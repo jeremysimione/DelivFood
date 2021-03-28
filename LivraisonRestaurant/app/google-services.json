@@ -1,0 +1,40 @@
+{
+    "project_info": {
+        "project_number": "13282686600",
+        "firebase_url": "https://delivfood-e9334-default-rtdb.firebaseio.com",
+        "project_id": "delivfood-e9334",
+        "storage_bucket": "delivfood-e9334.appspot.com"
+    },
+    "client": [
+        {
+            "client_info": {
+                "mobilesdk_app_id": "1:13282686600:android:46cd31dfc17dddc640513d",
+                "android_client_info": {
+                    "package_name": "com.example.livraisonrestaurant"
+                }
+            },
+            "oauth_client": [
+                {
+                    "client_id": "13282686600-epjbhpblqq2dj0gkg9gcm0ipi10u5s31.apps.googleusercontent.com",
+                    "client_type": 3
+                }
+            ],
+            "api_key": [
+                {
+                    "current_key": "AIzaSyB6OKXAVdj3505fYJFWOKcC3EWhnsqC098"
+                }
+            ],
+            "services": {
+                "appinvite_service": {
+                    "other_platform_oauth_client": [
+                        {
+                            "client_id": "13282686600-epjbhpblqq2dj0gkg9gcm0ipi10u5s31.apps.googleusercontent.com",
+                            "client_type": 3
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "configuration_version": "1"
+}
