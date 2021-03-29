@@ -1,9 +1,8 @@
 <resources>
-    <string name="app_name">FirebaseOC</string>
-    <string name="main_activity_description">Discute avec tes mentors, tout simplement.</string>
+    <string name="app_name">DelivFood</string>
+    <string name="main_activity_description">Pour commencer utilisez votre compte DelivFood</string>
 
     <string name="login">Connexion</string>
-    <string name="chat_with_mentor">Discute avec un mentor</string>
 
     <!-- NOTIFICATION SERVICE -->
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>

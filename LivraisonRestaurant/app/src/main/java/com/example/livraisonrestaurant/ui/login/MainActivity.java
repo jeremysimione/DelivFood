@@ -1,10 +1,17 @@
 package com.example.livraisonrestaurant.ui.login;
 
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -18,22 +25,39 @@ import com.example.livraisonrestaurant.ui.login.BaseActivity;
 import com.example.livraisonrestaurant.ui.login.models.user;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity {
     private static final int RC_SIGN_IN = 123;
     Button button;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        TextView tv = findViewById(R.id.home_textview);
+        //assuming your layout is in a LinearLayout as its root
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels ;
+        int width = displayMetrics.widthPixels;
+        tv.setPadding(width - 1040,height - 500,0,0);
+        ImageView image = findViewById(R.id.home_image);
+//Use RelativeLayout.LayoutParams if your parent is a RelativeLayout
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                width, height);
+        image.setLayoutParams(params);
+        image.setScaleType(ImageView.ScaleType.CENTER_CROP);
         button = (Button) findViewById(R.id.main_activity_button_login);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -47,6 +71,29 @@ public class MainActivity extends BaseActivity {
         if (this.isCurrentUserLogged()) {
             this.startProfileActivity();
         } else {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("name", "Tokyo");
+            data.put("country", "Japan");
+
+            db.collection("cities")
+                    .add(data)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            System.out.println( "DocumentSnapshot successfully written!");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            System.out.println("Error writing document" + e);
+                        }
+                    });
+
+
+
             this.startSignInActivity();
         }
     }
