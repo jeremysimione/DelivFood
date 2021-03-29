@@ -25,8 +25,10 @@ import com.example.livraisonrestaurant.ui.login.BaseActivity;
 import com.example.livraisonrestaurant.ui.login.models.user;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -40,6 +42,7 @@ import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity {
     private static final int RC_SIGN_IN = 123;
+    private user user1;
     Button button;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,7 +64,7 @@ public class MainActivity extends BaseActivity {
         button = (Button) findViewById(R.id.main_activity_button_login);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-    onClickLoginButton();
+                onClickLoginButton();
 
             }
         });
@@ -71,57 +74,28 @@ public class MainActivity extends BaseActivity {
         if (this.isCurrentUserLogged()) {
             this.startProfileActivity();
         } else {
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-            Map<String, Object> data = new HashMap<>();
-            data.put("name", "Tokyo");
-            data.put("country", "Japan");
-
-            db.collection("cities")
-                    .add(data)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            System.out.println( "DocumentSnapshot successfully written!");
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            System.out.println("Error writing document" + e);
-                        }
-                    });
-
-
-
             this.startSignInActivity();
         }
     }
 
-    private user getUser(String uid) {
-        final user[] user1 = {null};
+    private void startProfileActivity() {
         userHelper.getUser(this.getCurrentUser().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-
-
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                user1[0] = documentSnapshot.toObject(user.class);
+                user1 = documentSnapshot.toObject(user.class);
+
+                if (user1.getIsRest()) {
+                    Intent intent = new Intent(getApplicationContext(), restaurant.class);
+                    startActivity(intent);
+                } else if (user1.getIsRider()) {
+                    Intent intent = new Intent(getApplicationContext(), rider.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(getApplicationContext(), client.class);
+                    startActivity(intent);
+                }
             }
         });
-        return user1[0];
-    }
-
-    private void startProfileActivity() {
-        if (this.getUser(this.getCurrentUser().getUid()).getIsRest()) {
-            Intent intent = new Intent(this, restaurant.class);
-            startActivity(intent);
-        } else if (this.getUser(this.getCurrentUser().getUid()).getIsRider()) {
-            Intent intent = new Intent(this, rider.class);
-            startActivity(intent);
-        } else {
-            Intent intent = new Intent(this, client.class);
-            startActivity(intent);
-        }
     }
 
     private void startSignInActivity() {

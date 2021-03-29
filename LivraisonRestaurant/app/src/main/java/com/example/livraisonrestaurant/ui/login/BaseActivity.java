@@ -18,11 +18,6 @@ import butterknife.BindView;
 
 
 import butterknife.ButterKnife;
-
-    /**
-     * Created by Philippe on 12/01/2018.
-     */
-
     public abstract class BaseActivity extends AppCompatActivity {
 
         // --------------------
@@ -54,7 +49,6 @@ import butterknife.ButterKnife;
             return new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    System.out.println("---|||||||||||||||||||||||||||---------------------------------------------------------||||||||||||||||||||||||"+e.getMessage()+e.getClass());
                     Toast.makeText(getApplicationContext(), getString(R.string.error_unknown_error), Toast.LENGTH_LONG).show();
                 }
             };
@@ -65,7 +59,8 @@ import butterknife.ButterKnife;
         // --------------------
 
         @Nullable
-        protected FirebaseUser getCurrentUser(){ return FirebaseAuth.getInstance().getCurrentUser(); }
+        protected FirebaseUser getCurrentUser(){
+                return FirebaseAuth.getInstance().getCurrentUser(); }
 
         protected Boolean isCurrentUserLogged(){ return (this.getCurrentUser() != null); }
     }
