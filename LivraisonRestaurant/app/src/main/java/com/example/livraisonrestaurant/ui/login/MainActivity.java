@@ -46,10 +46,14 @@ public class MainActivity extends BaseActivity {
     Button button;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        if(this.isCurrentUserLogged()){
+            this.startProfileActivity();
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         TextView tv = findViewById(R.id.home_textview);
         //assuming your layout is in a LinearLayout as its root
+
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int height = displayMetrics.heightPixels ;
@@ -134,7 +138,7 @@ public class MainActivity extends BaseActivity {
             String uid = this.getCurrentUser().getUid();
 
             userHelper.createUser(uid, username).addOnFailureListener(this.onFailureListener());
-            System.out.println("---|||||||||||||||||||||||||||---------------------------------------------------------||||||||||||||||||||||||4");
+
 
         }
     }
@@ -143,7 +147,6 @@ public class MainActivity extends BaseActivity {
 
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) { // SUCCESS
-                System.out.println("---|||||||||||||||||||||||||||---------------------------------------------------------||||||||||||||||||||||||3");
 
                 this.createUserInFirestore();
 

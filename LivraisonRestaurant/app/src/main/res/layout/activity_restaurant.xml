@@ -4,12 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:gravity="center_horizontal">
+    android:orientation="horizontal"
+    android:background="@color/black"
+    >
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Rest" />
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_rail"
+        android:layout_width="70dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_gravity="bottom"
+        app:menu="@menu/navigation_rail_menu"
+       app:itemMaxLines="9"
+        android:background="@color/gris"/>
+
+
 </LinearLayout>
