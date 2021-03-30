@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu"
+        android:enabled="true"
+        android:icon="@drawable/menu_burger_icon_176150"
+        android:title="Menu"
+        />
+
+    <item
+        android:id="@+id/schedule"
+        android:enabled="true"
+        android:icon="@drawable/ic_fi_sr_receipt"
+        android:title="commande en cours"/>
+    <item
+        android:id="@+id/timer"
+        android:enabled="true"
+        android:icon="@drawable/bag"
+        android:title="commande prête"/>
+    <item
+        android:id="@+id/stopwatch"
+        android:enabled="true"
+        android:icon="@drawable/historique"
+        android:title="historique"/>
+</menu>
