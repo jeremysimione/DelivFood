@@ -2,11 +2,13 @@ package com.example.livraisonrestaurant.ui.login.models;
 
 import com.google.firebase.firestore.ServerTimestamp;
 
+import java.util.Date;
+
 public class restaurant {
     private String uid;
     private String adress_uid;
     private String name;
-    private String created_at;
+    private Date created_at;
     private String admin_Uid;
 
     public restaurant() {
@@ -44,7 +46,7 @@ public class restaurant {
         this.name = name;
     }
     @ServerTimestamp
-    public String getCreated_at() {
+    public Date getCreated_at() {
         return created_at;
     }
 
