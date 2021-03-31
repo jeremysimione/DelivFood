@@ -11,6 +11,18 @@
         android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <androidx.drawerlayout.widget.DrawerLayout
+            android:id="@+id/drawerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:openDrawer="start">
+            <com.google.android.material.navigation.NavigationView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start" />
+
+
+
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:id="@+id/map"
@@ -18,60 +30,68 @@
             android:layout_height="match_parent"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+
+            android:id="@+id/myconstraintlayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/floatingActionButton9"
                 android:layout_width="90dp"
                 android:layout_height="83dp"
-                android:layout_marginStart="164dp"
-                android:layout_marginLeft="164dp"
+                android:layout_marginStart="92dp"
+                android:layout_marginLeft="92dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
                 android:layout_marginBottom="100dp"
                 android:clickable="true"
+                app:backgroundTint="#3F51B5"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/historique" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/floatingActionButton13"
-                android:layout_width="51dp"
-                android:layout_height="46dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="17dp"
-                android:layout_marginEnd="88dp"
-                android:layout_marginRight="88dp"
-                android:clickable="true"
-                app:layout_constraintEnd_toStartOf="@+id/chip10"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/historique" />
+                app:layout_constraintEnd_toStartOf="@+id/textView2"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/floatingActionButton10"
+                app:srcCompat="@null" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/floatingActionButton12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
                 android:layout_marginBottom="100dp"
                 android:clickable="true"
+                app:backgroundTint="#FFFFFF"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/historique" />
+                app:srcCompat="@android:drawable/ic_menu_mylocation" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floatingActionButton14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:clickable="true"
+                app:backgroundTint="#FFFFFF"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/menu_burger_icon_176150" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip10"
-                android:layout_width="101dp"
-                android:layout_height="66dp"
-                android:layout_marginStart="92dp"
-                android:layout_marginLeft="92dp"
-                android:layout_marginTop="10dp"
-                android:text="0,00 £"
+                android:layout_width="102dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="144dp"
+                android:layout_marginRight="144dp"
+                android:text="0,00€"
                 android:textColor="@color/white"
-                app:chipIcon="@color/black"
+                android:textSize="32sp"
                 app:chipSurfaceColor="#0B0A0A"
-                app:layout_constraintStart_toEndOf="@+id/floatingActionButton13"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -82,11 +102,28 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginBottom="100dp"
                 android:clickable="true"
+                app:backgroundTint="#FFFFFF"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/historique" />
+                app:srcCompat="@android:drawable/ic_menu_view" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="62dp"
+                android:layout_height="83dp"
+                android:layout_marginBottom="80dp"
+                android:elevation="16dp"
+                android:text="GO"
+                android:textColor="@color/white"
+                android:textSize="32dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/floatingActionButton12"
+                app:layout_constraintHorizontal_bias="0.609"
+                app:layout_constraintStart_toEndOf="@+id/floatingActionButton10" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.drawerlayout.widget.DrawerLayout>
 
     </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
