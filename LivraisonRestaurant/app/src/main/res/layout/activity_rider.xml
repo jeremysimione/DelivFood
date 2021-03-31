@@ -9,16 +9,6 @@
     app:layout_anchor="@+id/frameLayout"
     app:layout_anchorGravity="center"
     tools:openDrawer="start">
-            <com.google.android.material.navigation.NavigationView
-                android:id="@+id/mynv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="start"
-                android:background="#FFFFFF"
-                android:clickable="true"
-                android:isScrollContainer="true"
-                android:longClickable="false"
-                app:menu="@menu/drawer" />
                 <androidx.coordinatorlayout.widget.CoordinatorLayout
                     android:layout_width="match_parent"
                     android:layout_height="663dp"
@@ -132,4 +122,13 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/mynv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:behavior_hideable="true"
+        android:background="#FFFFFF"
+        app:menu="@menu/drawer" />
         </androidx.drawerlayout.widget.DrawerLayout>
