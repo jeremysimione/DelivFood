@@ -3,6 +3,7 @@ package com.example.livraisonrestaurant.ui.login;
 import android.content.Intent;
 import android.nfc.Tag;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -47,41 +48,36 @@ public class MainActivity extends BaseActivity {
     Button button;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        restHelper.createRestaurant("test","sdjskojfo","grand slam burger","ffff").addOnFailureListener(this.onFailureListener());
-        restHelper.createRestaurant("test2","sjfgoj","la rose des sables","ffff").addOnFailureListener(this.onFailureListener());
-        restHelper.createRestaurant("test3","sdskope","Le cheese naan","ffff").addOnFailureListener(this.onFailureListener());
-        restHelper.createRestaurant("test4","sdjskojfo","grand slam burger","ffff").addOnFailureListener(this.onFailureListener());
-        restHelper.createRestaurant("test5","sjfgoj","la rose des sables","ffff").addOnFailureListener(this.onFailureListener());
-        restHelper.createRestaurant("test6","sdskope","Le cheese naan","ffff").addOnFailureListener(this.onFailureListener());
-        restHelper.createRestaurant("tes7","sdjskojfo","grand slam burger","ffff").addOnFailureListener(this.onFailureListener());
-        restHelper.createRestaurant("test8","sjfgoj","la rose des sables","ffff").addOnFailureListener(this.onFailureListener());
-        restHelper.createRestaurant("test9","sdskope","Le cheese naan","ffff").addOnFailureListener(this.onFailureListener());
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        //assuming your layout is in a LinearLayout as its root
+        new Handler().postDelayed(null,3000);
         if(this.isCurrentUserLogged()){
             this.startProfileActivity();
-        }
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        TextView tv = findViewById(R.id.home_textview);
-        //assuming your layout is in a LinearLayout as its root
-
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int height = displayMetrics.heightPixels ;
-        int width = displayMetrics.widthPixels;
-        tv.setPadding(width - 1040,height - 500,0,0);
-        ImageView image = findViewById(R.id.home_image);
+        }else {
+            setContentView(R.layout.activity_login);
+            TextView tv = (TextView) findViewById(R.id.home_textview);
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            int height = displayMetrics.heightPixels;
+            int width = displayMetrics.widthPixels;
+            tv.setPadding(width - 1040, height - 500, 0, 0);
+            ImageView image = findViewById(R.id.home_image);
 //Use RelativeLayout.LayoutParams if your parent is a RelativeLayout
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                width, height);
-        image.setLayoutParams(params);
-        image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        button = (Button) findViewById(R.id.main_activity_button_login);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                onClickLoginButton();
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                    width, height);
+            image.setLayoutParams(params);
+            image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            button = (Button) findViewById(R.id.main_activity_button_login);
+            button.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    onClickLoginButton();
 
-            }
-        });
+                }
+            });
+        }
     }
 
     public void onClickLoginButton() {
@@ -148,6 +144,7 @@ public class MainActivity extends BaseActivity {
             String uid = this.getCurrentUser().getUid();
 
             userHelper.createUser(uid, username).addOnFailureListener(this.onFailureListener());
+            this.startProfileActivity();
 
 
         }

@@ -19,7 +19,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.livraisonrestaurant.R;
-import com.example.livraisonrestaurant.ui.login.BaseActivity;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
