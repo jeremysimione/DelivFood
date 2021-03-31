@@ -20,6 +20,7 @@ import com.example.livraisonrestaurant.R;
 import com.example.livraisonrestaurant.ui.login.Auth.client;
 import com.example.livraisonrestaurant.ui.login.Auth.restaurant;
 import com.example.livraisonrestaurant.ui.login.Auth.rider;
+import com.example.livraisonrestaurant.ui.login.api.restHelper;
 import com.example.livraisonrestaurant.ui.login.api.userHelper;
 import com.example.livraisonrestaurant.ui.login.BaseActivity;
 import com.example.livraisonrestaurant.ui.login.models.user;
@@ -46,6 +47,15 @@ public class MainActivity extends BaseActivity {
     Button button;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        restHelper.createRestaurant("test","sdjskojfo","grand slam burger","ffff").addOnFailureListener(this.onFailureListener());
+        restHelper.createRestaurant("test2","sjfgoj","la rose des sables","ffff").addOnFailureListener(this.onFailureListener());
+        restHelper.createRestaurant("test3","sdskope","Le cheese naan","ffff").addOnFailureListener(this.onFailureListener());
+        restHelper.createRestaurant("test4","sdjskojfo","grand slam burger","ffff").addOnFailureListener(this.onFailureListener());
+        restHelper.createRestaurant("test5","sjfgoj","la rose des sables","ffff").addOnFailureListener(this.onFailureListener());
+        restHelper.createRestaurant("test6","sdskope","Le cheese naan","ffff").addOnFailureListener(this.onFailureListener());
+        restHelper.createRestaurant("tes7","sdjskojfo","grand slam burger","ffff").addOnFailureListener(this.onFailureListener());
+        restHelper.createRestaurant("test8","sjfgoj","la rose des sables","ffff").addOnFailureListener(this.onFailureListener());
+        restHelper.createRestaurant("test9","sdskope","Le cheese naan","ffff").addOnFailureListener(this.onFailureListener());
         if(this.isCurrentUserLogged()){
             this.startProfileActivity();
         }

@@ -29,8 +29,8 @@ public class  user {
         this.username = username;
         //Test activité client
         this.isRest=false;
-        this.isRider=false;
-        this.isCustomer = true;
+        this.isRider=true;
+        this.isCustomer = false;
     }
 
     public user(user user1) {
