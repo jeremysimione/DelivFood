@@ -21,7 +21,6 @@ public class userHelper {
 
     public static Task<Void> createUser(String uid, String username) {
         user userToCreate = new user(uid, username);
-        System.out.println("hereeeeeeeeee" + userToCreate.getIsCustomer());
 
         return userHelper.getUsersCollection().document(uid).set(userToCreate);
     }
@@ -38,9 +37,18 @@ public class userHelper {
     public static Task<Void> updateUsername(String username, String uid) {
         return userHelper.getUsersCollection().document(uid).update("username", username);
     }
+    public static Task<Void> updatePhoneNumbre(String phoneNumber, String uid) {
+        return userHelper.getUsersCollection().document(uid).update("phoneNumber", phoneNumber);
+    }
 
     public static Task<Void> updateIsCustomer(String uid, Boolean c) {
         return userHelper.getUsersCollection().document(uid).update("isCustomer", c);
+    }
+    public static Task<Void> updateIsRest(String uid, Boolean c) {
+        return userHelper.getUsersCollection().document(uid).update("isRest", c);
+    }
+    public static Task<Void> updateIsRider(String uid, Boolean c) {
+        return userHelper.getUsersCollection().document(uid).update("isRider", c);
     }
 
     // --- DELETE ---

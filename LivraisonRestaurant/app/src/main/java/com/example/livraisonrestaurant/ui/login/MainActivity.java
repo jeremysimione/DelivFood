@@ -45,6 +45,7 @@ import butterknife.OnClick;
 public class MainActivity extends BaseActivity {
     private static final int RC_SIGN_IN = 123;
     private user user1;
+    private user user2=null;
     Button button;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,6 +57,7 @@ public class MainActivity extends BaseActivity {
         new Handler().postDelayed(null,3000);
         if(this.isCurrentUserLogged()){
             this.startProfileActivity();
+
         }else {
             setContentView(R.layout.activity_login);
             TextView tv = (TextView) findViewById(R.id.home_textview);
@@ -97,12 +99,15 @@ public class MainActivity extends BaseActivity {
                 if (user1.getIsRest()) {
                     Intent intent = new Intent(getApplicationContext(), restaurant.class);
                     startActivity(intent);
+                    finish();
                 } else if (user1.getIsRider()) {
                     Intent intent = new Intent(getApplicationContext(), rider.class);
                     startActivity(intent);
+                    finish();
                 } else {
                     Intent intent = new Intent(getApplicationContext(), client.class);
                     startActivity(intent);
+                    finish();
                 }
             }
         });
@@ -142,13 +147,22 @@ public class MainActivity extends BaseActivity {
 
             String username = this.getCurrentUser().getDisplayName();
             String uid = this.getCurrentUser().getUid();
+            userHelper.getUser(this.getCurrentUser().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    user2 = documentSnapshot.toObject(user.class);
 
-            userHelper.createUser(uid, username).addOnFailureListener(this.onFailureListener());
+                }});
+            if (user2==null){
+                userHelper.createUser(uid, username).addOnFailureListener(this.onFailureListener());
+            }
             this.startProfileActivity();
+            }
+
 
 
         }
-    }
+
     private void handleResponseAfterSignIn(int requestCode, int resultCode, Intent data){
 
 
