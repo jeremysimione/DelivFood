@@ -5,16 +5,20 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -27,7 +31,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.math.MathUtils;
 import com.google.android.material.navigation.NavigationView;
 
 public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationButtonClickListener,
@@ -35,10 +42,37 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
         OnMapReadyCallback {
     private View locationButton;
     private GoogleMap mMap;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rider);
+        NavigationView nv = findViewById(R.id.navigationView);
+       BottomSheetBehavior bottomSheetBehavior= BottomSheetBehavior.from(nv);
+       bottomSheetBehavior.setDraggable(true);
+       bottomSheetBehavior.setPeekHeight(200);
+        bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                    // do stuff when the drawer is expanded
+                }
+
+                if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    // do stuff when the drawer is collapsed
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                // do stuff during the actual drag event for example
+                // animating a background color change based on the offset
+
+
+            }
+        });
+
+
         //ConstraintLayout cl = findViewById(R.id.myconstraintlayout);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -52,10 +86,22 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
                 mDrawerLayout.openDrawer(Gravity.START);
             }
         });
-
-
+    NavigationView nv2 =findViewById(R.id.mynv);
+    getCheckedItem(nv2);
     }
 
+    private int getCheckedItem(NavigationView navigationView) {
+        Menu menu = navigationView.getMenu();
+        for (int i = 0; i < menu.size(); i++) {
+            MenuItem item = menu.getItem(i);
+
+            if (item.isChecked()) {
+                item.setChecked(true);
+            }
+        }
+
+        return -1;
+    }
     @SuppressLint("ResourceType")
     @Override
     public void onMapReady(GoogleMap googleMap) {
