@@ -2,6 +2,7 @@ package com.example.livraisonrestaurant.ui.login.Auth;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
@@ -14,6 +15,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -43,10 +45,16 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
     private View locationButton;
     private GoogleMap mMap;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rider);
+        requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, 2);
+        if(ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION  }, 2);
+        }
         NavigationView nv = findViewById(R.id.navigationView);
        BottomSheetBehavior bottomSheetBehavior= BottomSheetBehavior.from(nv);
        bottomSheetBehavior.setDraggable(true);

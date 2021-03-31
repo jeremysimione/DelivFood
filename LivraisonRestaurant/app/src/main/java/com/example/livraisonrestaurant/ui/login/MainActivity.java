@@ -1,7 +1,9 @@
 package com.example.livraisonrestaurant.ui.login;
 
+import android.Manifest;
 import android.content.Intent;
 import android.nfc.Tag;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
@@ -47,12 +50,13 @@ public class MainActivity extends BaseActivity {
     private user user1;
     private user user2=null;
     Button button;
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, 2);
         //assuming your layout is in a LinearLayout as its root
         new Handler().postDelayed(null,3000);
         if(this.isCurrentUserLogged()){
@@ -147,15 +151,12 @@ public class MainActivity extends BaseActivity {
 
             String username = this.getCurrentUser().getDisplayName();
             String uid = this.getCurrentUser().getUid();
-            userHelper.getUser(this.getCurrentUser().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            userHelper.getUser(this.getCurrentUser().getUid()).addOnFailureListener(new OnFailureListener() {
                 @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    user2 = documentSnapshot.toObject(user.class);
-
-                }});
-            if (user2==null){
-                userHelper.createUser(uid, username).addOnFailureListener(this.onFailureListener());
-            }
+                public void onFailure(@NonNull Exception e) {
+                    userHelper.createUser(uid, username);
+                }
+            });
             this.startProfileActivity();
             }
 
