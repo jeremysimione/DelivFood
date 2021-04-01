@@ -22,7 +22,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.example.livraisonrestaurant.R;
 import com.example.livraisonrestaurant.ui.login.Auth.client;
-import com.example.livraisonrestaurant.ui.login.Auth.restaurant;
+import com.example.livraisonrestaurant.ui.login.Auth.restaurantActivity;
 import com.example.livraisonrestaurant.ui.login.Auth.rider;
 import com.example.livraisonrestaurant.ui.login.api.restHelper;
 import com.example.livraisonrestaurant.ui.login.api.userHelper;
@@ -101,7 +101,7 @@ public class MainActivity extends BaseActivity {
                 user1 = documentSnapshot.toObject(user.class);
 
                 if (user1.getIsRest()) {
-                    Intent intent = new Intent(getApplicationContext(), restaurant.class);
+                    Intent intent = new Intent(getApplicationContext(), restaurantActivity.class);
                     startActivity(intent);
                     finish();
                 } else if (user1.getIsRider()) {

@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
     android:background="@color/black"
-    >
-
+    app:layout_anchor="@+id/frameLayout"
+    app:layout_anchorGravity="center"
+    tools:openDrawer="start">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_rail"
         android:layout_width="70dp"
@@ -16,8 +21,21 @@
         android:layout_marginEnd="20dp"
         android:layout_gravity="bottom"
         app:menu="@menu/navigation_rail_menu"
-       app:itemMaxLines="9"
+        app:itemMaxLines="9"
         android:background="@color/gris"/>
-
-
 </LinearLayout>
+
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/mynv1"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/gris"
+        app:behavior_hideable="true"
+        app:menu="@menu/menu_rest"
+        app:itemIconSize="70dp"
+
+        app:itemIconPadding="20dp"/>
+
+</androidx.drawerlayout.widget.DrawerLayout>

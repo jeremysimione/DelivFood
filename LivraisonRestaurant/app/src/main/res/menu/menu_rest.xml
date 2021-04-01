@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/page_1"
+        android:enabled="true"
+        android:icon="@drawable/ic_fi_sr_user"
+        android:title="" />
+    <item
+        android:id="@+id/page_2"
+        android:enabled="true"
+        android:title="test"/>
+    <item
+        android:id="@+id/page_3"
+        android:enabled="true"
+        android:title="test"/>
+    <item
+        android:id="@+id/page_4"
+        android:enabled="true"
+        android:title="test"/>
+</menu>
