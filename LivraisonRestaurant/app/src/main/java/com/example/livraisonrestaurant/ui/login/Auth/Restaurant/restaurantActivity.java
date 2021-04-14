@@ -1,4 +1,4 @@
-package com.example.livraisonrestaurant.ui.login.Auth;
+package com.example.livraisonrestaurant.ui.login.Auth.Restaurant;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;

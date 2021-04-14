@@ -4,8 +4,8 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-feature android:name="android.hardware.location.gps" />
 
+    <uses-feature android:name="android.hardware.location.gps" />
 
     <application
         android:allowBackup="true"
@@ -14,6 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
+        <activity android:name=".ui.login.Auth.Restaurant.ajoute_products"></activity>
+        <activity android:name=".ui.login.Auth.Restaurant.ordersRestaurant" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -30,7 +32,7 @@
             android:label="@string/toolbar_title_login_activity"
             android:parentActivityName=".ui.login.MainActivity" />
         <activity
-            android:name=".ui.login.Auth.restaurantActivity"
+            android:name=".ui.login.Auth.Restaurant.restaurantActivity"
             android:label="@string/toolbar_title_login_activity"
             android:parentActivityName=".ui.login.MainActivity" /> <!-- PROFILE ACTIVITY -->
         <activity
