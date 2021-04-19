@@ -32,8 +32,9 @@ public class ajoute_products extends BaseActivity {
         Valid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                productHelper.createProduct(ownerId,"sandwich au thon ",uid,5,true).addOnCompleteListener(new OnCompleteListener<Void>() {
+                String n = (String) name.getText().toString();
+                int P = (int) Integer.parseInt(price.getText().toString());
+                productHelper.createProduct(ownerId,n,uid,P,true).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Intent intent = new Intent(getApplicationContext(), ordersRestaurant.class);

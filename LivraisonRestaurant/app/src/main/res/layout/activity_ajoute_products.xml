@@ -41,15 +41,6 @@
         android:textSize="24sp" />
 
     <EditText
-        android:id="@+id/Name"
-        android:layout_width="213dp"
-        android:layout_height="36dp"
-        android:layout_marginStart="130dp"
-        android:layout_marginTop="250dp"
-        android:layout_marginEnd="130dp"
-         />
-
-    <EditText
         android:id="@+id/Price"
         android:layout_width="213dp"
         android:layout_height="wrap_content"
@@ -72,6 +63,17 @@
 
         android:text="Ajouter"
         android:textSize="24sp" />
+
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="196dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="130dp"
+        android:layout_marginTop="250dp"
+        android:layout_marginEnd="130dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
