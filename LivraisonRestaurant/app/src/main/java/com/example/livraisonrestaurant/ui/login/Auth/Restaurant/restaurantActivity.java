@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -51,6 +52,16 @@ public class restaurantActivity extends BaseActivity {
                 System.out.println("++++++++++++++++++f2");
                restaurant re = documentSnapshot.toObject(restaurant.class);
                nv2.getMenu().getItem(0).setTitle(re.getName());
+               nv2.getMenu().getItem(1).setTitle("Produits");
+               nv2.getMenu().getItem(1).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                   @Override
+                   public boolean onMenuItemClick(MenuItem item) {
+                       Intent intent = new Intent(getApplicationContext(), ordersRestaurant.class);
+                       startActivity(intent);
+                       finish();
+                       return true;
+                   }
+               });
 
 
             }
