@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.example.livraisonrestaurant.R;
-import com.example.livraisonrestaurant.ui.login.Auth.client;
+import com.example.livraisonrestaurant.ui.login.Auth.Client.client;
 import com.example.livraisonrestaurant.ui.login.Auth.Restaurant.restaurantActivity;
 import com.example.livraisonrestaurant.ui.login.Auth.rider;
 import com.example.livraisonrestaurant.ui.login.api.userHelper;

@@ -37,7 +37,7 @@
             android:label="@string/toolbar_title_login_activity"
             android:parentActivityName=".ui.login.MainActivity" /> <!-- PROFILE ACTIVITY -->
         <activity
-            android:name=".ui.login.Auth.client"
+            android:name=".ui.login.Auth.Client.client"
             android:label="@string/toolbar_title_login_activity"
             android:parentActivityName=".ui.login.MainActivity" />
         <activity
