@@ -10,15 +10,18 @@ public class restaurant {
     private String name;
     private Date created_at;
     private String admin_Uid;
+    private String categorie;
 
     public restaurant() {
     }
 
-    public restaurant(String uid, String adress_uid, String name, String admin_Uid) {
+
+
+    public restaurant(String uid, String adress_uid, String name, String admin_Uid, String c) {
         this.uid = uid;
         this.adress_uid = adress_uid;
         this.name = name;
-
+        this.categorie=c;
         this.admin_Uid = admin_Uid;
     }
 
@@ -57,6 +60,9 @@ public class restaurant {
     public void setAdmin_Uid(String admin_Uid) {
         this.admin_Uid = admin_Uid;
     }
+    public String getCategorie() { return categorie; }
+
+    public void setCategorie(String categorie) { this.categorie = categorie; }
 
 
 }

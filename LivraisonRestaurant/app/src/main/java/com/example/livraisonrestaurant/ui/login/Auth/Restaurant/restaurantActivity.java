@@ -1,7 +1,6 @@
 package com.example.livraisonrestaurant.ui.login.Auth.Restaurant;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.annotation.SuppressLint;
@@ -14,7 +13,6 @@ import com.example.livraisonrestaurant.R;
 import com.example.livraisonrestaurant.ui.login.BaseActivity;
 import com.example.livraisonrestaurant.ui.login.api.orderHelper;
 import com.example.livraisonrestaurant.ui.login.api.restHelper;
-import com.example.livraisonrestaurant.ui.login.models.products;
 import com.example.livraisonrestaurant.ui.login.models.restaurant;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
@@ -41,7 +39,7 @@ public class restaurantActivity extends BaseActivity {
             }
         });
         String uid = getCurrentUser().getUid();
-        orderHelper.createOrders("test",uid,uid,200,new ArrayList<String>());
+        orderHelper.createOrders("test",uid,"wOzNVfEbXMOmedDKNX1yKmVS2LP2",200,new ArrayList<String>());
         r=GetR(uid);
         GetC(uid);
 
@@ -79,7 +77,7 @@ public class restaurantActivity extends BaseActivity {
                nv2.getMenu().getItem(1).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                    @Override
                    public boolean onMenuItemClick(MenuItem item) {
-                       Intent intent = new Intent(getApplicationContext(), ordersRestaurant.class);
+                       Intent intent = new Intent(getApplicationContext(), ListProduct.class);
                        startActivity(intent);
 
                        return true;

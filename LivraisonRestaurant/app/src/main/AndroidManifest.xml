@@ -16,7 +16,7 @@
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
         <activity android:name=".ui.login.Auth.Restaurant.historiqueOrders"></activity>
         <activity android:name=".ui.login.Auth.Restaurant.ajoute_products" />
-        <activity android:name=".ui.login.Auth.Restaurant.ordersRestaurant" />
+        <activity android:name=".ui.login.Auth.Restaurant.ListProduct" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

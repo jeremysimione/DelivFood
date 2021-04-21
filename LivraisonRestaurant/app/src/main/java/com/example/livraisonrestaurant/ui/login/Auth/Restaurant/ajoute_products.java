@@ -1,7 +1,6 @@
 package com.example.livraisonrestaurant.ui.login.Auth.Restaurant;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +15,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import java.util.UUID;
-import java.util.jar.Attributes;
 
 public class ajoute_products extends BaseActivity {
 
@@ -37,7 +35,7 @@ public class ajoute_products extends BaseActivity {
                 productHelper.createProduct(ownerId,n,uid,P,true).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Intent intent = new Intent(getApplicationContext(), ordersRestaurant.class);
+                        Intent intent = new Intent(getApplicationContext(), ListProduct.class);
                         startActivity(intent);
                         finish();
                     }

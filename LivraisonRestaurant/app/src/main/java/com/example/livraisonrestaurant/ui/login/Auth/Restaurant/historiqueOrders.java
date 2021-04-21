@@ -1,13 +1,18 @@
 package com.example.livraisonrestaurant.ui.login.Auth.Restaurant;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.livraisonrestaurant.R;
 import com.example.livraisonrestaurant.ui.login.BaseActivity;
@@ -30,6 +35,8 @@ import java.util.ArrayList;
 public class historiqueOrders extends BaseActivity {
     ArrayList<orders> commande = new ArrayList<orders>();
     user u=null;
+    products p12 =null;
+    String s;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,12 +55,14 @@ public class historiqueOrders extends BaseActivity {
                     }
                 }
                 for (orders p : commande){
+                    s="";
                     LinearLayout parent = new LinearLayout(context);
                     MaterialCardView m = new MaterialCardView(context);
                     m.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                     m.setClickable(true);
                     m.setFocusable(true);
                     m.setCheckable(true);
+                  
 
 
                     parent.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -72,6 +81,38 @@ public class historiqueOrders extends BaseActivity {
                             layout2.addView(tv1);
                             layout2.addView(tv2);
                             m.addView(parent);
+                            m.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                                    builder.setTitle(u.getUsername()+"   "+p.getPrice()+"$");
+
+                                    for (String c : p.getListProducts()
+                                            ) {
+
+                                        productHelper.getProduct(c).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                            p12 = documentSnapshot.toObject(products.class);
+                                            s += p12.getName()+"\n";
+                                            builder.setMessage(s);
+                                            builder.show();
+
+                                        }
+                                    });
+                                        
+                                    }
+
+
+
+                                    builder.setNegativeButton("Retour", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Toast.makeText(getApplicationContext(), "retour", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+
+                            });
                             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                                     LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 

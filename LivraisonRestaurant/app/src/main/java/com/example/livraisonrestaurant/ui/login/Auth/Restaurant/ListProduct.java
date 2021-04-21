@@ -1,9 +1,11 @@
 package com.example.livraisonrestaurant.ui.login.Auth.Restaurant;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.livraisonrestaurant.R;
 import com.example.livraisonrestaurant.ui.login.BaseActivity;
@@ -26,7 +29,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-public class ordersRestaurant extends BaseActivity {
+public class ListProduct extends BaseActivity {
     ArrayList<products> produits = new ArrayList<products>();
 
     @Override
@@ -62,7 +65,32 @@ public class ordersRestaurant extends BaseActivity {
                     m.setClickable(true);
                     m.setFocusable(true);
                     m.setCheckable(true);
+                    m.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            builder.setTitle("Suppression de "+p.getName());
+                            builder.setMessage("Voulez vous Supprimer ce produit ?");
+                            builder.setIcon(android.R.drawable.ic_dialog_alert);
+                            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    productHelper.deleteProduct(p.getUid());
+                                    Toast.makeText(getApplicationContext(), "Produits Supprimer!", Toast.LENGTH_SHORT).show();
+                                   Intent i = getIntent();
+                                    startActivity(i);
+                                    finish();
 
+                                }
+                            });
+                            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Toast.makeText(getApplicationContext(), "retour", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            builder.show();
+                                }
+
+                    });
                     parent.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                     parent.setOrientation(LinearLayout.VERTICAL);
 
