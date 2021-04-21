@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.example.livraisonrestaurant.R;
-import com.example.livraisonrestaurant.ui.login.Auth.client;
+import com.example.livraisonrestaurant.ui.login.Auth.Client.client;
 import com.example.livraisonrestaurant.ui.login.Auth.Restaurant.restaurantActivity;
 import com.example.livraisonrestaurant.ui.login.Auth.rider;
 import com.example.livraisonrestaurant.ui.login.api.userHelper;
@@ -44,8 +44,7 @@ public class MainActivity extends BaseActivity {
         //assuming your layout is in a LinearLayout as its root
         new Handler().postDelayed(null,3000);
         if(this.isCurrentUserLogged()){
-            this.startProfileActivity();
-
+            this.createUserInFirestore();
         }else {
             setContentView(R.layout.activity_login);
             TextView tv = (TextView) findViewById(R.id.home_textview);
@@ -136,21 +135,24 @@ public class MainActivity extends BaseActivity {
 
             String username = this.getCurrentUser().getDisplayName();
             String uid = this.getCurrentUser().getUid();
-            userHelper.getUser(this.getCurrentUser().getUid()).addOnFailureListener(new OnFailureListener() {
+            System.out.println("jke suis lààà1221221111111111111111122222222222 ");
+            userHelper.getUser(uid).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
-                public void onFailure(@NonNull Exception e) {
-                    userHelper.createUser(uid, username);
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                    if(documentSnapshot.toObject(user.class)==null){
+                        userHelper.createUser(uid,username);
+                    }
                 }
             });
+
             this.startProfileActivity();
-            }
-
-
-
         }
 
-    private void handleResponseAfterSignIn(int requestCode, int resultCode, Intent data){
 
+
+    }
+    private void handleResponseAfterSignIn(int requestCode, int resultCode, Intent data){
 
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) { // SUCCESS

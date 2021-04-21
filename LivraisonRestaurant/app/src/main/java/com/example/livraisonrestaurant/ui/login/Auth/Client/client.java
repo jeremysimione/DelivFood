@@ -1,4 +1,4 @@
-package com.example.livraisonrestaurant.ui.login.Auth;
+package com.example.livraisonrestaurant.ui.login.Auth.Client;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -7,8 +7,12 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.widget.NestedScrollView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,6 +23,8 @@ import com.example.livraisonrestaurant.ui.login.api.restHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationMenu;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.card.MaterialCardView;
 import com.example.livraisonrestaurant.ui.login.models.restaurant;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -37,6 +43,16 @@ public class client extends AppCompatActivity {
         Context context = this;
         setContentView(R.layout.activity_client);
         LinearLayout myScrollView = findViewById(R.id.linScrollView);
+        BottomNavigationView bnm = findViewById(R.id.bottom_nav);
+        for (int i = 0; i < 4;i++) {
+            bnm.getMenu().getItem(i).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    onOptionsItemSelected(item);
+                    return true;
+                }
+            });
+        }
         restHelper.getRestaurantCollection().get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -58,6 +74,14 @@ public class client extends AppCompatActivity {
                             MaterialCardView m = new MaterialCardView(context);
                             m.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                             m.setClickable(true);
+                            m.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent = new Intent(getApplicationContext(),MenuRestaurantActivity.class);
+                                    intent.putExtra("id_resto",r.getUid());
+                                    startActivity(intent);
+                                }
+                            });
                             m.setFocusable(true);
                             m.setCheckable(true);
                             parent.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -88,8 +112,32 @@ public class client extends AppCompatActivity {
                     }
                 });
 
-        System.out.println("reastaurants : "  + restaurants);
+        System.out.println("restaurants : "  + restaurants);
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.homepage:
+                return true;
+            case R.id.searchpage:
+                Intent in = new Intent(getApplicationContext(),SearchActivity.class);
+                startActivity(in);
+                return true;
+            case R.id.orderspage :
+                Intent inte = new Intent(getApplicationContext(),OrdersActivity.class);
+                startActivity(inte);
+                return true;
+            case R.id.accountpage :
+                Intent intent = new Intent(getApplicationContext(),AccountActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
         }
+    }
+
+}

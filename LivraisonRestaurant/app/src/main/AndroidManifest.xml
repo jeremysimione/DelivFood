@@ -14,7 +14,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
-        <activity android:name=".ui.login.Auth.Restaurant.ajoute_products"></activity>
+        <activity android:name=".ui.login.Auth.Client.SettingsActivity"></activity>
+        <activity android:name=".ui.login.Auth.Client.SearchActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <activity android:name=".ui.login.Auth.Client.OrdersActivity" />
+        <activity android:name=".ui.login.Auth.Client.AccountActivity" />
+        <activity android:name=".ui.login.Auth.Client.MenuRestaurantActivity" />
+        <activity android:name=".ui.login.Auth.Restaurant.ajoute_products" />
         <activity android:name=".ui.login.Auth.Restaurant.ordersRestaurant" />
 
         <meta-data
@@ -36,7 +49,7 @@
             android:label="@string/toolbar_title_login_activity"
             android:parentActivityName=".ui.login.MainActivity" /> <!-- PROFILE ACTIVITY -->
         <activity
-            android:name=".ui.login.Auth.client"
+            android:name=".ui.login.Auth.Client.client"
             android:label="@string/toolbar_title_login_activity"
             android:parentActivityName=".ui.login.MainActivity" />
         <activity
