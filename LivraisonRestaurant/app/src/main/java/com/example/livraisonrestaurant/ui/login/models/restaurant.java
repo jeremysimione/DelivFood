@@ -57,4 +57,6 @@ public class restaurant {
     public void setAdmin_Uid(String admin_Uid) {
         this.admin_Uid = admin_Uid;
     }
+
+
 }
