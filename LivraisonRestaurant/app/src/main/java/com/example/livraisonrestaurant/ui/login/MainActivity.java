@@ -23,11 +23,9 @@ import com.example.livraisonrestaurant.ui.login.Auth.rider;
 import com.example.livraisonrestaurant.ui.login.api.userHelper;
 import com.example.livraisonrestaurant.ui.login.models.user;
 import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Arrays;
 
@@ -46,7 +44,7 @@ public class MainActivity extends BaseActivity {
         //assuming your layout is in a LinearLayout as its root
         new Handler().postDelayed(null,3000);
         if(this.isCurrentUserLogged()){
-            this.createUserInFirestore();
+            this.startProfileActivity();
 
         }else {
             setContentView(R.layout.activity_login);
@@ -138,18 +136,12 @@ public class MainActivity extends BaseActivity {
 
             String username = this.getCurrentUser().getDisplayName();
             String uid = this.getCurrentUser().getUid();
-            System.out.println("jke suis lààà1221221111111111111111122222222222 ");
-           userHelper.getUser(uid).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            userHelper.getUser(this.getCurrentUser().getUid()).addOnFailureListener(new OnFailureListener() {
                 @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-
-                    if(documentSnapshot.toObject(user.class)==null){
-                        userHelper.createUser(uid,username);
-                    }
+                public void onFailure(@NonNull Exception e) {
+                    userHelper.createUser(uid, username);
                 }
             });
-
-
             this.startProfileActivity();
             }
 

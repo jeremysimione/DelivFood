@@ -1,21 +1,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/page_1"
+        android:id="@+id/homepage"
         android:enabled="true"
         android:icon="@drawable/home"
         android:title="Acceuil"/>
     <item
-        android:id="@+id/page_2"
+        android:id="@+id/searchpage"
         android:enabled="true"
         android:icon="@drawable/ic_fi_sr_search"
         android:title="Recherche"/>
     <item
-        android:id="@+id/page_3"
+        android:id="@+id/orderspage"
         android:enabled="true"
         android:icon="@drawable/ic_fi_sr_receipt"
         android:title="Commandes"/>
     <item
-        android:id="@+id/page_4"
+        android:id="@+id/accountpage"
         android:enabled="true"
         android:icon="@drawable/ic_fi_sr_user"
         android:title="Compte"/>
