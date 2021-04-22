@@ -23,6 +23,18 @@
         app:menu="@menu/navigation_rail_menu"
         app:itemMaxLines="9"
         android:background="@color/gris"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="640dp"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/linScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>
 
 

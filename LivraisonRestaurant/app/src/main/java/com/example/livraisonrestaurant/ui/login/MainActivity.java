@@ -20,6 +20,7 @@ import com.example.livraisonrestaurant.R;
 import com.example.livraisonrestaurant.ui.login.Auth.Client.client;
 import com.example.livraisonrestaurant.ui.login.Auth.Restaurant.restaurantActivity;
 import com.example.livraisonrestaurant.ui.login.Auth.rider;
+import com.example.livraisonrestaurant.ui.login.api.orderHelper;
 import com.example.livraisonrestaurant.ui.login.api.userHelper;
 import com.example.livraisonrestaurant.ui.login.models.user;
 import com.firebase.ui.auth.AuthUI;
