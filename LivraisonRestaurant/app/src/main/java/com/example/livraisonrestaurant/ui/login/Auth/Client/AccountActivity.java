@@ -11,70 +11,91 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.livraisonrestaurant.R;
+import com.example.livraisonrestaurant.ui.login.CustomAdapter;
+import com.example.livraisonrestaurant.ui.login.RowItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AccountActivity extends AppCompatActivity {
+    ListView myListView;
+    ArrayList<RowItem> myRowItems;
+    HashMap<String, Intent> test = new HashMap<String, Intent>();
 
-    HashMap<String, Intent> test = new HashMap<String,Intent>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
+        myRowItems = new ArrayList<RowItem>();
 
-            final ListView listview = (ListView) findViewById(R.id.listview);
-            String[] values = new String[] { "Vos favoris", "Paiement", "Programme de fidélité restaurant",
-                    "Préférences professionelles", "Aide", "Promotions", "Deliver with Delivfood", "Paramètres"};
+        myListView = (ListView) findViewById(R.id.listview);
 
-            test.put("Paramètres",new Intent(this,SettingsActivity.class));
-
-            final ArrayList<String> list = new ArrayList<String>();
-            for (int i = 0; i < values.length; ++i) {
-                list.add(values[i]);
-            }
-            final StableArrayAdapter adapter = new StableArrayAdapter(this,
-                    android.R.layout.simple_list_item_1, list);
-            listview.setAdapter(adapter);
-
-            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                @Override
-                public void onItemClick(AdapterView<?> parent, final View view,
-                                        int position, long id) {
-                    final String item = (String) parent.getItemAtPosition(position);
-                    System.out.println("iciiiiiiiiiiiiiiiiiiii" + item);
-                    startActivity(test.get(item));
-
-                   // Toast.makeText(getApplicationContext(), item,Toast.LENGTH_LONG);
-                }
-
-            });
-        }
-
-        private class StableArrayAdapter extends ArrayAdapter<String> {
-
-            HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
-
-            public StableArrayAdapter(AccountActivity context, int textViewResourceId,
-                                      ArrayList<String> objects) {
-                super(context, textViewResourceId, objects);
-                for (int i = 0; i < objects.size(); ++i) {
-                    mIdMap.put(objects.get(i), i);
-                }
-            }
+        fillArrayList();
+        test.put("Paramètres",new Intent(this,SettingsActivity.class));
+        CustomAdapter myAdapter = new CustomAdapter(getApplicationContext(), myRowItems);
+        myListView.setAdapter(myAdapter);
+        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
-            public long getItemId(int position) {
-                String item = getItem(position);
-                return mIdMap.get(item);
+            public void onItemClick(AdapterView<?> parent, final View view,
+                                    int position, long id) {
+                RowItem list_row = myRowItems.get(position);
+
+                startActivity(test.get(list_row.getHeading()));
+
+                // Toast.makeText(getApplicationContext(), item,Toast.LENGTH_LONG);
             }
 
-            @Override
-            public boolean hasStableIds() {
-                return true;
-            }
+        });
+    }
 
-        }
+
+    private void fillArrayList() {
+
+        RowItem row_one = new RowItem();
+        row_one.setHeading("Vos favoris");
+        row_one.setSubHeading("");
+        row_one.setSmallImageName(R.drawable.ic_fi_sr_receipt);
+
+        myRowItems.add(row_one);
+
+        RowItem row_two = new RowItem();
+        row_two.setHeading("Programme de fidélité restaurant");
+        row_two.setSmallImageName(R.drawable.ic_fi_sr_user);
+        myRowItems.add(row_two);
+
+
+        RowItem row_three = new RowItem();
+        row_three.setHeading("Paiement");
+        row_three.setSmallImageName(R.drawable.ic_fi_sr_user);
+        myRowItems.add(row_three);
+
+
+        RowItem row_four = new RowItem();
+        row_four.setHeading("Aide");
+        row_four.setSmallImageName(R.drawable.ic_fi_sr_user);
+        myRowItems.add(row_four);
+
+
+        RowItem row_five = new RowItem();
+        row_five.setHeading("Promotions");
+        row_five.setSmallImageName(R.drawable.ic_fi_sr_user);
+        myRowItems.add(row_five);
+
+
+        RowItem row_six = new RowItem();
+        row_six.setHeading("Livrer avec nous");
+        row_six.setSmallImageName(R.drawable.ic_fi_sr_user);
+        myRowItems.add(row_six);
+
+        RowItem row_seven = new RowItem();
+        row_seven.setHeading("Paramètres");
+        row_seven.setSmallImageName(R.drawable.ic_fi_sr_user);
+        myRowItems.add(row_seven);
 
     }
+
+}
+
+
+
