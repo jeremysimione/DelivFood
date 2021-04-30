@@ -33,30 +33,6 @@ public class OrdersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_orders);
 
-        mBottomSheetDialog = new BottomSheetDialog(OrdersActivity.this);
-
-        View bottomSheetLayout = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_dialog, (LinearLayout)findViewById(R.id.bottomSheetContainer));
-                            TextView test = findViewById(R.id.tv_title);
-                            (bottomSheetLayout.findViewById(R.id.button_close)).setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    mBottomSheetDialog.dismiss();
-                                }
-                            });
-                            (bottomSheetLayout.findViewById(R.id.button_ok)).setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Toast.makeText(getApplicationContext(), "Ok button clicked", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-
-
-                            mBottomSheetDialog.setContentView(bottomSheetLayout);
-                            mBottomSheetDialog.show();
-
-                    }
-
-
-
+    }
 
 }

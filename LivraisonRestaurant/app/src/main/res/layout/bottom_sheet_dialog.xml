@@ -1,47 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraint"
     android:layout_width="match_parent"
-    android:id="@+id/bottomSheetContainer"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_gravity="bottom"
-    android:orientation="vertical"
-    android:padding="15dp">
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_title"
+    <Button
+        android:id="@+id/chip4"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-         />
-
-    <TextView
-        android:id="@+id/tv_detail"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginTop="5dp"
-        android:text="ehfiuhdiufhiuhiuhusiuhdfuhsuihduussuhiuihfushuihsiuhsuifhsiuhiufhiushiufhuihsuihufihfuishiuhisuhusih"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:gravity="right"
-        android:orientation="horizontal">
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:text="REFUSER"
+        android:textAlignment="center"
+        app:chipIcon="@android:drawable/presence_offline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/button_close"
-            style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="CLOSE" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bottomSheetContainer"
+            android:layout_width="385dp"
+            android:layout_height="272dp"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="11dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="vertical"
+            android:padding="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
-        <Button
-            android:id="@+id/button_ok"
-            style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="OK" />
-    </LinearLayout>
-</LinearLayout>
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="130dp"
+                android:layout_marginBottom="207dp"
+                android:text="Livraison repas"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="108dp"
+                android:layout_marginBottom="156dp"
+                android:gravity="center"
+                android:text="0,00 $ \n 17 min - 3.0km"
+                android:textColor="#050505"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="130dp"
+                android:layout_height="28dp"
+                android:layout_marginStart="112dp"
+                android:layout_marginBottom="107dp"
+                android:text="Grand slam burger"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="227dp"
+                android:layout_height="39dp"
+                android:layout_marginStart="64dp"
+                android:layout_marginBottom="68dp"
+                android:text="Avenue charles flahault , Rue de lécole normale,  Montpellier"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="36dp"
+                android:layout_height="27dp"
+                android:layout_marginStart="72dp"
+                android:layout_marginBottom="1dp"
+                app:layout_constraintBottom_toTopOf="@+id/textView11"
+                app:layout_constraintStart_toStartOf="parent"
+                android:background="@drawable/bag" />
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="37dp"
+                android:layout_height="35dp"
+                android:background="@drawable/ic_fi_sr_user"
+                android:layout_marginStart="27dp"
+                android:layout_marginBottom="68dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                 />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

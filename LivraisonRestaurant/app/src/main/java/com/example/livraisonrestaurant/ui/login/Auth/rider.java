@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -13,9 +14,12 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.drawable.Animatable2;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.media.MediaPlayer;
 import android.os.Build;
@@ -26,6 +30,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -45,7 +50,11 @@ import com.example.livraisonrestaurant.ui.login.models.restaurant;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -58,21 +67,40 @@ import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.maps.DirectionsApi;
+import com.google.maps.GeoApiContext;
+import com.google.maps.android.PolyUtil;
+import com.google.maps.errors.ApiException;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.TravelMode;
+import com.google.type.DateTime;
 
+import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationButtonClickListener,
         GoogleMap.OnMyLocationClickListener,
         OnMapReadyCallback {
     private View locationButton;
+    private Marker markerPerth;
+    private LatLng latlng = null;
+    DirectionsResult result= null;
+    private LatLng position = null;
     private BottomSheetDialog mBottomSheetDialog;
     private GoogleMap mMap;
     private restaurant r;
     ListView myListView;
     ListView myListView1;
+
     ArrayList<RowItem> myRowItems;
     ArrayList<RowItem> myRowItems1;
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,7 +121,7 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
         CustomAdapter myAdapter1 = new CustomAdapter(getApplicationContext(), myRowItems1);
         myListView1.setAdapter(myAdapter1);
         RiderCustomerAdapter myAdapter = new RiderCustomerAdapter(getApplicationContext(), myRowItems);
-        myListView.setAdapter( myAdapter );
+        myListView.setAdapter(myAdapter);
         fab1.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -180,6 +208,7 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setMyLocationEnabled(true);
+
         try {
             // Customise the styling of the base map using a JSON object defined
             // in a raw resource file.
@@ -215,6 +244,7 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
 
     @Override
     public void onMyLocationClick(@NonNull Location location) {
+        position = new LatLng(location.getLatitude(), location.getLongitude() );
         Toast.makeText(this, "Current location:\n" + location, Toast.LENGTH_LONG)
                 .show();
     }
@@ -229,7 +259,8 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
     }
 
     public void getorderslistner() {
-       // String uid = getCurrentUser().getUid();
+        // String uid = getCurrentUser().getUid();
+
         final MediaPlayer mp = MediaPlayer.create(this, R.raw.uberdriver);
 
         orderHelper.getOrdersCollection().whereEqualTo("rider_id", FirebaseAuth.getInstance().getCurrentUser().getUid()).whereEqualTo("status", 0).addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -244,55 +275,79 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
                         case ADDED:
                             mp.start();
                             mBottomSheetDialog = new BottomSheetDialog(rider.this);
-                            View bottomSheetLayout = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_dialog, (LinearLayout)findViewById(R.id.bottomSheetContainer));
+                           // View bottomSheetLayout1 = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_dialog, (ConstraintLayout) findViewById(R.id.constraint));
+                            View bottomSheetLayout = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_dialog,(ConstraintLayout)findViewById(R.id.bottomSheetContainer));
 
                             TextView test = bottomSheetLayout.findViewById(R.id.tv_title);
                             restHelper.getRestaurant((String) dc.getDocument().getData().get("restaurant_id")).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                 @Override
                                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                        r = documentSnapshot.toObject(restaurant.class);
-                                        test.setText(r.getName());
-                                    (bottomSheetLayout.findViewById(R.id.button_close)).setOnClickListener(new View.OnClickListener() {
+                                    r = documentSnapshot.toObject(restaurant.class);
+                                    test.setText(r.getName());
+                                    try {
+                                        System.out.println(r.getAdress_uid());
+                                        latlng = getLocationFromAddress(r.getAdress_uid());
+
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                    (bottomSheetLayout.findViewById(R.id.chip4)).setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
                                             mBottomSheetDialog.dismiss();
                                         }
                                     });
-                                    (bottomSheetLayout.findViewById(R.id.button_ok)).setOnClickListener(new View.OnClickListener() {
+                                    (bottomSheetLayout.findViewById(R.id.bottomSheetContainer)).setOnClickListener(new View.OnClickListener() {
+                                        @RequiresApi(api = Build.VERSION_CODES.O)
                                         @Override
                                         public void onClick(View v) {
-                                            Toast.makeText(getApplicationContext(), "Ok button clicked", Toast.LENGTH_SHORT).show();
+                                            try {
+                                           result = DirectionsApi.newRequest(getGeoContext())
+                                                        .mode(TravelMode.BICYCLING).origin("31 rue de la méditerranée").destination("16 rue boussairolles").departureTime(Instant.now()).await();
+                                           System.out.println(result);
+                                            } catch (ApiException e) {
+                                                e.printStackTrace();
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                            position = new LatLng(mMap.getMyLocation().getLatitude(),mMap.getMyLocation().getLongitude());
+                                            System.out.println(position);
+                                            addMarkersToMap(result,mMap);
+                                            addPolyline(result,mMap);
+
+                                            mBottomSheetDialog.dismiss();
                                         }
                                     });
-
                                     mBottomSheetDialog.setContentView(bottomSheetLayout);
-                                    if(!isFinishing()) {
+                                    if (!isFinishing()) {
                                         mBottomSheetDialog.show();
                                     }
                                 }
 
-                        });
+                            });
                             break;
                     }
                 }
             }
         });
     }
+
     private void fillArrayList() {
 
-        RowItem row_one = new RowItem( );
+        RowItem row_one = new RowItem();
         row_one.setHeading("Compte");
 
 
-
-        myRowItems.add( row_one );
+        myRowItems.add(row_one);
 
         RowItem row_two = new RowItem();
         row_two.setHeading("Boîte de réception");
         myRowItems.add(row_two);
 
-       RowItem r = new RowItem();
-       r.setHeading("Bonus");
+        RowItem r = new RowItem();
+        r.setHeading("Bonus");
         myRowItems.add(r);
 
 
@@ -309,6 +364,47 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
         RowItem r3 = new RowItem();
         r3.setHeading("Compte");
         myRowItems.add(r3);
+    }
+
+    public LatLng getLocationFromAddress(String strAddress) throws IOException {
+
+        Geocoder coder = new Geocoder(this);
+        List<Address> address;
+        LatLng p1 = null;
+
+        try {
+            address = coder.getFromLocationName(strAddress, 5);
+            if (address == null) {
+                return null;
+            }
+            Address location = address.get(0);
+            location.getLatitude();
+            location.getLongitude();
+            System.out.println(location.getLatitude());
+
+            System.out.println(location.getLongitude());
+
+            p1 = new LatLng(location.getLatitude(), location.getLongitude() );
+
+                 } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return p1;
+    }
+    private GeoApiContext getGeoContext() {
+
+        return new GeoApiContext.Builder().apiKey("AIzaSyDgvoOUdBPjTtemYGC7WSWHFY21jd9wZ4M")
+                .build();
+    }
+
+    private void addMarkersToMap(DirectionsResult results, GoogleMap mMap) {
+        mMap.addMarker(new MarkerOptions().position(new LatLng(results.routes[0].legs[0].startLocation.lat,results.routes[0].legs[0].startLocation.lng)).title(results.routes[0].legs[0].startAddress));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(results.routes[0].legs[0].endLocation.lat,results.routes[0].legs[0].endLocation.lng)).title(results.routes[0].legs[0].startAddress));
+    }
+
+    private void addPolyline(DirectionsResult results, GoogleMap mMap) {
+        List<LatLng> decodedPath = PolyUtil.decode(results.routes[0].overviewPolyline.getEncodedPath());
+        mMap.addPolyline(new PolylineOptions().addAll(decodedPath));
     }
 }
 
