@@ -1,15 +1,19 @@
 package com.example.livraisonrestaurant.ui.login.Auth.Restaurant;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,8 +24,11 @@ import com.example.livraisonrestaurant.R;
 import com.example.livraisonrestaurant.ui.login.Auth.Client.MenuRestaurantActivity;
 import com.example.livraisonrestaurant.ui.login.BaseActivity;
 import com.example.livraisonrestaurant.ui.login.api.orderHelper;
+import com.example.livraisonrestaurant.ui.login.api.productHelper;
 import com.example.livraisonrestaurant.ui.login.api.restHelper;
+import com.example.livraisonrestaurant.ui.login.api.userHelper;
 import com.example.livraisonrestaurant.ui.login.models.orders;
+import com.example.livraisonrestaurant.ui.login.models.products;
 import com.example.livraisonrestaurant.ui.login.models.restaurant;
 import com.example.livraisonrestaurant.ui.login.models.user;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -43,6 +50,7 @@ public class restaurantActivity extends BaseActivity {
     Context context = this;
     LinearLayout myScrollView;
     NavigationView n;
+    products p12;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +68,6 @@ public class restaurantActivity extends BaseActivity {
             }
         });
         String uid = getCurrentUser().getUid();
-        orderHelper.createOrders("test",uid,"wOzNVfEbXMOmedDKNX1yKmVS2LP2",200,new ArrayList<String>());
         r=GetR(uid);
         GetC(uid);
 
@@ -130,13 +137,105 @@ public class restaurantActivity extends BaseActivity {
                 for (DocumentChange dc : value.getDocumentChanges()) {
                     switch (dc.getType()) {
                         case ADDED:
-                            System.out.println("+++++++++++++++++++++Nouveau orders:" + dc.getDocument().getData());
 
                             mp.start();
                             LinearLayout parent = new LinearLayout(context);
                             MaterialCardView m = new MaterialCardView(context);
                             m.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                             m.setClickable(true);
+                            m.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                    View myScrollView1 = inflater.inflate(R.layout.scrool_text, null, false);
+                                    LinearLayout l = myScrollView1.findViewById(R.id.linlay);
+                                    for (String c: (ArrayList<String>) dc.getDocument().getData().get("listProducts")
+                                         ) {
+                                        productHelper.getProduct(c).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                p12 = documentSnapshot.toObject(products.class);
+                                                LinearLayout parent1 = new LinearLayout(context);
+                                                MaterialCardView m1 = new MaterialCardView(context);
+                                                m1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                                                m1.setFocusable(true);
+                                                m1.setCheckable(true);
+                                                parent1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                                                parent1.setOrientation(LinearLayout.VERTICAL);
+                                                LinearLayout layout3 = new LinearLayout(context);
+                                                layout3.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                                                layout3.setOrientation(LinearLayout.VERTICAL);
+
+                                                parent1.addView(layout3);
+                                                TextView tv12 = new TextView(context);
+
+                                                tv12.setText("     "+p12.getName()+"           "+p12.getPrice()+"$");
+                                                TextView tv22 = new TextView(context);
+                                                layout3.addView(tv12);
+                                                layout3.addView(tv22);
+                                                m1.addView(parent1);
+                                                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                                                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                                                layoutParams.setMargins(0, 20, 0, 0);
+                                                l.addView(m1, layoutParams);
+                                            }
+                                        });
+
+                                    }
+                                    LinearLayout parent1 = new LinearLayout(context);
+                                    MaterialCardView m1 = new MaterialCardView(context);
+                                    m1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                                    m1.setFocusable(true);
+                                    m1.setCheckable(true);
+                                    parent1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                                    parent1.setOrientation(LinearLayout.VERTICAL);
+                                    LinearLayout layout3 = new LinearLayout(context);
+                                    layout3.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                                    layout3.setOrientation(LinearLayout.VERTICAL);
+
+                                    parent1.addView(layout3);
+                                    TextView tv12 = new TextView(context);
+
+                                    tv12.setText("Total TTC :"+dc.getDocument().getData().get("price")+"$");
+                                    TextView tv22 = new TextView(context);
+                                    layout3.addView(tv12);
+                                    layout3.addView(tv22);
+                                    m1.addView(parent1);
+                                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                                            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                                    layoutParams.setMargins(0, 20, 0, 0);
+                                    l.addView(m1, layoutParams);
+
+
+                                    userHelper.getUser((String)dc.getDocument().getData().get("client_Uid")).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                            u =documentSnapshot.toObject(user.class);
+                                            new AlertDialog.Builder(restaurantActivity.this).setView(myScrollView1)
+                                                    .setTitle(u.getUsername())
+                                                    .setNegativeButton("Refuser", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
+
+                                                        }
+                                                    })
+                                                    .setPositiveButton("Confirmer", new DialogInterface.OnClickListener() {
+                                                        @TargetApi(11)
+                                                        public void onClick(DialogInterface dialog, int id) {
+                                                            dialog.cancel();
+                                                        }
+
+                                                    }).show();
+
+
+                                        }
+                                    });
+
+
+                                }
+                            });
 
                             m.setFocusable(true);
                             m.setCheckable(true);
@@ -150,8 +249,15 @@ public class restaurantActivity extends BaseActivity {
 
                             parent.addView(layout2);
                             TextView tv1 = new TextView(context);
+                            userHelper.getUser((String)dc.getDocument().getData().get("client_Uid")).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    u =documentSnapshot.toObject(user.class);
+                                    tv1.setText(u.getUsername());
 
-                            tv1.setText((String)dc.getDocument().getData().get("restaurant_id"));
+                                }
+                            });
+
                             TextView tv2 = new TextView(context);
                             layout2.addView(tv1);
                             layout2.addView(tv2);
