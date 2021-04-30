@@ -393,7 +393,7 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
     }
     private GeoApiContext getGeoContext() {
 
-        return new GeoApiContext.Builder().apiKey("AIzaSyDgvoOUdBPjTtemYGC7WSWHFY21jd9wZ4M")
+        return new GeoApiContext.Builder().apiKey("Your_api_key")
                 .build();
     }
 
