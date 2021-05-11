@@ -114,6 +114,8 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
         myListView = (ListView) findViewById(R.id.listviewrider);
 
         myListView1 = (ListView) findViewById(R.id.listviewprofile);
+        TextView con = (TextView) findViewById(R.id.textView7);
+        TextView go = (TextView) findViewById(R.id.textView2);
 
         fillArrayList();
         fillProfile();
@@ -130,6 +132,9 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
                 mp.start();
                 getorderslistner();
                 pb.setIndeterminate(true);
+                con.setText("vous êtes en ligne...");
+                go.setVisibility(View.GONE);
+                fab1.setVisibility (View.GONE);
 
             }
         });
@@ -263,7 +268,7 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
 
         final MediaPlayer mp = MediaPlayer.create(this, R.raw.uberdriver);
 
-        orderHelper.getOrdersCollection().whereEqualTo("rider_id", FirebaseAuth.getInstance().getCurrentUser().getUid()).whereEqualTo("status", 0).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        orderHelper.getOrdersCollection().whereEqualTo("rider_id", FirebaseAuth.getInstance().getCurrentUser().getUid()).whereEqualTo("status", 1).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (error != null) {
