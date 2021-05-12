@@ -35,8 +35,12 @@ public class orderHelper {
 
     // --- UPDATE ---
 
-
-
+    public static Task<Void> orderRider(String uid, String c) {
+        return orderHelper.getOrdersCollection().document(uid).update("rider_id", c);
+    }
+    public static Task<Void> updateStatus(String uid, int c) {
+        return orderHelper.getOrdersCollection().document(uid).update("status", c);
+    }
 
 
     // --- DELETE ---

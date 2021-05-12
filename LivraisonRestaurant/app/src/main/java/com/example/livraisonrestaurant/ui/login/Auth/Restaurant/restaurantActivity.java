@@ -46,11 +46,13 @@ public class restaurantActivity extends BaseActivity {
     restaurant r;
     user u;
     orders o;
+    String s;
     NavigationView nv2;
     Context context = this;
     LinearLayout myScrollView;
     NavigationView n;
     products p12;
+    int i;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,11 +151,13 @@ public class restaurantActivity extends BaseActivity {
                                     LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                                     View myScrollView1 = inflater.inflate(R.layout.scrool_text, null, false);
                                     LinearLayout l = myScrollView1.findViewById(R.id.linlay);
-                                    for (String c: (ArrayList<String>) dc.getDocument().getData().get("listProducts")
-                                         ) {
+                                    s="";
+                                    i =0;
+                                    for (String c: (ArrayList<String>) dc.getDocument().getData().get("listProducts")) {
                                         productHelper.getProduct(c).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                             @Override
                                             public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                i++;
                                                 p12 = documentSnapshot.toObject(products.class);
                                                 LinearLayout parent1 = new LinearLayout(context);
                                                 MaterialCardView m1 = new MaterialCardView(context);
@@ -168,8 +172,11 @@ public class restaurantActivity extends BaseActivity {
 
                                                 parent1.addView(layout3);
                                                 TextView tv12 = new TextView(context);
+                                                s +="       "+ p12.getName()+"         "+p12.getPrice()+"$"+"\n";
+                                                if(i==((ArrayList<String>) dc.getDocument().getData().get("listProducts")).size()){
+                                                    tv12.setText(s);
+                                                }
 
-                                                tv12.setText("     "+p12.getName()+"           "+p12.getPrice()+"$");
                                                 TextView tv22 = new TextView(context);
                                                 layout3.addView(tv12);
                                                 layout3.addView(tv22);
@@ -224,7 +231,15 @@ public class restaurantActivity extends BaseActivity {
                                                     .setPositiveButton("Confirmer", new DialogInterface.OnClickListener() {
                                                         @TargetApi(11)
                                                         public void onClick(DialogInterface dialog, int id) {
-                                                            dialog.cancel();
+                                                            userHelper.getUsersCollection().whereEqualTo("isRider",true).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                                                @Override
+                                                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                                    ;
+                                                                    System.out.println("+++++++++++++++++++++"+(String)queryDocumentSnapshots.getDocumentChanges().get(0).getDocument().getData().get("uid"));
+                                                                   orderHelper.orderRider((String)dc.getDocument().getData().get("uid"),(String)queryDocumentSnapshots.getDocumentChanges().get(0).getDocument().getData().get("uid") );
+                                                                   orderHelper.updateStatus((String)dc.getDocument().getData().get("uid"),1);
+                                                                }
+                                                            });
                                                         }
 
                                                     }).show();

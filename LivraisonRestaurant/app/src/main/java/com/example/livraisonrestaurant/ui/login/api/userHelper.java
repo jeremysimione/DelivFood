@@ -50,6 +50,9 @@ public class userHelper {
     public static Task<Void> updateIsRider(String uid, Boolean c) {
         return userHelper.getUsersCollection().document(uid).update("isRider", c);
     }
+    public static Task<Void> updateStatus(String uid, int c) {
+        return userHelper.getUsersCollection().document(uid).update("status", c);
+    }
 
     // --- DELETE ---
 
