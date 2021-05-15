@@ -14,15 +14,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
-        <activity android:name=".ui.login.Auth.Restaurant.historiqueOrders"></activity>
+        <activity android:name=".ui.login.Auth.Rider.RiderAccountActivity"></activity>
+        <activity android:name=".ui.login.Auth.Rider.MailBoxActivity" />
+        <activity android:name=".ui.login.Auth.Restaurant.historiqueOrders" />
         <activity android:name=".ui.login.Auth.Restaurant.ajoute_products" />
         <activity android:name=".ui.login.Auth.Restaurant.ListProduct" />
-        <activity android:name=".ui.login.Auth.Client.OrdersActivity"></activity>
+        <activity android:name=".ui.login.Auth.Client.OrdersActivity" />
         <activity android:name=".ui.login.Auth.Client.AccountActivity" />
         <activity android:name=".ui.login.Auth.Client.SearchActivity" />
-        <activity android:name=".ui.login.Auth.Client.SettingsActivity"></activity>
-        <activity android:name=".ui.login.Auth.Client.MenuRestaurantActivity"></activity>
-
+        <activity android:name=".ui.login.Auth.Client.SettingsActivity" />
+        <activity android:name=".ui.login.Auth.Client.MenuRestaurantActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

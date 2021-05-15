@@ -12,6 +12,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -31,6 +32,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -40,6 +42,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.livraisonrestaurant.R;
+import com.example.livraisonrestaurant.ui.login.Auth.Rider.MailBoxActivity;
+import com.example.livraisonrestaurant.ui.login.Auth.Rider.RiderAccountActivity;
 import com.example.livraisonrestaurant.ui.login.BaseActivity;
 import com.example.livraisonrestaurant.ui.login.CustomAdapter;
 import com.example.livraisonrestaurant.ui.login.RiderCustomerAdapter;
@@ -107,10 +111,10 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rider);
         FloatingActionButton fab1 = findViewById(R.id.floatingActionButton9);
+        FloatingActionButton deconnexion = findViewById(R.id.floatingActionButton);
         ProgressBar pb = findViewById(R.id.progressBar);
         myRowItems = new ArrayList<RowItem>();
         myRowItems1 = new ArrayList<RowItem>();
-
         myListView = (ListView) findViewById(R.id.listviewrider);
 
         myListView1 = (ListView) findViewById(R.id.listviewprofile);
@@ -119,11 +123,31 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
 
         fillArrayList();
         fillProfile();
-
+        pb.setVisibility(View.GONE);
         CustomAdapter myAdapter1 = new CustomAdapter(getApplicationContext(), myRowItems1);
         myListView1.setAdapter(myAdapter1);
         RiderCustomerAdapter myAdapter = new RiderCustomerAdapter(getApplicationContext(), myRowItems);
         myListView.setAdapter(myAdapter);
+        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent;
+                RowItem selectedItem = (RowItem) parent.getItemAtPosition(position);
+                String selection = selectedItem.getHeading();
+                System.out.println("iciciici" + selection);
+                switch (selection){
+                    case "Boîte de réception":
+                        intent = new Intent(getApplicationContext(), MailBoxActivity.class);
+                        startActivity(intent);
+                        break;
+                    case "Compte":
+                        intent = new Intent(getApplicationContext(), RiderAccountActivity.class);
+                        startActivity(intent);
+
+                }
+            }
+        });
+
         fab1.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -131,8 +155,10 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
                 final MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.uber_online);
                 mp.start();
                 getorderslistner();
+
+                pb.setVisibility(View.VISIBLE);
                 pb.setIndeterminate(true);
-                con.setText("vous êtes en ligne...");
+                con.setText("Vous êtes en ligne");
                 go.setVisibility(View.GONE);
                 fab1.setVisibility (View.GONE);
 
@@ -151,11 +177,15 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                    // do stuff when the drawer is expanded
+                    // do stuff when the drawer is expanded*
+                    pb.setVisibility(View.GONE);
                 }
 
                 if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
                     // do stuff when the drawer is collapsed
+                    if(con.getText().equals("Vous êtes en ligne")){
+                        pb.setVisibility(View.VISIBLE);
+                    }
                 }
             }
 
@@ -163,12 +193,24 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
                 // do stuff during the actual drag event for example
                 // animating a background color change based on the offset
-
+                pb.setVisibility(View.GONE);
 
             }
         });
 
 
+        deconnexion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                con.setText("Vous êtes hors ligne");
+                go.setVisibility(View.VISIBLE);
+                fab1.setVisibility (View.VISIBLE);
+                pb.setIndeterminate(false);
+                pb.setVisibility(View.GONE);
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            };
+        });
         //ConstraintLayout cl = findViewById(R.id.myconstraintlayout);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -342,7 +384,7 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
     private void fillArrayList() {
 
         RowItem row_one = new RowItem();
-        row_one.setHeading("Compte");
+        row_one.setHeading("COVID-19");
 
 
         myRowItems.add(row_one);
@@ -398,7 +440,8 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
     }
     private GeoApiContext getGeoContext() {
 
-        return new GeoApiContext.Builder().apiKey("Your_api_key")
+        return new GeoApiContext.Builder().apiKey("" +
+                "Your_api_key")
                 .build();
     }
 
