@@ -131,6 +131,7 @@ public class client extends AppCompatActivity {
                             MaterialCardView m = new MaterialCardView(context);
                             m.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
                             m.setClickable(true);
+
                             m.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {

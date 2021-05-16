@@ -37,6 +37,7 @@ public class historiqueOrders extends BaseActivity {
     user u=null;
     products p12 =null;
     String s;
+    int iden;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +61,7 @@ public class historiqueOrders extends BaseActivity {
                     MaterialCardView m = new MaterialCardView(context);
                     m.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                     m.setClickable(true);
+
                     m.setFocusable(true);
                     m.setCheckable(true);
                   
@@ -86,22 +88,29 @@ public class historiqueOrders extends BaseActivity {
                                 public void onClick(View v) {
                                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                                     builder.setTitle(u.getUsername()+"   "+p.getPrice()+"$");
-
+                                    s ="";
+                                   iden=0;
                                     for (String c : p.getListProducts()
                                             ) {
 
                                         productHelper.getProduct(c).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                         @Override
                                         public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                            iden++;
                                             p12 = documentSnapshot.toObject(products.class);
                                             s += p12.getName()+"\n";
-                                            builder.setMessage(s);
-                                            builder.show();
+                                            if( iden == p.getListProducts().size()){
+                                                builder.setMessage(s);
+                                                builder.show();
+                                            }
+
+
 
                                         }
                                     });
                                         
                                     }
+
 
 
 
