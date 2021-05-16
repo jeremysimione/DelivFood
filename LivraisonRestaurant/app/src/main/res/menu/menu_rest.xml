@@ -15,9 +15,15 @@
         android:id="@+id/page_3"
         android:enabled="true"
 
-        android:title="test"/>
+        android:title="Revenue"/>
+    <item
+        android:id="@+id/page_5"
+        android:enabled="true"
+
+        android:title="Compte"
+        />
     <item
         android:id="@+id/page_4"
         android:enabled="true"
-        android:title="test"/>
+        android:title="Déconnexion"/>
 </menu>

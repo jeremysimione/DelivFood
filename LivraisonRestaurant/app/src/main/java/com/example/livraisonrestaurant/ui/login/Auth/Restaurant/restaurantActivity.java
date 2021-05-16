@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.example.livraisonrestaurant.R;
 import com.example.livraisonrestaurant.ui.login.Auth.Client.MenuRestaurantActivity;
 import com.example.livraisonrestaurant.ui.login.BaseActivity;
+import com.example.livraisonrestaurant.ui.login.MainActivity;
 import com.example.livraisonrestaurant.ui.login.api.orderHelper;
 import com.example.livraisonrestaurant.ui.login.api.productHelper;
 import com.example.livraisonrestaurant.ui.login.api.restHelper;
@@ -34,6 +35,7 @@ import com.example.livraisonrestaurant.ui.login.models.user;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -66,6 +68,17 @@ public class restaurantActivity extends BaseActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 DrawerLayout mDrawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout1);
                 mDrawerLayout.openDrawer(Gravity.START);
+                return false;
+            }
+        });
+        nv2.getMenu().getItem(4).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @SuppressLint("WrongConstant")
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent3 = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent3);
+                finish();
                 return false;
             }
         });
@@ -109,7 +122,6 @@ public class restaurantActivity extends BaseActivity {
                restaurant re = documentSnapshot.toObject(restaurant.class);
                nv2.getMenu().getItem(0).setTitle(re.getName());
                nv2.getMenu().getItem(1).setTitle("Produits");
-               nv2.getMenu().getItem(2).setTitle("");
                nv2.getMenu().getItem(1).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                    @Override
                    public boolean onMenuItemClick(MenuItem item) {
