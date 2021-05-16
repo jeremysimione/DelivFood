@@ -50,6 +50,7 @@ import com.example.livraisonrestaurant.ui.login.RiderCustomerAdapter;
 import com.example.livraisonrestaurant.ui.login.RowItem;
 import com.example.livraisonrestaurant.ui.login.api.orderHelper;
 import com.example.livraisonrestaurant.ui.login.api.restHelper;
+import com.example.livraisonrestaurant.ui.login.api.riderHelper;
 import com.example.livraisonrestaurant.ui.login.models.restaurant;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -153,6 +154,7 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
             @Override
             public void onClick(View v) {
                 final MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.uber_online);
+                riderHelper.updateEnligne(true,FirebaseAuth.getInstance().getCurrentUser().getUid());
                 mp.start();
                 getorderslistner();
 
@@ -453,6 +455,12 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
     private void addPolyline(DirectionsResult results, GoogleMap mMap) {
         List<LatLng> decodedPath = PolyUtil.decode(results.routes[0].overviewPolyline.getEncodedPath());
         mMap.addPolyline(new PolylineOptions().addAll(decodedPath));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        riderHelper.updateEnligne(false,FirebaseAuth.getInstance().getCurrentUser().getUid());
     }
 }
 

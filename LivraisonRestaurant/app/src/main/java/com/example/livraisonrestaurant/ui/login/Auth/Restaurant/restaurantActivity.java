@@ -27,6 +27,7 @@ import com.example.livraisonrestaurant.ui.login.MainActivity;
 import com.example.livraisonrestaurant.ui.login.api.orderHelper;
 import com.example.livraisonrestaurant.ui.login.api.productHelper;
 import com.example.livraisonrestaurant.ui.login.api.restHelper;
+import com.example.livraisonrestaurant.ui.login.api.riderHelper;
 import com.example.livraisonrestaurant.ui.login.api.userHelper;
 import com.example.livraisonrestaurant.ui.login.models.orders;
 import com.example.livraisonrestaurant.ui.login.models.products;
@@ -243,7 +244,7 @@ public class restaurantActivity extends BaseActivity {
                                                     .setPositiveButton("Confirmer", new DialogInterface.OnClickListener() {
                                                         @TargetApi(11)
                                                         public void onClick(DialogInterface dialog, int id) {
-                                                            userHelper.getUsersCollection().whereEqualTo("isRider",true).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                                            riderHelper.getRiderCollection().whereEqualTo("enLigne",true).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                                                 @Override
                                                                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                                                     ;
