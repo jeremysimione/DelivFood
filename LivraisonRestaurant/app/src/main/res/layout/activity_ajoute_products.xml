@@ -19,38 +19,49 @@
         android:text="Nouveau produit : "
         android:textSize="24sp" />
 
-    <TextView
-        android:id="@+id/textView"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="wrap_content"
+
+    <com.google.android.material.textfield.TextInputLayout
+
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:hint="Prix du produit"
+        android:layout_marginTop="360dp"
+        app:startIconDrawable="@drawable/ic_baseline_euro_24"
+        app:startIconTint="@color/cardview_dark_background"
+        android:textColorHint="@color/cardview_dark_background"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:inputType="number"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/Price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout><com.google.android.material.textfield.TextInputLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nom du produit"
         android:layout_marginTop="250dp"
-        android:text="Name : "
-        android:textSize="24sp" />
-    <TextView
-        android:id="@+id/textView2"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="360dp"
-        android:text="Price : "
-        android:textSize="24sp" />
+        app:startIconDrawable="@drawable/ic_fi_sr_receipt"
+        app:startIconTint="@color/cardview_dark_background"
+        android:textColorHint="@color/cardview_dark_background"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-    <EditText
-        android:id="@+id/Price"
-        android:layout_width="213dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="130dp"
-        android:layout_marginTop="360dp"
-        android:layout_marginEnd="130dp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
 
-        android:ems="10"
-        android:inputType="number" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
 
     <Button
         android:id="@+id/Validate"
@@ -64,16 +75,7 @@
         android:text="Ajouter"
         android:textSize="24sp" />
 
-    <EditText
-        android:id="@+id/name"
-        android:layout_width="196dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="130dp"
-        android:layout_marginTop="250dp"
-        android:layout_marginEnd="130dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name" />
+
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

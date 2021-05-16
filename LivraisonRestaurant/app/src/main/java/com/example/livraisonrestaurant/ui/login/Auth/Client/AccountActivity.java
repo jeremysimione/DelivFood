@@ -11,8 +11,12 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.livraisonrestaurant.R;
+import com.example.livraisonrestaurant.ui.login.Auth.rider;
 import com.example.livraisonrestaurant.ui.login.CustomAdapter;
 import com.example.livraisonrestaurant.ui.login.RowItem;
+import com.example.livraisonrestaurant.ui.login.api.riderHelper;
+import com.example.livraisonrestaurant.ui.login.api.userHelper;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +36,7 @@ public class AccountActivity extends AppCompatActivity {
 
         fillArrayList();
         test.put("Paramètres",new Intent(this,SettingsActivity.class));
+        test.put("Livrer avec nous",new Intent(this, rider.class));
         CustomAdapter myAdapter = new CustomAdapter(getApplicationContext(), myRowItems);
         myListView.setAdapter(myAdapter);
         myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -40,13 +45,19 @@ public class AccountActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, final View view,
                                     int position, long id) {
                 RowItem list_row = myRowItems.get(position);
+                if (list_row.getHeading() =="Livrer avec nous"){
+                    riderHelper.createRider(FirebaseAuth.getInstance().getUid());
+                    userHelper.updateIsRider(FirebaseAuth.getInstance().getUid(),true);
+                }
 
                 startActivity(test.get(list_row.getHeading()));
-
+                finish();
                 // Toast.makeText(getApplicationContext(), item,Toast.LENGTH_LONG);
             }
 
         });
+
+
     }
 
 
@@ -88,10 +99,17 @@ public class AccountActivity extends AppCompatActivity {
         row_six.setSmallImageName(R.drawable.ic_fi_sr_user);
         myRowItems.add(row_six);
 
+
+        RowItem row_8 = new RowItem();
+        row_8.setHeading("Devenir restaurant partenaire ");
+        row_8.setSmallImageName(R.drawable.ic_fi_sr_user);
+        myRowItems.add(row_8);
+
         RowItem row_seven = new RowItem();
         row_seven.setHeading("Paramètres");
         row_seven.setSmallImageName(R.drawable.ic_fi_sr_user);
         myRowItems.add(row_seven);
+
 
     }
 

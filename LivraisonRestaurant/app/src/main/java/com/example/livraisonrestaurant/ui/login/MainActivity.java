@@ -43,7 +43,6 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, 2);
         //assuming your layout is in a LinearLayout as its root
-        createUserInFirestore();
         new Handler().postDelayed(null,3000);
         if(this.isCurrentUserLogged()){
             this.startProfileActivity();
@@ -141,8 +140,9 @@ public class MainActivity extends BaseActivity {
             userHelper.getUser(this.getCurrentUser().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    userHelper.createUser(uid, username);
-
+                    if(documentSnapshot.toObject(user.class)==null) {
+                        userHelper.createUser(uid, username);
+                    }
                     System.out.println("DocumentSnapshot successfully written!");
                 }
 

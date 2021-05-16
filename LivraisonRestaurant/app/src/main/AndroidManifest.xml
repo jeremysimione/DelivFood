@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
-        <activity android:name=".ui.login.Auth.Rider.RiderAccountActivity"></activity>
+        <activity android:name=".ui.login.Auth.Client.devenirRest"></activity>
+        <activity android:name=".ui.login.Auth.Rider.RiderAccountActivity" />
         <activity android:name=".ui.login.Auth.Rider.MailBoxActivity" />
         <activity android:name=".ui.login.Auth.Restaurant.historiqueOrders" />
         <activity android:name=".ui.login.Auth.Restaurant.ajoute_products" />
