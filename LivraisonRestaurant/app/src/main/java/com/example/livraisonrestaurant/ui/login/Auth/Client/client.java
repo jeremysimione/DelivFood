@@ -8,13 +8,19 @@ import androidx.core.widget.NestedScrollView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.livraisonrestaurant.R;
@@ -23,6 +29,8 @@ import com.example.livraisonrestaurant.ui.login.api.restHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationMenu;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.card.MaterialCardView;
@@ -44,6 +52,55 @@ public class client extends AppCompatActivity {
         setContentView(R.layout.activity_client);
         LinearLayout myScrollView = findViewById(R.id.linScrollView);
         BottomNavigationView bnm = findViewById(R.id.bottom_nav);
+        AppBarLayout mappBar = findViewById(R.id.appbar);
+        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+// Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.planets_array, android.R.layout.simple_spinner_item);
+// Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+        spinner.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Intent i = new Intent(getApplicationContext(), AccountActivity.class);
+                startActivity(i);
+                return true;
+            }
+        });
+        Button b = findViewById(R.id.filter_search);
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(),SearchActivity.class);
+                startActivity(i);
+            }
+        });
+
+
+
+        mappBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+
+                if (verticalOffset == 0)
+                {
+                    MaterialToolbar mtb = findViewById(R.id.toolbar);
+                    mtb.setVisibility(View.GONE);
+                    System.out.println("ouvert");
+                }
+                else
+                {
+                    MaterialToolbar mtb = findViewById(R.id.toolbar);
+                    mtb.setVisibility(View.VISIBLE);
+
+                    System.out.println("fermé");
+                }
+
+            }
+
+        });
         for (int i = 0; i < 4;i++) {
             bnm.getMenu().getItem(i).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
@@ -72,7 +129,7 @@ public class client extends AppCompatActivity {
                             System.out.println("Dans la liste des restaurants " + "grand slam");
                             LinearLayout parent = new LinearLayout(context);
                             MaterialCardView m = new MaterialCardView(context);
-                            m.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                            m.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
                             m.setClickable(true);
                             m.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -86,11 +143,12 @@ public class client extends AppCompatActivity {
                             m.setCheckable(true);
                             parent.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                             parent.setOrientation(LinearLayout.VERTICAL);
-
+                            parent.getLayoutParams().height = 600;
                             ImageView iv = new ImageView(context);
-                            iv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                            iv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
                             iv.setImageResource(R.drawable.home);
-                            iv.getLayoutParams().height = 150;
+                            iv.getLayoutParams().height=420;
+
                             iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
                             LinearLayout layout2 = new LinearLayout(context);
                             layout2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -99,6 +157,8 @@ public class client extends AppCompatActivity {
                             parent.addView(layout2);
                             TextView tv1 = new TextView(context);
                             tv1.setText(r.getName());
+                            tv1.setTextSize(20);
+                            tv1.setTextColor(Color.BLACK);
                             TextView tv2 = new TextView(context);
                             layout2.addView(tv1);
                             layout2.addView(tv2);
