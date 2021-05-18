@@ -119,14 +119,12 @@ public class client extends AppCompatActivity {
                                 Log.d("test", document.getId() + " => " + document.getData());
                                 restaurant resto = document.toObject(restaurant.class);
                                 restaurants.add(resto);
-                                System.out.println("Dans le oncomplete  " +
-                                        restaurants.get(0).getName());
+
                             }
                         } else {
                             Log.d("test", "Error getting documents: ", task.getException());
                         }
                         for (restaurant r : restaurants) {
-                            System.out.println("Dans la liste des restaurants " + "grand slam");
                             LinearLayout parent = new LinearLayout(context);
                             MaterialCardView m = new MaterialCardView(context);
                             m.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));

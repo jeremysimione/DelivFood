@@ -4,6 +4,7 @@ import com.google.firebase.firestore.ServerTimestamp;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class  user {
@@ -20,6 +21,7 @@ public class  user {
     public String phoneNumber;
     public Boolean isRest;
     public Boolean isRider;
+    public orders orders;
 
 
     public user() { }
@@ -31,6 +33,7 @@ public class  user {
         this.isRest=false;
         this.isRider=false;
         this.isCustomer = false;
+        this.orders = new orders(null,null,this.uid,0,new ArrayList<String>());
     }
 
     public user(user user1) {
