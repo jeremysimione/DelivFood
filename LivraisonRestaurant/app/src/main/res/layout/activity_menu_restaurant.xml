@@ -7,11 +7,19 @@
     android:background="#d3d3d3"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floating_action_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_margin="16dp"
+        android:contentDescription=""
+        app:srcCompat="@drawable/ic_baseline_shopping_cart_24"/>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView6"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="586dp"
         android:layout_marginTop="70dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 

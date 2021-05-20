@@ -4,8 +4,10 @@ import com.example.livraisonrestaurant.ui.login.models.orders;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 public class orderHelper {
@@ -41,7 +43,9 @@ public class orderHelper {
     public static Task<Void> updateStatus(String uid, int c) {
         return orderHelper.getOrdersCollection().document(uid).update("status", c);
     }
-
+    public static Task<Void> Addproduct(String uid, String c) {
+        return orderHelper.getOrdersCollection().document(uid).update("listProducts", FieldValue.arrayUnion(c));
+    }
 
     // --- DELETE ---
 

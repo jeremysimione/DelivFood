@@ -2,11 +2,14 @@ package com.example.livraisonrestaurant.ui.login.Auth.Client;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.widget.NestedScrollView;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -25,7 +28,12 @@ import android.widget.TextView;
 
 import com.example.livraisonrestaurant.R;
 import com.example.livraisonrestaurant.ui.login.BaseActivity;
+import com.example.livraisonrestaurant.ui.login.api.orderHelper;
 import com.example.livraisonrestaurant.ui.login.api.restHelper;
+import com.example.livraisonrestaurant.ui.login.api.riderHelper;
+import com.example.livraisonrestaurant.ui.login.api.userHelper;
+import com.example.livraisonrestaurant.ui.login.models.orders;
+import com.example.livraisonrestaurant.ui.login.models.user;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -35,6 +43,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationMenu;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.card.MaterialCardView;
 import com.example.livraisonrestaurant.ui.login.models.restaurant;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -42,12 +51,16 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class client extends AppCompatActivity {
     ArrayList<restaurant> restaurants = new ArrayList<restaurant>();
-
+    user U;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        orders ord1 = new orders(null,null,FirebaseAuth.getInstance().getUid(),0,new ArrayList<String>());
+        userHelper.updateorders(FirebaseAuth.getInstance().getUid(),ord1);
         Context context = this;
         setContentView(R.layout.activity_client);
         LinearLayout myScrollView = findViewById(R.id.linScrollView);
@@ -88,14 +101,14 @@ public class client extends AppCompatActivity {
                 {
                     MaterialToolbar mtb = findViewById(R.id.toolbar);
                     mtb.setVisibility(View.GONE);
-                    System.out.println("ouvert");
+
                 }
                 else
                 {
                     MaterialToolbar mtb = findViewById(R.id.toolbar);
                     mtb.setVisibility(View.VISIBLE);
 
-                    System.out.println("fermé");
+
                 }
 
             }
@@ -135,7 +148,40 @@ public class client extends AppCompatActivity {
                                 public void onClick(View v) {
                                     Intent intent = new Intent(getApplicationContext(),MenuRestaurantActivity.class);
                                     intent.putExtra("id_resto",r.getUid());
-                                    startActivity(intent);
+                                    userHelper.getUser(FirebaseAuth.getInstance().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                            U = documentSnapshot.toObject(user.class);
+                                            System.out.println(U.getOrder());
+                                            if(U.getOrder().getListProducts().size() == 0 || U.getOrder().getRestaurant_id()==r.getUid() ){
+                                                orders ord = new orders(null,r.getUid(),FirebaseAuth.getInstance().getUid(),0,new ArrayList<String>());
+                                                userHelper.updateorders(FirebaseAuth.getInstance().getUid(),ord);
+                                                startActivity(intent);
+                                            }else{
+                                               AlertDialog.Builder d = new AlertDialog.Builder(client.this);
+                                               d.setTitle("Vous avez dêja un panier sur un autres restaurant voulez vous le supprimer ?? ");
+                                               d.setNegativeButton("NON", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+
+                                                    }
+                                                });
+                                               d.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+                                                   @TargetApi(11)
+                                                   public void onClick(DialogInterface dialog, int id) {
+                                                       orders ord = new orders(null,r.getUid(),FirebaseAuth.getInstance().getUid(),0,new ArrayList<String>());
+                                                       userHelper.updateorders(FirebaseAuth.getInstance().getUid(),ord);
+                                                       startActivity(intent);
+
+                                                           }
+                                                       });
+                                               d.show();
+                                            }
+                                        }
+                                    });
+
+
+
                                 }
                             });
                             m.setFocusable(true);

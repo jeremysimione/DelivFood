@@ -85,6 +85,9 @@ public class orders {
     public int getStatus() {
         return status;
     }
+    public void addProduct(String e) {
+        listProducts.add(e);
+    }
 
     public void setStatus(int status) {
         this.status = status;

@@ -51,6 +51,14 @@ public class  user {
     @ServerTimestamp
     public Date getDateCreated() { return dateCreated; }
 
+    public com.example.livraisonrestaurant.ui.login.models.orders getOrder() {
+        return orders;
+    }
+
+    public void setOrders(com.example.livraisonrestaurant.ui.login.models.orders order) {
+        this.orders = order;
+    }
+
     public Boolean getIsCustomer() { return isCustomer; }
     public Boolean getIsRest() { return isRest; }
     public Boolean getIsRider() { return isRider; }

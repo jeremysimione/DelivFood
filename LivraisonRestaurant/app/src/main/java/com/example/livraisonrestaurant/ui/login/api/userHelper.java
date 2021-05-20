@@ -1,9 +1,12 @@
 package com.example.livraisonrestaurant.ui.login.api;
 
+import com.example.livraisonrestaurant.ui.login.models.orders;
+import com.example.livraisonrestaurant.ui.login.models.products;
 import com.example.livraisonrestaurant.ui.login.models.user;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
@@ -50,9 +53,13 @@ public class userHelper {
     public static Task<Void> updateIsRider(String uid, Boolean c) {
         return userHelper.getUsersCollection().document(uid).update("isRider", c);
     }
-    public static Task<Void> updateStatus(String uid, int c) {
-        return userHelper.getUsersCollection().document(uid).update("status", c);
+    public static Task<Void> updateorders(String uid, orders c) {
+        return userHelper.getUsersCollection().document(uid).update("orders", c);
     }
+    public static Task<Void> addProducts(String uid, String c) {
+        return userHelper.getUsersCollection().document(uid).update("orders.listProducts", FieldValue.arrayUnion(c));
+    }
+
 
     // --- DELETE ---
 
