@@ -60,7 +60,7 @@ public class client extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         orders ord1 = new orders(null,null,FirebaseAuth.getInstance().getUid(),0,new ArrayList<String>());
-        userHelper.updateorders(FirebaseAuth.getInstance().getUid(),ord1);
+        userHelper.updateorders2(FirebaseAuth.getInstance().getUid(),ord1);
         Context context = this;
         setContentView(R.layout.activity_client);
         LinearLayout myScrollView = findViewById(R.id.linScrollView);
@@ -153,9 +153,9 @@ public class client extends AppCompatActivity {
                                         public void onSuccess(DocumentSnapshot documentSnapshot) {
                                             U = documentSnapshot.toObject(user.class);
                                             System.out.println(U.getOrder());
-                                            if(U.getOrder().getListProducts().size() == 0 || U.getOrder().getRestaurant_id()==r.getUid() ){
-                                                orders ord = new orders(null,r.getUid(),FirebaseAuth.getInstance().getUid(),0,new ArrayList<String>());
-                                                userHelper.updateorders(FirebaseAuth.getInstance().getUid(),ord);
+                                            if(U.getOrder().getListProducts().size() == 0 || U.getOrder().getRestaurant_id().equals(r.getUid()) ){
+
+                                                userHelper.updateorders(FirebaseAuth.getInstance().getUid(),r.getUid());
                                                 startActivity(intent);
                                             }else{
                                                AlertDialog.Builder d = new AlertDialog.Builder(client.this);
@@ -170,7 +170,7 @@ public class client extends AppCompatActivity {
                                                    @TargetApi(11)
                                                    public void onClick(DialogInterface dialog, int id) {
                                                        orders ord = new orders(null,r.getUid(),FirebaseAuth.getInstance().getUid(),0,new ArrayList<String>());
-                                                       userHelper.updateorders(FirebaseAuth.getInstance().getUid(),ord);
+                                                       userHelper.updateorders2(FirebaseAuth.getInstance().getUid(),ord);
                                                        startActivity(intent);
 
                                                            }

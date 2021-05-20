@@ -8,6 +8,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firestore.v1.StructuredQuery;
 
 
 public class userHelper {
@@ -53,7 +54,10 @@ public class userHelper {
     public static Task<Void> updateIsRider(String uid, Boolean c) {
         return userHelper.getUsersCollection().document(uid).update("isRider", c);
     }
-    public static Task<Void> updateorders(String uid, orders c) {
+    public static Task<Void> updateorders(String uid, String c) {
+        return userHelper.getUsersCollection().document(uid).update("orders.restaurant_id", c);
+    }
+    public static Task<Void> updateorders2(String uid, orders c) {
         return userHelper.getUsersCollection().document(uid).update("orders", c);
     }
     public static Task<Void> addProducts(String uid, String c) {

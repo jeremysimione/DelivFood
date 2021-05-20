@@ -34,7 +34,7 @@ public class riderHelper {
 
     // --- UPDATE ---
 
-    public static Task<Void> updateEnligne(Boolean c, String uid) {
+    public static Task<Void> updateEnligne(String uid,Boolean c) {
         return  riderHelper.getRiderCollection().document(uid).update("enLigne", c);
     }
 

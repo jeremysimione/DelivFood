@@ -7,6 +7,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.Manifest;
@@ -22,9 +23,12 @@ import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -42,6 +46,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.livraisonrestaurant.R;
+import com.example.livraisonrestaurant.ui.login.Auth.Client.client;
 import com.example.livraisonrestaurant.ui.login.Auth.Rider.MailBoxActivity;
 import com.example.livraisonrestaurant.ui.login.Auth.Rider.RiderAccountActivity;
 import com.example.livraisonrestaurant.ui.login.BaseActivity;
@@ -50,8 +55,14 @@ import com.example.livraisonrestaurant.ui.login.RiderCustomerAdapter;
 import com.example.livraisonrestaurant.ui.login.RowItem;
 import com.example.livraisonrestaurant.ui.login.api.orderHelper;
 import com.example.livraisonrestaurant.ui.login.api.restHelper;
-import com.example.livraisonrestaurant.ui.login.api.riderHelper;
+import com.example.livraisonrestaurant.ui.login.api.userHelper;
 import com.example.livraisonrestaurant.ui.login.models.restaurant;
+import com.example.livraisonrestaurant.ui.login.models.user;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -59,6 +70,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -83,29 +95,42 @@ import com.google.maps.model.TravelMode;
 import com.google.type.DateTime;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationButtonClickListener,
         GoogleMap.OnMyLocationClickListener,
         OnMapReadyCallback {
     private View locationButton;
+    private boolean isInShift =false;
+    private FusedLocationProviderClient fusedLocationClient;
+    private LocationCallback locationCallback;
     private Marker markerPerth;
     private LatLng latlng = null;
-    DirectionsResult result= null;
+    DirectionsResult result = null;
+    DirectionsResult result_client = null;
     private LatLng position = null;
+    user c;
+    private boolean pickedUpOrder = false;
     private BottomSheetDialog mBottomSheetDialog;
     private GoogleMap mMap;
     private restaurant r;
+    ArrayList<Marker> markers= new ArrayList<Marker>();
+    String str;
+    Polyline myItinierary;
+    String adr_client;
+    private Location mCurrentLocation;
     ListView myListView;
     ListView myListView1;
 
     ArrayList<RowItem> myRowItems;
     ArrayList<RowItem> myRowItems1;
-
+    LocationRequest locationRequest = LocationRequest.create();
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -117,7 +142,86 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
         myRowItems = new ArrayList<RowItem>();
         myRowItems1 = new ArrayList<RowItem>();
         myListView = (ListView) findViewById(R.id.listviewrider);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(5000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            // Logic to handle location object
+                            position = new LatLng(location.getLatitude(), location.getLongitude());
+                            mCurrentLocation = location;
 
+                        }
+                    }
+                });
+
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+
+                    onMyLocationClick(location);
+
+                    if(isInShift){
+                        if(!pickedUpOrder) {
+                            try {
+                                result = DirectionsApi.newRequest(getGeoContext())
+                                        .mode(TravelMode.BICYCLING).origin(getAdressFromLocation()).destination(str).departureTime(Instant.now()).await();
+                            } catch (ApiException e) {
+                                e.printStackTrace();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            myItinierary.remove();
+                            addPolyline(result, mMap);
+                            if (result.routes[0].legs[0].distance.inMeters < 50) {
+                                Toast.makeText(getApplicationContext(), "Vous etes arrivés au restau", Toast.LENGTH_LONG).show();
+                                pickedUpOrder =true;
+                            }
+                        } else {
+                            try {
+                                result = DirectionsApi.newRequest(getGeoContext())
+                                        .mode(TravelMode.BICYCLING).origin(getAdressFromLocation()).destination(adr_client).departureTime(Instant.now()).await();
+                            } catch (ApiException e) {
+                                e.printStackTrace();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            for (int i = 0;i< markers.size();i++) {
+                                markers.get(i).remove();
+                            }
+                            addMarkersToMap(result,mMap);
+                            myItinierary.remove();
+                            addPolyline(result, mMap);
+
+
+                        }
+                    }
+                }
+            }
+        };
         myListView1 = (ListView) findViewById(R.id.listviewprofile);
         TextView con = (TextView) findViewById(R.id.textView7);
         TextView go = (TextView) findViewById(R.id.textView2);
@@ -136,7 +240,7 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
                 RowItem selectedItem = (RowItem) parent.getItemAtPosition(position);
                 String selection = selectedItem.getHeading();
                 System.out.println("iciciici" + selection);
-                switch (selection){
+                switch (selection) {
                     case "Boîte de réception":
                         intent = new Intent(getApplicationContext(), MailBoxActivity.class);
                         startActivity(intent);
@@ -154,7 +258,6 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
             @Override
             public void onClick(View v) {
                 final MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.uber_online);
-                riderHelper.updateEnligne(true,FirebaseAuth.getInstance().getCurrentUser().getUid());
                 mp.start();
                 getorderslistner();
 
@@ -162,7 +265,7 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
                 pb.setIndeterminate(true);
                 con.setText("Vous êtes en ligne");
                 go.setVisibility(View.GONE);
-                fab1.setVisibility (View.GONE);
+                fab1.setVisibility(View.GONE);
 
             }
         });
@@ -185,7 +288,7 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
 
                 if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
                     // do stuff when the drawer is collapsed
-                    if(con.getText().equals("Vous êtes en ligne")){
+                    if (con.getText().equals("Vous êtes en ligne")) {
                         pb.setVisibility(View.VISIBLE);
                     }
                 }
@@ -204,14 +307,15 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
         deconnexion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 con.setText("Vous êtes hors ligne");
                 go.setVisibility(View.VISIBLE);
-                fab1.setVisibility (View.VISIBLE);
+                fab1.setVisibility(View.VISIBLE);
                 pb.setIndeterminate(false);
                 pb.setVisibility(View.GONE);
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-            };
+            }
+
+            ;
         });
         //ConstraintLayout cl = findViewById(R.id.myconstraintlayout);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -238,7 +342,29 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (true) {
+            startLocationUpdates();
+        }
+    }
 
+    private void startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        fusedLocationClient.requestLocationUpdates(locationRequest,
+                locationCallback,
+                Looper.getMainLooper());
+    }
     private int getCheckedItem(NavigationView navigationView) {
         Menu menu = navigationView.getMenu();
         for (int i = 0; i < menu.size(); i++) {
@@ -293,9 +419,8 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
 
     @Override
     public void onMyLocationClick(@NonNull Location location) {
-        position = new LatLng(location.getLatitude(), location.getLongitude() );
-        Toast.makeText(this, "Current location:\n" + location, Toast.LENGTH_LONG)
-                .show();
+        mCurrentLocation = location;
+        position = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
     }
 
     @Override
@@ -309,7 +434,6 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
 
     public void getorderslistner() {
         // String uid = getCurrentUser().getUid();
-
         final MediaPlayer mp = MediaPlayer.create(this, R.raw.uberdriver);
 
         orderHelper.getOrdersCollection().whereEqualTo("rider_id", FirebaseAuth.getInstance().getCurrentUser().getUid()).whereEqualTo("status", 1).addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -324,59 +448,80 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
                         case ADDED:
                             mp.start();
                             mBottomSheetDialog = new BottomSheetDialog(rider.this);
-                           // View bottomSheetLayout1 = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_dialog, (ConstraintLayout) findViewById(R.id.constraint));
+                            // View bottomSheetLayout1 = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_dialog, (ConstraintLayout) findViewById(R.id.constraint));
                             View bottomSheetLayout = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_dialog,(ConstraintLayout)findViewById(R.id.bottomSheetContainer));
 
                             TextView test = bottomSheetLayout.findViewById(R.id.tv_title);
-                            restHelper.getRestaurant((String) dc.getDocument().getData().get("restaurant_id")).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+
+                            userHelper.getUser((String) dc.getDocument().getData().get("client_Uid")).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                 @Override
                                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                    r = documentSnapshot.toObject(restaurant.class);
-                                    test.setText(r.getName());
-                                    try {
-                                        System.out.println(r.getAdress_uid());
-                                        latlng = getLocationFromAddress(r.getAdress_uid());
-
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                    (bottomSheetLayout.findViewById(R.id.chip4)).setOnClickListener(new View.OnClickListener() {
+                                    c = documentSnapshot.toObject(user.class);
+                                    adr_client = c.getAdress();
+                                    restHelper.getRestaurant((String) dc.getDocument().getData().get("restaurant_id")).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                         @Override
-                                        public void onClick(View view) {
-                                            mBottomSheetDialog.dismiss();
-                                        }
-                                    });
-                                    (bottomSheetLayout.findViewById(R.id.bottomSheetContainer)).setOnClickListener(new View.OnClickListener() {
-                                        @RequiresApi(api = Build.VERSION_CODES.O)
-                                        @Override
-                                        public void onClick(View v) {
+                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                            r = documentSnapshot.toObject(restaurant.class);
+                                            test.setText(r.getName());
                                             try {
-                                           result = DirectionsApi.newRequest(getGeoContext())
-                                                        .mode(TravelMode.BICYCLING).origin("31 rue de la méditerranée").destination("16 rue boussairolles").departureTime(Instant.now()).await();
-                                           System.out.println(result);
-                                            } catch (ApiException e) {
-                                                e.printStackTrace();
-                                            } catch (InterruptedException e) {
-                                                e.printStackTrace();
+                                                System.out.println(r.getAdress_uid());
+                                                str = r.getAdress_uid();
+                                                latlng = getLocationFromAddress(r.getAdress_uid());
+                                                try {
+                                                    result = DirectionsApi.newRequest(getGeoContext())
+                                                            .mode(TravelMode.BICYCLING).origin(getAdressFromLocation()).destination(str).departureTime(Instant.now()).await();
+                                                    result_client = DirectionsApi.newRequest(getGeoContext())
+                                                            .mode(TravelMode.BICYCLING).origin(getAdressFromLocation()).destination(adr_client).departureTime(Instant.now()).await();
+                                                } catch (ApiException e) {
+                                                    e.printStackTrace();
+                                                } catch (InterruptedException e) {
+                                                    e.printStackTrace();
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                }
+                                                addMarkersToMap(result_client, mMap);
+                                                addPolyline(result_client, mMap);
+                                                int distance = (int) (result_client.routes[0].legs[0].distance.inMeters);
+                                                double distance2 = (double) distance / 1000;
+                                                double tps = 5 * distance2;
+                                                int tps1 = (int) tps;
+                                                TextView tarifs = bottomSheetLayout.findViewById(R.id.textView9);
+                                                DecimalFormat df = new DecimalFormat("0.00");
+                                                tarifs.setText(df.format(calculTarifLivraison(result_client, 1)) + "€" + "\n" + distance2 + "km -" + tps1 + "mn");
+                                                TextView tv10 = bottomSheetLayout.findViewById(R.id.textView11);
+                                                tv10.setText(c.getAdress());
                                             } catch (IOException e) {
                                                 e.printStackTrace();
                                             }
-                                            position = new LatLng(mMap.getMyLocation().getLatitude(),mMap.getMyLocation().getLongitude());
-                                            System.out.println(position);
-                                            addMarkersToMap(result,mMap);
-                                            addPolyline(result,mMap);
-
-                                            mBottomSheetDialog.dismiss();
+                                            (bottomSheetLayout.findViewById(R.id.chip4)).setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    mBottomSheetDialog.dismiss();
+                                                }
+                                            });
+                                            (bottomSheetLayout.findViewById(R.id.bottomSheetContainer)).setOnClickListener(new View.OnClickListener() {
+                                                @RequiresApi(api = Build.VERSION_CODES.O)
+                                                @Override
+                                                public void onClick(View v) {
+                                                    mp.stop();
+                                                    isInShift = true;
+                                                    markers.get(0).remove();
+                                                    addMarkersToMap(result, mMap);
+                                                    myItinierary.remove();
+                                                    addPolyline(result, mMap);
+                                                    mBottomSheetDialog.dismiss();
+                                                }
+                                            });
+                                            mBottomSheetDialog.setContentView(bottomSheetLayout);
+                                            if (!isFinishing()) {
+                                                mBottomSheetDialog.show();
+                                            }
                                         }
-                                    });
-                                    mBottomSheetDialog.setContentView(bottomSheetLayout);
-                                    if (!isFinishing()) {
-                                        mBottomSheetDialog.show();
-                                    }
-                                }
 
+                                    });
+
+                                }
                             });
-                            break;
                     }
                 }
             }
@@ -435,32 +580,48 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
 
             p1 = new LatLng(location.getLatitude(), location.getLongitude() );
 
-                 } catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return p1;
     }
+
+    public String getAdressFromLocation() throws IOException {
+        Geocoder geocoder;
+        List<Address> addresses;
+        geocoder = new Geocoder(this, Locale.getDefault());
+        addresses = geocoder.getFromLocation(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+
+        String address = addresses.get(0).getAddressLine(0);
+
+        return address;
+    }
     private GeoApiContext getGeoContext() {
 
-        return new GeoApiContext.Builder().apiKey("" +
-                "Your_api_key")
+        return new GeoApiContext.Builder().apiKey("AIzaSyDgvoOUdBPjTtemYGC7WSWHFY21jd9wZ4M")
                 .build();
     }
 
     private void addMarkersToMap(DirectionsResult results, GoogleMap mMap) {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(results.routes[0].legs[0].startLocation.lat,results.routes[0].legs[0].startLocation.lng)).title(results.routes[0].legs[0].startAddress));
-        mMap.addMarker(new MarkerOptions().position(new LatLng(results.routes[0].legs[0].endLocation.lat,results.routes[0].legs[0].endLocation.lng)).title(results.routes[0].legs[0].startAddress));
+        markers.add(mMap.addMarker(new MarkerOptions().position(new LatLng(results.routes[0].legs[0].endLocation.lat,results.routes[0].legs[0].endLocation.lng)).title(results.routes[0].legs[0].startAddress)));
+
+
     }
 
+    private double calculTarifLivraison(DirectionsResult result,int nbOrders){
+        double prixTotal = 0;
+        double tarifPriseEnChargeNet = 1.9;
+        double tarifDepotClientNet = 0.95;
+        double tarifParKm = 0.76;
+        int distance = (int)(result.routes[0].legs[0].distance.inMeters);
+        double distance2 = (double) distance/1000;
+        System.out.println("distance : " + distance2 + " " + distance2 + tarifParKm);
+        prixTotal+= tarifPriseEnChargeNet + (tarifParKm *  distance2) + tarifDepotClientNet;
+        return prixTotal;
+    }
     private void addPolyline(DirectionsResult results, GoogleMap mMap) {
         List<LatLng> decodedPath = PolyUtil.decode(results.routes[0].overviewPolyline.getEncodedPath());
-        mMap.addPolyline(new PolylineOptions().addAll(decodedPath));
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        riderHelper.updateEnligne(false,FirebaseAuth.getInstance().getCurrentUser().getUid());
+        myItinierary = mMap.addPolyline(new PolylineOptions().addAll(decodedPath));
     }
 }
 

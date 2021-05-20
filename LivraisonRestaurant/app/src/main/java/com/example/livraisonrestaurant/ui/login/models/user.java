@@ -68,4 +68,7 @@ public class  user {
     public void setUid(String uid) { this.uid = uid; }
     public void setIsMentor(Boolean customer) { isCustomer = customer; }
 
+    public String getAdress() {
+        return adressCode;
+    }
 }
