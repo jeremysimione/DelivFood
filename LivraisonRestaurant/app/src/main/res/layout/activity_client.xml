@@ -8,17 +8,19 @@
     android:nestedScrollingEnabled="true"
     android:theme="@style/Theme.MaterialComponents.Bridge">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.andremion.counterfab.CounterFab
         android:id="@+id/floating_action_button"
+        app:badgeBackgroundColor="@color/bleu"
+        android:backgroundTint="@color/gris"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:layout_margin="16dp"
         android:contentDescription=""
-        app:srcCompat="@drawable/ic_baseline_shopping_cart_24"
-        >
+        android:src="@drawable/ic_baseline_shopping_cart_24"
+        />
 
-    </com.google.android.material.floatingactionbutton.FloatingActionButton>
+
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
@@ -113,7 +115,7 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="605dp"
+        android:layout_height="682dp"
         android:isScrollContainer="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 

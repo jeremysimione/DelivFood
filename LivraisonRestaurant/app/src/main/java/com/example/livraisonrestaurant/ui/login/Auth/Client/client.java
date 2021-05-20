@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.andremion.counterfab.CounterFab;
 import com.example.livraisonrestaurant.R;
 import com.example.livraisonrestaurant.ui.login.BaseActivity;
 import com.example.livraisonrestaurant.ui.login.api.orderHelper;
@@ -58,11 +59,18 @@ public class client extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
+
         super.onCreate(savedInstanceState);
-        orders ord1 = new orders(null,null,FirebaseAuth.getInstance().getUid(),0,new ArrayList<String>());
-        userHelper.updateorders2(FirebaseAuth.getInstance().getUid(),ord1);
+
         Context context = this;
         setContentView(R.layout.activity_client);
+        CounterFab cart = findViewById(R.id.floating_action_button);
+        userHelper.getUser(FirebaseAuth.getInstance().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                U = documentSnapshot.toObject(user.class);
+                cart.setCount(U.getOrder().getListProducts().size());
+            }});
         LinearLayout myScrollView = findViewById(R.id.linScrollView);
         BottomNavigationView bnm = findViewById(R.id.bottom_nav);
         AppBarLayout mappBar = findViewById(R.id.appbar);
@@ -220,6 +228,7 @@ public class client extends AppCompatActivity {
         System.out.println("restaurants : "  + restaurants);
 
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
