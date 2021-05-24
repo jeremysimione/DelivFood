@@ -23,17 +23,22 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.andremion.counterfab.CounterFab;
 import com.example.livraisonrestaurant.R;
 import com.example.livraisonrestaurant.ui.login.BaseActivity;
+import com.example.livraisonrestaurant.ui.login.MenuAdapter;
+import com.example.livraisonrestaurant.ui.login.RowItem;
 import com.example.livraisonrestaurant.ui.login.api.orderHelper;
+import com.example.livraisonrestaurant.ui.login.api.productHelper;
 import com.example.livraisonrestaurant.ui.login.api.restHelper;
 import com.example.livraisonrestaurant.ui.login.api.riderHelper;
 import com.example.livraisonrestaurant.ui.login.api.userHelper;
 import com.example.livraisonrestaurant.ui.login.models.orders;
+import com.example.livraisonrestaurant.ui.login.models.products;
 import com.example.livraisonrestaurant.ui.login.models.user;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -42,8 +47,10 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationMenu;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.card.MaterialCardView;
 import com.example.livraisonrestaurant.ui.login.models.restaurant;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -56,6 +63,7 @@ import java.util.List;
 public class client extends AppCompatActivity {
     ArrayList<restaurant> restaurants = new ArrayList<restaurant>();
     user U;
+    ArrayList<RowItem> myRowItems;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -64,23 +72,65 @@ public class client extends AppCompatActivity {
 
         Context context = this;
         setContentView(R.layout.activity_client);
+        NavigationView nav = findViewById(R.id.navigationView);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(nav);
+        bottomSheetBehavior.setDraggable(true);
+        myRowItems = new ArrayList<RowItem>();
+        bottomSheetBehavior.setPeekHeight(0);
+        ListView lv = findViewById(R.id.lvcart);
+        lv.setNestedScrollingEnabled(true);
         CounterFab cart = findViewById(R.id.floating_action_button);
+        Button btnOrder = findViewById(R.id.buttonOrder);
+        btnOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(),PaymentActivity.class);
+                startActivity(i);
+            }
+        });
+        cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
+                for(String c : U.getOrder().getListProducts()){
+                    productHelper.getProduct(c).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                            products p = documentSnapshot.toObject(products.class);
+
+                            RowItem row_one = new RowItem();
+                            row_one.setSubHeading("lorem ipsumf ffjoizhgoirzhvohzrvuoih");
+                            row_one.setTheFooter(String.valueOf(p.getPrice()) + "€");
+                            row_one.setHeading(p.getName());
+                            myRowItems.add(row_one);
+
+                            MenuAdapter myAdapter = new MenuAdapter(getApplicationContext(), myRowItems);
+                            lv.setAdapter(myAdapter);
+
+                        }
+                    });
+                }
+            }
+        });
+
+
         userHelper.getUser(FirebaseAuth.getInstance().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 U = documentSnapshot.toObject(user.class);
                 cart.setCount(U.getOrder().getListProducts().size());
-            }});
+                             }});
         LinearLayout myScrollView = findViewById(R.id.linScrollView);
         BottomNavigationView bnm = findViewById(R.id.bottom_nav);
         AppBarLayout mappBar = findViewById(R.id.appbar);
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
-// Create an ArrayAdapter using the string array and a default spinner layout
+
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.planets_array, android.R.layout.simple_spinner_item);
-// Specify the layout to use when the list of choices appears
+
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-// Apply the adapter to the spinner
+
         spinner.setAdapter(adapter);
         spinner.setOnTouchListener(new View.OnTouchListener() {
             @Override

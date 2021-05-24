@@ -4,6 +4,7 @@ public class RowItem {
 
     private String heading;
     private String subHeading;
+    private String theFooter;
     private int smallImageName;
     private int bigImageName;
 
@@ -41,6 +42,13 @@ public class RowItem {
 
         return this.smallImageName;
 
+    }
+    public String getTheFooter(){
+        return theFooter;
+    }
+
+    public void setTheFooter(String str){
+        theFooter = str;
     }
 
     public void setBigImageName(int bigName) {

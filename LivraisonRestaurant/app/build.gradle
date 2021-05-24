@@ -42,7 +42,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 
 dependencies {
-    compile 'com.github.andremion:counterfab:1.2.2'
+    implementation 'com.github.andremion:counterfab:1.2.2'
     implementation 'com.jakewharton:butterknife:8.8.1'
     implementation "androidx.constraintlayout:constraintlayout:2.0.4"
     implementation "androidx.cardview:cardview:1.0.0"
@@ -69,9 +69,11 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'androidx.wear:wear:1.0.0'
     testImplementation 'junit:junit:4.+'
     implementation 'com.caverock:androidsvg:1.2.1'
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    compileOnly 'com.google.android.wearable:wearable:2.6.0'
 }

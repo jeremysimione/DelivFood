@@ -45,7 +45,7 @@ public class MainActivity extends BaseActivity {
         //assuming your layout is in a LinearLayout as its root
         new Handler().postDelayed(null,3000);
         if(this.isCurrentUserLogged()){
-            this.startProfileActivity();
+            this.createUserInFirestore();
 
         }else {
             setContentView(R.layout.activity_login);

@@ -62,6 +62,9 @@ public class orders {
         return client_Uid;
     }
 
+    public int getNbDeProduits(){
+        return listProducts.size();
+    }
     public void setClient_Uid(String client_Uid) {
         this.client_Uid = client_Uid;
     }
