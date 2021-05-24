@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="16dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="106dp"
+                android:layout_height="27dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="11dp"
+                android:text="TextView"
+                app:layout_constraintBottom_toTopOf="@+id/textView18"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textView18"
+                android:layout_width="106dp"
+                android:layout_height="27dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="227dp"
+                android:text="TextView"
+                app:layout_constraintBottom_toBottomOf="@+id/lvord"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ListView
+                android:id="@+id/lvadr"
+                android:layout_width="381dp"
+                android:layout_height="112dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/textView17"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ListView
+                android:id="@+id/lvord"
+                android:layout_width="389dp"
+                android:layout_height="215dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="12dp"
+                app:layout_constraintBottom_toTopOf="@+id/textView20"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Button
+                android:id="@+id/button6"
+                android:layout_width="362dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginBottom="6dp"
+                android:text="Button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="66dp"
+                android:layout_height="23dp"
+                android:layout_marginStart="29dp"
+                android:layout_marginTop="1dp"
+                android:text="Total"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView22" />
+
+            <TextView
+                android:id="@+id/textView32"
+                android:layout_width="66dp"
+                android:layout_height="23dp"
+                android:layout_marginStart="324dp"
+                android:layout_marginTop="1dp"
+                android:text="TextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView22" />
+
+            <TextView
+                android:id="@+id/textView20"
+                android:layout_width="78dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="27dp"
+                android:layout_marginBottom="138dp"
+                android:text="Sous total"
+                app:layout_constraintBottom_toBottomOf="@+id/button6"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textView29"
+                android:layout_width="78dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="316dp"
+                android:layout_marginBottom="5dp"
+                android:text="TextView"
+                app:layout_constraintBottom_toTopOf="@+id/textView30"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textView30"
+                android:layout_width="48dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="344dp"
+                android:layout_marginBottom="8dp"
+                android:text="TextView"
+                app:layout_constraintBottom_toTopOf="@+id/textView31"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textView31"
+                android:layout_width="45dp"
+                android:layout_height="19dp"
+                android:layout_marginStart="348dp"
+                android:layout_marginBottom="3dp"
+                android:text="TextView"
+                app:layout_constraintBottom_toTopOf="@+id/textView32"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textView22"
+                android:layout_width="64dp"
+                android:layout_height="21dp"
+                android:layout_marginStart="29dp"
+                android:layout_marginBottom="24dp"
+                android:text="Livraison"
+                app:layout_constraintBottom_toTopOf="@+id/button6"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textView23"
+                android:layout_width="64dp"
+                android:layout_height="21dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginBottom="10dp"
+                android:text="Frais"
+                app:layout_constraintBottom_toTopOf="@+id/textView22"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
