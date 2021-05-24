@@ -55,6 +55,7 @@ import com.example.livraisonrestaurant.ui.login.RiderCustomerAdapter;
 import com.example.livraisonrestaurant.ui.login.RowItem;
 import com.example.livraisonrestaurant.ui.login.api.orderHelper;
 import com.example.livraisonrestaurant.ui.login.api.restHelper;
+import com.example.livraisonrestaurant.ui.login.api.riderHelper;
 import com.example.livraisonrestaurant.ui.login.api.userHelper;
 import com.example.livraisonrestaurant.ui.login.models.restaurant;
 import com.example.livraisonrestaurant.ui.login.models.user;
@@ -264,6 +265,7 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
                 pb.setVisibility(View.VISIBLE);
                 pb.setIndeterminate(true);
                 con.setText("Vous êtes en ligne");
+                riderHelper.updateEnligne(FirebaseAuth.getInstance().getUid(),true);
                 go.setVisibility(View.GONE);
                 fab1.setVisibility(View.GONE);
 
