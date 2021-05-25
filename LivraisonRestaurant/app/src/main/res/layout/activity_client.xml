@@ -8,17 +8,7 @@
     android:nestedScrollingEnabled="true"
     android:background="@color/white">
 
-    <com.andremion.counterfab.CounterFab
-        android:id="@+id/floating_action_button"
-        app:badgeBackgroundColor="@color/bleu"
-        android:backgroundTint="@color/gris"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_margin="16dp"
-        android:contentDescription=""
-        android:src="@drawable/ic_baseline_shopping_cart_24"
-        />
+
 
 
 
@@ -128,7 +118,7 @@
             android:layout_marginStart="62dp"
             android:layout_marginTop="16dp"
             android:gravity="center"
-            android:text="La Rose des Sables"
+
             android:textColor="#050505"
             android:textSize="25dp"
             android:textStyle="bold"
@@ -188,6 +178,7 @@
             android:orientation="vertical">
 
         </LinearLayout>
+
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -196,5 +187,16 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         app:menu="@menu/bottom_navigation_menu" />
+    <com.andremion.counterfab.CounterFab
+        android:id="@+id/floating_action_button"
+        app:badgeBackgroundColor="@color/bleu"
+        android:backgroundTint="@color/gris"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity=""
+        android:layout_margin="16dp"
+        android:contentDescription=""
+        android:src="@drawable/ic_baseline_shopping_cart_24"
+        />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

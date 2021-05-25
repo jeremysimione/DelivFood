@@ -8,6 +8,64 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigationView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:behavior_hideable="true"
+
+        android:background="@drawable/rounded_dialog"
+        app:layout_behavior="@string/bottom_sheet_behavior" >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="287dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="62dp"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:textColor="#050505"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="411dp"
+                android:layout_height="579dp"
+                android:layout_marginTop="24dp"
+                android:fillViewport="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView14">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/buttonOrder"
+                        android:layout_width="375dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:background="@color/black"
+                        android:text="Commander" />
+
+                    <ListView
+                        android:id="@+id/lvcart"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"></ListView>
+
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.navigation.NavigationView>
     <androidx.core.widget.NestedScrollView
         android:id="@+id/mynsv"
         android:layout_width="match_parent"
@@ -31,7 +89,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:paddingLeft="6dp"
-                android:text="McDonalds (Montpellier Gare)"
                 android:textColor="#000000"
                 android:textSize="25dp"
                 android:textStyle="bold" />
@@ -44,5 +101,16 @@
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+    <com.andremion.counterfab.CounterFab
+        android:id="@+id/floating_action_button"
+        app:badgeBackgroundColor="@color/bleu"
+        android:backgroundTint="@color/gris"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="16dp"
+        android:contentDescription=""
+        android:src="@drawable/ic_baseline_shopping_cart_24"
+        />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

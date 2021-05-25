@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.andremion.counterfab.CounterFab;
 import com.example.livraisonrestaurant.R;
@@ -64,11 +65,37 @@ public class client extends AppCompatActivity {
     ArrayList<restaurant> restaurants = new ArrayList<restaurant>();
     user U;
     ArrayList<RowItem> myRowItems;
+    CounterFab cart;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        userHelper.getUser(FirebaseAuth.getInstance().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                U = documentSnapshot.toObject(user.class);
+                cart.setCount(U.getOrder().getListProducts().size());
+                if (U.getOrder().getListProducts().size()!=0){
+                    restHelper.getRestaurant(U.getOrder().getRestaurant_id()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            ((TextView) findViewById(R.id.textView14)).setText(documentSnapshot.toObject(restaurant.class).getName());
+                        }
+                    });
+
+
+                }
+            }});
+
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
 
         super.onCreate(savedInstanceState);
+
 
         Context context = this;
         setContentView(R.layout.activity_client);
@@ -79,7 +106,7 @@ public class client extends AppCompatActivity {
         bottomSheetBehavior.setPeekHeight(0);
         ListView lv = findViewById(R.id.lvcart);
         lv.setNestedScrollingEnabled(true);
-        CounterFab cart = findViewById(R.id.floating_action_button);
+        cart = findViewById(R.id.floating_action_button);
         Button btnOrder = findViewById(R.id.buttonOrder);
         btnOrder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,25 +118,39 @@ public class client extends AppCompatActivity {
         cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
-                for(String c : U.getOrder().getListProducts()){
-                    productHelper.getProduct(c).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                        @Override
-                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (U.getOrder().getListProducts().size() != 0) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
+                    if (U.getOrder().getListProducts().size() != 0) {
+                        restHelper.getRestaurant(U.getOrder().getRestaurant_id()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                ((TextView) findViewById(R.id.textView14)).setText(documentSnapshot.toObject(restaurant.class).getName());
+                            }
+                        });
 
-                            products p = documentSnapshot.toObject(products.class);
 
-                            RowItem row_one = new RowItem();
-                            row_one.setSubHeading("lorem ipsumf ffjoizhgoirzhvohzrvuoih");
-                            row_one.setTheFooter(String.valueOf(p.getPrice()) + "€");
-                            row_one.setHeading(p.getName());
-                            myRowItems.add(row_one);
+                    }
+                    for (String c : U.getOrder().getListProducts()) {
+                        productHelper.getProduct(c).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
 
-                            MenuAdapter myAdapter = new MenuAdapter(getApplicationContext(), myRowItems);
-                            lv.setAdapter(myAdapter);
+                                products p = documentSnapshot.toObject(products.class);
 
-                        }
-                    });
+                                RowItem row_one = new RowItem();
+                                row_one.setSubHeading("lorem ipsumf ffjoizhgoirzhvohzrvuoih");
+                                row_one.setTheFooter(String.valueOf(p.getPrice()) + "€");
+                                row_one.setHeading(p.getName());
+                                myRowItems.add(row_one);
+
+                                MenuAdapter myAdapter = new MenuAdapter(getApplicationContext(), myRowItems);
+                                lv.setAdapter(myAdapter);
+
+                            }
+                        });
+                    }
+                }else{
+                    Toast.makeText(getApplicationContext(), "Votre panier est vide", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -120,7 +161,17 @@ public class client extends AppCompatActivity {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 U = documentSnapshot.toObject(user.class);
                 cart.setCount(U.getOrder().getListProducts().size());
-                             }});
+                if (U.getOrder().getListProducts().size()!=0){
+                    restHelper.getRestaurant(U.getOrder().getRestaurant_id()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            ((TextView) findViewById(R.id.textView14)).setText(documentSnapshot.toObject(restaurant.class).getName());
+                        }
+                    });
+
+
+                }
+            }});
         LinearLayout myScrollView = findViewById(R.id.linScrollView);
         BottomNavigationView bnm = findViewById(R.id.bottom_nav);
         AppBarLayout mappBar = findViewById(R.id.appbar);

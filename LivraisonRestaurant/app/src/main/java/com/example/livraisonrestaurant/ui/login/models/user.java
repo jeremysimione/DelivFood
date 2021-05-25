@@ -45,6 +45,7 @@ public class  user {
         this.isCustomer = user1.getIsCustomer();
     }
 
+
     // --- GETTERS ---
     public String getUid() { return uid; }
     public String getUsername() { return username; }
