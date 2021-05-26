@@ -2,6 +2,7 @@ package com.example.livraisonrestaurant.ui.login.models;
 
 import com.google.firebase.firestore.ServerTimestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class restaurant {
@@ -10,7 +11,7 @@ public class restaurant {
     private String name;
     private Date created_at;
     private String admin_Uid;
-    private String categorie;
+    private ArrayList<String>  categorie;
     private String numTEl;
 
     public restaurant() {
@@ -22,7 +23,7 @@ public class restaurant {
         this.uid = uid;
         this.adress_uid = adress_uid;
         this.name = name;
-        this.categorie=c;
+        this.categorie = new ArrayList<String>();
         this.numTEl=numTel;
         this.admin_Uid = admin_Uid;
     }
@@ -66,9 +67,9 @@ public class restaurant {
     public void setAdmin_Uid(String admin_Uid) {
         this.admin_Uid = admin_Uid;
     }
-    public String getCategorie() { return categorie; }
+    public ArrayList<String>  getCategorie() { return categorie; }
 
-    public void setCategorie(String categorie) { this.categorie = categorie; }
+    public void setCategorie(ArrayList<String> categorie) { this.categorie = categorie; }
 
 
 }
