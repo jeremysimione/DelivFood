@@ -16,6 +16,8 @@ import com.example.livraisonrestaurant.ui.login.api.restHelper;
 import com.example.livraisonrestaurant.ui.login.api.userHelper;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
+
 public class devenirRest extends AppCompatActivity {
 
     @Override
@@ -27,10 +29,13 @@ public class devenirRest extends AppCompatActivity {
         EditText adress = findViewById(R.id.adress);
         EditText catg = findViewById(R.id.catg);
         Button valider = findViewById(R.id.outlinedButton);
+
         valider.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                restHelper.createRestaurant(FirebaseAuth.getInstance().getUid(),String.valueOf(adress.getText()),String.valueOf(nom.getText()),FirebaseAuth.getInstance().getUid(),String.valueOf(catg.getText()),String.valueOf(num.getText()));
+                ArrayList<String> cat = new ArrayList<String>();
+                        cat.add(String.valueOf(catg.getText()));
+                restHelper.createRestaurant(FirebaseAuth.getInstance().getUid(),String.valueOf(adress.getText()),String.valueOf(nom.getText()),FirebaseAuth.getInstance().getUid(),cat,String.valueOf(num.getText()));
                 userHelper.updateIsRest(FirebaseAuth.getInstance().getUid(),true);
                 setContentView(R.layout.activity_main);
                 new Handler().postDelayed(null,6000);

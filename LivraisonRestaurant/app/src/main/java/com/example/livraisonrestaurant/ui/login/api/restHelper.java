@@ -6,6 +6,8 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+
 public class restHelper {
 
         private static final String COLLECTION_NAME = "restaurants";
@@ -18,7 +20,7 @@ public class restHelper {
 
         // --- CREATE ---
 
-        public static Task<Void> createRestaurant(String uid, String adress_uid, String name, String admin_Uid,String ca,String num) {
+        public static Task<Void> createRestaurant(String uid, String adress_uid, String name, String admin_Uid, ArrayList<String> ca, String num) {
             restaurant restaurantToCreate = new restaurant(uid, adress_uid,name,admin_Uid,ca,num);
 
 
