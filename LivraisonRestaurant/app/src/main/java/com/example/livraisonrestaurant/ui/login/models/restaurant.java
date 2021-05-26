@@ -19,11 +19,11 @@ public class restaurant {
 
 
 
-    public restaurant(String uid, String adress_uid, String name, String admin_Uid, String c,String numTel) {
+    public restaurant(String uid, String adress_uid, String name, String admin_Uid, ArrayList<String> c,String numTel) {
         this.uid = uid;
         this.adress_uid = adress_uid;
         this.name = name;
-        this.categorie = new ArrayList<String>();
+        this.categorie = c;
         this.numTEl=numTel;
         this.admin_Uid = admin_Uid;
     }
