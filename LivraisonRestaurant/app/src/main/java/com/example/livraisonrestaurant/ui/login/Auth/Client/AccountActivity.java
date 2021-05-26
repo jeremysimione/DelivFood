@@ -37,6 +37,7 @@ public class AccountActivity extends AppCompatActivity {
         fillArrayList();
         test.put("Paramètres",new Intent(this,SettingsActivity.class));
         test.put("Livrer avec nous",new Intent(this, rider.class));
+        test.put("Devenir restaurant partenaire ",new Intent(this,devenirRest.class));
         CustomAdapter myAdapter = new CustomAdapter(getApplicationContext(), myRowItems);
         myListView.setAdapter(myAdapter);
         myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

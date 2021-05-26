@@ -165,6 +165,22 @@ public class MenuRestaurantActivity extends AppCompatActivity {
                                 if (list_row.getHeading().equals(p.getName())) {
                                     userHelper.addProducts(FirebaseAuth.getInstance().getUid(), p.getUid());
                                     Toast.makeText(getApplicationContext(), "Produit ajoutée dans le panier !", Toast.LENGTH_SHORT).show();
+                                    userHelper.getUser(FirebaseAuth.getInstance().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                            U = documentSnapshot.toObject(user.class);
+                                            cart.setCount(U.getOrder().getListProducts().size());
+                                            if (U.getOrder().getListProducts().size()!=0){
+                                                restHelper.getRestaurant(U.getOrder().getRestaurant_id()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                                    @Override
+                                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                        ((TextView) findViewById(R.id.textView14)).setText(documentSnapshot.toObject(restaurant.class).getName());
+                                                    }
+                                                });
+
+
+                                            }
+                                        }});
                                 }
                             }
                         }

@@ -26,6 +26,7 @@ import com.example.livraisonrestaurant.ui.login.models.user;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.Arrays;
@@ -35,6 +36,7 @@ public class MainActivity extends BaseActivity {
     private user user1;
     private user user2=null;
     Button button;
+    boolean f = false;
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,26 +83,34 @@ public class MainActivity extends BaseActivity {
     }
 
     private void startProfileActivity() {
+
         userHelper.getUser(this.getCurrentUser().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 user1 = documentSnapshot.toObject(user.class);
-
-                if (user1.getIsRest()) {
-                    Intent intent = new Intent(getApplicationContext(), restaurantActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else if (user1.getIsRider()) {
-                    Intent intent = new Intent(getApplicationContext(), rider.class);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Intent intent = new Intent(getApplicationContext(), client.class);
-                    startActivity(intent);
-                    finish();
+                if(user1.getIsRest()!=null) {
+                    f=true;
+                    if (user1.getIsRest()) {
+                        Intent intent = new Intent(getApplicationContext(), restaurantActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else if (user1.getIsRider()) {
+                        Intent intent = new Intent(getApplicationContext(), rider.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Intent intent = new Intent(getApplicationContext(), client.class);
+                        startActivity(intent);
+                        finish();
+                    }
                 }
+
+
             }
         });
+
+
+
     }
 
     private void startSignInActivity() {
@@ -142,6 +152,38 @@ public class MainActivity extends BaseActivity {
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     if(documentSnapshot.toObject(user.class)==null) {
                         userHelper.createUser(uid, username);
+                        new Handler().postDelayed(null,6000);
+                        Intent intent = new Intent(getApplicationContext(), client.class);
+                        startActivity(intent);
+                    }else
+                        {
+
+
+                            userHelper.getUser(FirebaseAuth.getInstance().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    user1 = documentSnapshot.toObject(user.class);
+                                    if(user1.getIsRest()!=null) {
+                                        f=true;
+                                        if (user1.getIsRest()) {
+                                            Intent intent = new Intent(getApplicationContext(), restaurantActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        } else if (user1.getIsRider()) {
+                                            Intent intent = new Intent(getApplicationContext(), rider.class);
+                                            startActivity(intent);
+                                            finish();
+                                        } else {
+                                            Intent intent = new Intent(getApplicationContext(), client.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    }
+
+
+                                }
+                            });
+
                     }
                     System.out.println("DocumentSnapshot successfully written!");
                 }
@@ -153,7 +195,7 @@ public class MainActivity extends BaseActivity {
                             System.out.println("Error writing document");
                         }
                     });
-            this.startProfileActivity();
+
             }
 
 
