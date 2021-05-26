@@ -146,7 +146,7 @@ public class MenuRestaurantActivity extends AppCompatActivity {
                 }
                 for (products p : produits) {
                     RowItem row_one = new RowItem();
-                    row_one.setSubHeading("lorem ipsumf ffjoizhgoirzhvohzrvuoih");
+                    row_one.setSubHeading("Déscription du produit");
                     row_one.setTheFooter(String.valueOf(p.getPrice()) + "€");
                     row_one.setHeading(p.getName());
                     row_one.setSmallImageName(R.drawable.mcdonalds2);
@@ -163,7 +163,7 @@ public class MenuRestaurantActivity extends AppCompatActivity {
                             System.out.println(list_row + "laa");
                             for (products p : produits) {
                                 if (list_row.getHeading().equals(p.getName())) {
-                                    userHelper.addProducts(FirebaseAuth.getInstance().getUid(), p.getUid());
+                                    userHelper.addProducts(FirebaseAuth.getInstance().getUid(), p.getUid(),p.getPrice());
                                     Toast.makeText(getApplicationContext(), "Produit ajoutée dans le panier !", Toast.LENGTH_SHORT).show();
                                     userHelper.getUser(FirebaseAuth.getInstance().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                         @Override

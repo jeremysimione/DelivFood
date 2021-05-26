@@ -78,7 +78,11 @@ public class historiqueOrders extends BaseActivity {
                             layout2.setOrientation(LinearLayout.VERTICAL);
                             parent.addView(layout2);
                             TextView tv1 = new TextView(context);
-                            tv1.setText(u.getUsername()+"           "+p.getPrice()+"$");
+                            tv1.setText(u.getUsername()+"                                                                               "+p.getPrice()+"$");
+                            if(p.getStatus()==8){
+                                tv1.setText(u.getUsername()+"                                                                               -Annulée ");
+                            }
+
                             TextView tv2 = new TextView(context);
                             layout2.addView(tv1);
                             layout2.addView(tv2);

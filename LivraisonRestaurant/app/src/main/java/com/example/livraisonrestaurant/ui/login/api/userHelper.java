@@ -60,7 +60,9 @@ public class userHelper {
     public static Task<Void> updateorders2(String uid, orders c) {
         return userHelper.getUsersCollection().document(uid).update("orders", c);
     }
-    public static Task<Void> addProducts(String uid, String c) {
+    public static Task<Void> addProducts(String uid, String c,int p) {
+        userHelper.getUsersCollection().document(uid).update("orders.price",FieldValue.increment(p));
+        userHelper.getUsersCollection().document(uid).update("orders.nbDeProduits",FieldValue.increment(1));
         return userHelper.getUsersCollection().document(uid).update("orders.listProducts", FieldValue.arrayUnion(c));
     }
 

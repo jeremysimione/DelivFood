@@ -5,14 +5,21 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.app.NotificationCompat;
 import androidx.core.widget.NestedScrollView;
 
 import android.annotation.TargetApi;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.RingtoneManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,6 +38,7 @@ import android.widget.Toast;
 import com.andremion.counterfab.CounterFab;
 import com.example.livraisonrestaurant.R;
 import com.example.livraisonrestaurant.ui.login.BaseActivity;
+import com.example.livraisonrestaurant.ui.login.MainActivity;
 import com.example.livraisonrestaurant.ui.login.MenuAdapter;
 import com.example.livraisonrestaurant.ui.login.RowItem;
 import com.example.livraisonrestaurant.ui.login.api.orderHelper;
@@ -53,7 +61,10 @@ import com.google.android.material.card.MaterialCardView;
 import com.example.livraisonrestaurant.ui.login.models.restaurant;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -96,6 +107,29 @@ public class client extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
+        orderHelper.getOrdersCollection().whereEqualTo("client_Uid",FirebaseAuth.getInstance().getUid()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    Log.w("TAG", "listen:error", error);
+                    return;
+                }
+                for (DocumentChange dc : value.getDocumentChanges()) {
+                    switch (dc.getType()) {
+                        case MODIFIED:
+
+                           if(dc.getDocument().getData().get("status").toString().equals("1")){
+                               notif("Votre commande à été prise en charge par le restaurant");}
+                            if(dc.getDocument().getData().get("status").toString().equals("2")){
+                               notif("Votre commande a été prise en charge par le livreur");}
+                            if(dc.getDocument().getData().get("status").toString().equals("8")){
+                               notif("Votre commande a été annulée ");
+
+                           }
+                    }
+                }
+            }
+        });
 
         Context context = this;
         setContentView(R.layout.activity_client);
@@ -353,6 +387,31 @@ public class client extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+    public void notif(String message){
+        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+        inboxStyle.setBigContentTitle("Mise à jours commande");
+        inboxStyle.addLine(message);
+        String channelId = getString(R.string.default_notification_channel_id);
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(getApplicationContext(), channelId)
+                        .setSmallIcon(R.drawable.ic_baseline_notifications_24)
+                        .setContentTitle(getString(R.string.app_name))
+                        .setContentText("Mise à jours commande")
+                        .setAutoCancel(true)
+                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                        .setContentIntent(pendingIntent)
+                        .setStyle(inboxStyle);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence channelName = "Message provenant de Firebase";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = new NotificationChannel(channelId, channelName, importance);
+            notificationManager.createNotificationChannel(mChannel);
+        }
+        notificationManager.notify("firebase", 007, notificationBuilder.build());
     }
 
 }

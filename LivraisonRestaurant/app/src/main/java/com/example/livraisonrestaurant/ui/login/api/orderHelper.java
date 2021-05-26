@@ -28,12 +28,18 @@ public class orderHelper {
 
         return orderHelper.getOrdersCollection().document(p.getUid()).set(p);
     }
+    public static Task<Void> createOrders1(orders p) {
 
+
+
+        return orderHelper.getOrdersCollection().document(p.getUid()).set(p);
+    }
     // --- GET ---
 
     public static Task<DocumentSnapshot> getOrders(String uid){
         return  orderHelper.getOrdersCollection().document(uid).get();
     }
+
 
 
     // --- UPDATE ---
@@ -47,6 +53,7 @@ public class orderHelper {
     public static Task<Void> Addproduct(String uid, String c) {
         return orderHelper.getOrdersCollection().document(uid).update("listProducts", FieldValue.arrayUnion(c));
     }
+
 
     // --- DELETE ---
 

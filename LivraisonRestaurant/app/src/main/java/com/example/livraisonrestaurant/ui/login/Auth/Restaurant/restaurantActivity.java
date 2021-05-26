@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.livraisonrestaurant.R;
@@ -152,7 +153,7 @@ public class restaurantActivity extends BaseActivity {
                 for (DocumentChange dc : value.getDocumentChanges()) {
                     switch (dc.getType()) {
                         case ADDED:
-
+                            final boolean[] bo = {true};
                             mp.start();
                             LinearLayout parent = new LinearLayout(context);
                             MaterialCardView m = new MaterialCardView(context);
@@ -233,29 +234,55 @@ public class restaurantActivity extends BaseActivity {
                                         @Override
                                         public void onSuccess(DocumentSnapshot documentSnapshot) {
                                             u =documentSnapshot.toObject(user.class);
-                                            new AlertDialog.Builder(restaurantActivity.this).setView(myScrollView1)
-                                                    .setTitle(u.getUsername())
-                                                    .setNegativeButton("Refuser", new DialogInterface.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(DialogInterface dialog, int which) {
+                                            AlertDialog.Builder d = new AlertDialog.Builder(restaurantActivity.this).setView(myScrollView1);
+                                                    d.setTitle(u.getUsername());
+                                                    if(bo[0])
+                                                    {
+                                                        d.setNegativeButton("Refuser", new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialog, int which) {
+                                                                orderHelper.updateStatus((String) dc.getDocument().getData().get("uid"), 8);
 
-                                                        }
-                                                    })
-                                                    .setPositiveButton("Confirmer", new DialogInterface.OnClickListener() {
-                                                        @TargetApi(11)
-                                                        public void onClick(DialogInterface dialog, int id) {
-                                                            riderHelper.getRiderCollection().whereEqualTo("enLigne",true).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                                                @Override
-                                                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                                                    ;
-                                                                    System.out.println("+++++++++++++++++++++"+(String)queryDocumentSnapshots.getDocumentChanges().get(0).getDocument().getData().get("uid"));
-                                                                   orderHelper.orderRider((String)dc.getDocument().getData().get("uid"),(String)queryDocumentSnapshots.getDocumentChanges().get(0).getDocument().getData().get("uid") );
-                                                                   orderHelper.updateStatus((String)dc.getDocument().getData().get("uid"),1);
+                                                                parent.setVisibility(RelativeLayout.GONE);
+
+                                                            }
+                                                        });
+
+                                                        d.setPositiveButton("Confirmer", new DialogInterface.OnClickListener() {
+                                                            @TargetApi(11)
+                                                            public void onClick(DialogInterface dialog, int id) {
+                                                                riderHelper.getRiderCollection().whereEqualTo("enLigne", true).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                                                    @Override
+                                                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                                        ;
+                                                                        System.out.println("+++++++++++++++++++++" + (String) queryDocumentSnapshots.getDocumentChanges().get(0).getDocument().getData().get("uid"));
+                                                                        orderHelper.orderRider((String) dc.getDocument().getData().get("uid"), (String) queryDocumentSnapshots.getDocumentChanges().get(0).getDocument().getData().get("uid"));
+                                                                        orderHelper.updateStatus((String) dc.getDocument().getData().get("uid"), 1);
+                                                                        bo[0] = false;
+
+                                                                    }
+                                                                });
+
+                                                            }
+
+                                                        });
+                                                    }else{
+                                                        d.setNegativeButton("", new DialogInterface.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(DialogInterface dialog, int which) {
+
+                                                                    }
                                                                 }
-                                                            });
-                                                        }
+                                                        );
+                                                        d.setPositiveButton("imprimer", new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialog, int which) {
 
-                                                    }).show();
+                                                            }
+                                                        });
+                                                    }
+
+                                                     d.show();
 
 
                                         }
