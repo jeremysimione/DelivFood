@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-
     android:layout_height="100dp">
 
     <TextView
@@ -40,7 +39,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
+    <TextView
         android:id="@+id/button5"
         android:layout_width="206dp"
         android:layout_height="39dp"
@@ -48,9 +47,11 @@
         android:layout_marginTop="31dp"
         android:background="@color/white"
         android:backgroundTint="#9E9494"
+        android:fontFamily="casual"
+        android:gravity="center|center_vertical"
         android:text="Voir l'établissement"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="#131313"
-        app:iconTint="#000000"
         app:layout_constraintStart_toEndOf="@+id/textView13"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

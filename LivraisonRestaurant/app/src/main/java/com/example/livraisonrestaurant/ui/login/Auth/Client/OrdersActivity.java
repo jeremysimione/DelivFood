@@ -105,7 +105,8 @@ public class OrdersActivity extends AppCompatActivity {
 
                 }
                 myAdapter = new OrdersAdapter(getApplicationContext(), myRowItems);
-                myListView.setAdapter(myAdapter);
+
+
             }
 
         });
@@ -116,55 +117,47 @@ public class OrdersActivity extends AppCompatActivity {
             @Override
             public void onItemClick (AdapterView <?> parent,final View view, int position, long id){
                 RowItem list_row = myRowItems.get(position);
-                Toast.makeText(getApplicationContext(), "Produit ajoutée dans le panier !", Toast.LENGTH_SHORT).show();
-                    restHelper.getRestaurantCollection().whereEqualTo("name",list_row.getHeading()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                Toast.makeText(getApplicationContext(), list_row.getHeading(), Toast.LENGTH_SHORT).show();
+                    restHelper.getRestaurantCollection().whereEqualTo("name",list_row.getHeading()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                         @Override
-                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                            if (error != null) {
-                                Log.w("TAG", "listen:error", error);
-                                return;
-                            }
-                            for (DocumentChange dc : value.getDocumentChanges()) {
-                                switch (dc.getType()) {
-                                    case ADDED:
-                                        Intent intent = new Intent(getApplicationContext(),MenuRestaurantActivity.class);
-                                        intent.putExtra("id_resto", (String)dc.getDocument().getData().get("restaurant_id"));
-                                        userHelper.getUser(FirebaseAuth.getInstance().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                            Intent intent = new Intent(getApplicationContext(),MenuRestaurantActivity.class);
+                            intent.putExtra("id_resto",queryDocumentSnapshots.getDocuments().get(0).toObject(restaurant.class).getUid());
+                            userHelper.getUser(FirebaseAuth.getInstance().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    U = documentSnapshot.toObject(user.class);
+                                    System.out.println(U.getOrder());
+                                    if(U.getOrder().getListProducts().size() == 0 || U.getOrder().getRestaurant_id().equals(queryDocumentSnapshots.getDocuments().get(0).toObject(restaurant.class).getUid()) ){
+
+                                        userHelper.updateorders(FirebaseAuth.getInstance().getUid(),(String)queryDocumentSnapshots.getDocuments().get(0).toObject(restaurant.class).getUid());
+                                        startActivity(intent);
+                                    }else{
+                                        AlertDialog.Builder d = new AlertDialog.Builder(OrdersActivity.this);
+                                        d.setTitle("Vous avez dêja un panier sur un autres restaurant voulez vous le supprimer ?? ");
+                                        d.setNegativeButton("NON", new DialogInterface.OnClickListener() {
                                             @Override
-                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                                U = documentSnapshot.toObject(user.class);
-                                                System.out.println(U.getOrder());
-                                                if(U.getOrder().getListProducts().size() == 0 || U.getOrder().getRestaurant_id().equals((String)dc.getDocument().getData().get("restaurant_id")) ){
+                                            public void onClick(DialogInterface dialog, int which) {
 
-                                                    userHelper.updateorders(FirebaseAuth.getInstance().getUid(),(String)dc.getDocument().getData().get("restaurant_id"));
-                                                    startActivity(intent);
-                                                }else{
-                                                    AlertDialog.Builder d = new AlertDialog.Builder(OrdersActivity.this);
-                                                    d.setTitle("Vous avez dêja un panier sur un autres restaurant voulez vous le supprimer ?? ");
-                                                    d.setNegativeButton("NON", new DialogInterface.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(DialogInterface dialog, int which) {
-
-                                                        }
-                                                    });
-                                                    d.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
-                                                        @TargetApi(11)
-                                                        public void onClick(DialogInterface dialog, int id) {
-                                                            orders ord = new orders(null,(String)dc.getDocument().getData().get("restaurant_id"),FirebaseAuth.getInstance().getUid(),0,new ArrayList<String>());
-                                                            userHelper.updateorders2(FirebaseAuth.getInstance().getUid(),ord);
-                                                            startActivity(intent);
-
-                                                        }
-                                                    });
-                                                    d.show();
-                                                }
                                             }
                                         });
-                                }
-                            }
+                                        d.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+                                            @TargetApi(11)
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                orders ord = new orders(null,(String)queryDocumentSnapshots.getDocuments().get(0).toObject(restaurant.class).getUid(),FirebaseAuth.getInstance().getUid(),0,new ArrayList<String>());
+                                                userHelper.updateorders2(FirebaseAuth.getInstance().getUid(),ord);
+                                                startActivity(intent);
 
+                                            }
+                                        });
+                                        d.show();
+                                    }
+                                }
+                            });
                         }
                     });
+
 
 
             }

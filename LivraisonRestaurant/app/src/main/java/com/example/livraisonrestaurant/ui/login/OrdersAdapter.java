@@ -48,7 +48,7 @@ public class OrdersAdapter extends BaseAdapter {
                 TextView theHeading = (TextView) convertView.findViewById(R.id.textView89);
                 TextView theSubHeading = (TextView) convertView.findViewById(R.id.textView12);
                 TextView theFooter = (TextView) convertView.findViewById(R.id.textView13);
-                Button theButton = (Button) convertView.findViewById(R.id.button5);
+                //Button theButton = (Button) convertView.findViewById(R.id.button5);
 
                 RowItem currentRow = (RowItem) getItem(position);
 
@@ -62,7 +62,8 @@ public class OrdersAdapter extends BaseAdapter {
                 theSubHeading.setGravity(Gravity.CENTER | Gravity.LEFT);
                 theFooter.setGravity(Gravity.CENTER | Gravity.LEFT);
                 theFooter.setText(currentRow.getTheFooter());
-                theButton.setText("Voir l'établissement");
+                //theButton.setText("Voir l'établissement");
+
             }
 
             return convertView;
