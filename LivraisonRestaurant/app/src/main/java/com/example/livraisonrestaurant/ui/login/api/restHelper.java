@@ -18,8 +18,8 @@ public class restHelper {
 
         // --- CREATE ---
 
-        public static Task<Void> createRestaurant(String uid, String adress_uid, String name, String admin_Uid,String ca) {
-            restaurant restaurantToCreate = new restaurant(uid, adress_uid,name,admin_Uid,ca);
+        public static Task<Void> createRestaurant(String uid, String adress_uid, String name, String admin_Uid,String ca,String num) {
+            restaurant restaurantToCreate = new restaurant(uid, adress_uid,name,admin_Uid,ca,num);
 
 
             return restHelper.getRestaurantCollection().document(uid).set(restaurantToCreate);

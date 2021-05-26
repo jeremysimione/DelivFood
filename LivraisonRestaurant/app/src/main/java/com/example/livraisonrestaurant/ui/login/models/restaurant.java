@@ -11,18 +11,24 @@ public class restaurant {
     private Date created_at;
     private String admin_Uid;
     private String categorie;
+    private String numTEl;
 
     public restaurant() {
     }
 
 
 
-    public restaurant(String uid, String adress_uid, String name, String admin_Uid, String c) {
+    public restaurant(String uid, String adress_uid, String name, String admin_Uid, String c,String numTel) {
         this.uid = uid;
         this.adress_uid = adress_uid;
         this.name = name;
         this.categorie=c;
+        this.numTEl=numTel;
         this.admin_Uid = admin_Uid;
+    }
+
+    public String getNumTEl() {
+        return numTEl;
     }
 
     public String getUid() {
