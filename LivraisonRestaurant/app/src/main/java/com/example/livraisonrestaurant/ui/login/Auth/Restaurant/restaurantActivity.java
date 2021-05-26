@@ -57,6 +57,7 @@ public class restaurantActivity extends BaseActivity {
     NavigationView n;
     products p12;
     int i;
+    LinearLayout parent;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,7 +144,7 @@ public class restaurantActivity extends BaseActivity {
         String uid = getCurrentUser().getUid();
         final MediaPlayer mp = MediaPlayer.create(this, R.raw.test2);
 
-        orderHelper.getOrdersCollection().whereEqualTo("restaurant_id",uid).whereEqualTo("status",0).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        orderHelper.getOrdersCollection().whereEqualTo("restaurant_id",uid).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (error != null) {
@@ -153,176 +154,182 @@ public class restaurantActivity extends BaseActivity {
                 for (DocumentChange dc : value.getDocumentChanges()) {
                     switch (dc.getType()) {
                         case ADDED:
-                            final boolean[] bo = {true};
                             mp.start();
-                            LinearLayout parent = new LinearLayout(context);
-                            MaterialCardView m = new MaterialCardView(context);
-                            m.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                            m.setClickable(true);
-                            m.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                                    View myScrollView1 = inflater.inflate(R.layout.scrool_text, null, false);
-                                    LinearLayout l = myScrollView1.findViewById(R.id.linlay);
-                                    s="";
-                                    i =0;
-                                    for (String c: (ArrayList<String>) dc.getDocument().getData().get("listProducts")) {
-                                        productHelper.getProduct(c).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            if(dc.getDocument().getData().get("status").toString().equals("0")) {
+                                final boolean[] bo = {true};
+                                mp.start();
+                                parent = new LinearLayout(context);
+                                MaterialCardView m = new MaterialCardView(context);
+                                m.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                                m.setClickable(true);
+                                m.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                        View myScrollView1 = inflater.inflate(R.layout.scrool_text, null, false);
+                                        LinearLayout l = myScrollView1.findViewById(R.id.linlay);
+                                        s = "";
+                                        i = 0;
+                                        for (String c : (ArrayList<String>) dc.getDocument().getData().get("listProducts")) {
+                                            productHelper.getProduct(c).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                    i++;
+                                                    p12 = documentSnapshot.toObject(products.class);
+                                                    LinearLayout parent1 = new LinearLayout(context);
+                                                    MaterialCardView m1 = new MaterialCardView(context);
+                                                    m1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                                                    m1.setFocusable(true);
+                                                    m1.setCheckable(true);
+                                                    parent1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                                                    parent1.setOrientation(LinearLayout.VERTICAL);
+                                                    LinearLayout layout3 = new LinearLayout(context);
+                                                    layout3.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                                                    layout3.setOrientation(LinearLayout.VERTICAL);
+
+                                                    parent1.addView(layout3);
+                                                    TextView tv12 = new TextView(context);
+                                                    s += "       " + p12.getName() + "         " + p12.getPrice() + "$" + "\n";
+                                                    if (i == ((ArrayList<String>) dc.getDocument().getData().get("listProducts")).size()) {
+                                                        tv12.setText(s);
+                                                    }
+
+                                                    TextView tv22 = new TextView(context);
+                                                    layout3.addView(tv12);
+                                                    layout3.addView(tv22);
+                                                    m1.addView(parent1);
+                                                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                                                            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                                                    layoutParams.setMargins(0, 20, 0, 0);
+                                                    l.addView(m1, layoutParams);
+                                                }
+                                            });
+
+                                        }
+                                        LinearLayout parent1 = new LinearLayout(context);
+                                        MaterialCardView m1 = new MaterialCardView(context);
+                                        m1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                                        m1.setFocusable(true);
+                                        m1.setCheckable(true);
+                                        parent1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                                        parent1.setOrientation(LinearLayout.VERTICAL);
+                                        LinearLayout layout3 = new LinearLayout(context);
+                                        layout3.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                                        layout3.setOrientation(LinearLayout.VERTICAL);
+
+                                        parent1.addView(layout3);
+                                        TextView tv12 = new TextView(context);
+
+                                        tv12.setText("Total TTC :" + dc.getDocument().getData().get("price") + "$");
+                                        TextView tv22 = new TextView(context);
+                                        layout3.addView(tv12);
+                                        layout3.addView(tv22);
+                                        m1.addView(parent1);
+                                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                                                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                                        layoutParams.setMargins(0, 20, 0, 0);
+                                        l.addView(m1, layoutParams);
+
+
+                                        userHelper.getUser((String) dc.getDocument().getData().get("client_Uid")).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                             @Override
                                             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                                i++;
-                                                p12 = documentSnapshot.toObject(products.class);
-                                                LinearLayout parent1 = new LinearLayout(context);
-                                                MaterialCardView m1 = new MaterialCardView(context);
-                                                m1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                                                m1.setFocusable(true);
-                                                m1.setCheckable(true);
-                                                parent1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                                                parent1.setOrientation(LinearLayout.VERTICAL);
-                                                LinearLayout layout3 = new LinearLayout(context);
-                                                layout3.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                                                layout3.setOrientation(LinearLayout.VERTICAL);
+                                                u = documentSnapshot.toObject(user.class);
+                                                AlertDialog.Builder d = new AlertDialog.Builder(restaurantActivity.this).setView(myScrollView1);
+                                                d.setTitle(u.getUsername());
+                                                if (bo[0]) {
+                                                    d.setNegativeButton("Refuser", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            orderHelper.updateStatus((String) dc.getDocument().getData().get("uid"), 8);
 
-                                                parent1.addView(layout3);
-                                                TextView tv12 = new TextView(context);
-                                                s +="       "+ p12.getName()+"         "+p12.getPrice()+"$"+"\n";
-                                                if(i==((ArrayList<String>) dc.getDocument().getData().get("listProducts")).size()){
-                                                    tv12.setText(s);
+                                                            parent.setVisibility(RelativeLayout.GONE);
+
+                                                        }
+                                                    });
+
+                                                    d.setPositiveButton("Confirmer", new DialogInterface.OnClickListener() {
+                                                        @TargetApi(11)
+                                                        public void onClick(DialogInterface dialog, int id) {
+                                                            riderHelper.getRiderCollection().whereEqualTo("enLigne", true).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                                                @Override
+                                                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                                    ;
+                                                                    System.out.println("+++++++++++++++++++++" + (String) queryDocumentSnapshots.getDocumentChanges().get(0).getDocument().getData().get("uid"));
+                                                                    orderHelper.orderRider((String) dc.getDocument().getData().get("uid"), (String) queryDocumentSnapshots.getDocumentChanges().get(0).getDocument().getData().get("uid"));
+                                                                    orderHelper.updateStatus((String) dc.getDocument().getData().get("uid"), 1);
+                                                                    bo[0] = false;
+
+                                                                }
+                                                            });
+
+                                                        }
+
+                                                    });
+                                                } else {
+                                                    d.setNegativeButton("", new DialogInterface.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(DialogInterface dialog, int which) {
+
+                                                                }
+                                                            }
+                                                    );
+                                                    d.setPositiveButton("imprimer", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
+
+                                                        }
+                                                    });
                                                 }
 
-                                                TextView tv22 = new TextView(context);
-                                                layout3.addView(tv12);
-                                                layout3.addView(tv22);
-                                                m1.addView(parent1);
-                                                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                                                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                                d.show();
 
-                                                layoutParams.setMargins(0, 20, 0, 0);
-                                                l.addView(m1, layoutParams);
+
                                             }
                                         });
 
+
                                     }
-                                    LinearLayout parent1 = new LinearLayout(context);
-                                    MaterialCardView m1 = new MaterialCardView(context);
-                                    m1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                                    m1.setFocusable(true);
-                                    m1.setCheckable(true);
-                                    parent1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                                    parent1.setOrientation(LinearLayout.VERTICAL);
-                                    LinearLayout layout3 = new LinearLayout(context);
-                                    layout3.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                                    layout3.setOrientation(LinearLayout.VERTICAL);
+                                });
 
-                                    parent1.addView(layout3);
-                                    TextView tv12 = new TextView(context);
-
-                                    tv12.setText("Total TTC :"+dc.getDocument().getData().get("price")+"$");
-                                    TextView tv22 = new TextView(context);
-                                    layout3.addView(tv12);
-                                    layout3.addView(tv22);
-                                    m1.addView(parent1);
-                                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                                            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-                                    layoutParams.setMargins(0, 20, 0, 0);
-                                    l.addView(m1, layoutParams);
+                                m.setFocusable(true);
+                                m.setCheckable(true);
+                                parent.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                                parent.setOrientation(LinearLayout.VERTICAL);
 
 
-                                    userHelper.getUser((String)dc.getDocument().getData().get("client_Uid")).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                            u =documentSnapshot.toObject(user.class);
-                                            AlertDialog.Builder d = new AlertDialog.Builder(restaurantActivity.this).setView(myScrollView1);
-                                                    d.setTitle(u.getUsername());
-                                                    if(bo[0])
-                                                    {
-                                                        d.setNegativeButton("Refuser", new DialogInterface.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(DialogInterface dialog, int which) {
-                                                                orderHelper.updateStatus((String) dc.getDocument().getData().get("uid"), 8);
+                                LinearLayout layout2 = new LinearLayout(context);
+                                layout2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                                layout2.setOrientation(LinearLayout.VERTICAL);
 
-                                                                parent.setVisibility(RelativeLayout.GONE);
+                                parent.addView(layout2);
+                                TextView tv1 = new TextView(context);
+                                userHelper.getUser((String) dc.getDocument().getData().get("client_Uid")).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                        u = documentSnapshot.toObject(user.class);
+                                        tv1.setText(u.getUsername());
 
-                                                            }
-                                                        });
+                                    }
+                                });
 
-                                                        d.setPositiveButton("Confirmer", new DialogInterface.OnClickListener() {
-                                                            @TargetApi(11)
-                                                            public void onClick(DialogInterface dialog, int id) {
-                                                                riderHelper.getRiderCollection().whereEqualTo("enLigne", true).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                                                    @Override
-                                                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                                                        ;
-                                                                        System.out.println("+++++++++++++++++++++" + (String) queryDocumentSnapshots.getDocumentChanges().get(0).getDocument().getData().get("uid"));
-                                                                        orderHelper.orderRider((String) dc.getDocument().getData().get("uid"), (String) queryDocumentSnapshots.getDocumentChanges().get(0).getDocument().getData().get("uid"));
-                                                                        orderHelper.updateStatus((String) dc.getDocument().getData().get("uid"), 1);
-                                                                        bo[0] = false;
+                                TextView tv2 = new TextView(context);
+                                layout2.addView(tv1);
+                                layout2.addView(tv2);
+                                m.addView(parent);
+                                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-                                                                    }
-                                                                });
-
-                                                            }
-
-                                                        });
-                                                    }else{
-                                                        d.setNegativeButton("", new DialogInterface.OnClickListener() {
-                                                                    @Override
-                                                                    public void onClick(DialogInterface dialog, int which) {
-
-                                                                    }
-                                                                }
-                                                        );
-                                                        d.setPositiveButton("imprimer", new DialogInterface.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(DialogInterface dialog, int which) {
-
-                                                            }
-                                                        });
-                                                    }
-
-                                                     d.show();
-
-
-                                        }
-                                    });
-
-
-                                }
-                            });
-
-                            m.setFocusable(true);
-                            m.setCheckable(true);
-                            parent.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                            parent.setOrientation(LinearLayout.VERTICAL);
-
-
-                            LinearLayout layout2 = new LinearLayout(context);
-                            layout2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                            layout2.setOrientation(LinearLayout.VERTICAL);
-
-                            parent.addView(layout2);
-                            TextView tv1 = new TextView(context);
-                            userHelper.getUser((String)dc.getDocument().getData().get("client_Uid")).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                @Override
-                                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                    u =documentSnapshot.toObject(user.class);
-                                    tv1.setText(u.getUsername());
-
-                                }
-                            });
-
-                            TextView tv2 = new TextView(context);
-                            layout2.addView(tv1);
-                            layout2.addView(tv2);
-                            m.addView(parent);
-                            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-                            layoutParams.setMargins(0, 20, 0, 0);
-                            myScrollView.addView(m, layoutParams);
-                            break;
+                                layoutParams.setMargins(0, 20, 0, 0);
+                                myScrollView.addView(m, layoutParams);
+                                break;
+                            }
+                        case MODIFIED:
+                            if(dc.getDocument().getData().get("status").toString().equals("2")){
+                                parent.setVisibility(RelativeLayout.GONE);
+                               }
                     }
                 }
             }

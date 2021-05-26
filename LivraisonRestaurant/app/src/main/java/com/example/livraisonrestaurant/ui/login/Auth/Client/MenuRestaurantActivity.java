@@ -133,6 +133,12 @@ public class MenuRestaurantActivity extends AppCompatActivity {
 
                 }
             }});
+        restHelper.getRestaurant(uid).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                ((TextView)findViewById(R.id.textView10)).setText(documentSnapshot.toObject(restaurant.class).getName());
+            }
+        });
 
         productHelper.getProductsCollection().whereEqualTo("restaurant_id", uid).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
