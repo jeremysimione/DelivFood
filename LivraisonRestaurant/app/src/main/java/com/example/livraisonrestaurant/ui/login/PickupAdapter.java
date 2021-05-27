@@ -67,7 +67,6 @@ public class PickupAdapter extends BaseAdapter {
                     orderHelper.getOrdersCollection().whereEqualTo("rider_id", FirebaseAuth.getInstance().getCurrentUser().getUid()).whereEqualTo("status", 1).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                         @Override
                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                       queryDocumentSnapshots.getDocuments().get(0).toObject(orders.class);
                        orderHelper.updateStatus(queryDocumentSnapshots.getDocuments().get(0).toObject(orders.class).getUid(),2);
                         }
                     });

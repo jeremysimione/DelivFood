@@ -39,6 +39,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextClock;
@@ -116,6 +117,7 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
     private LocationCallback locationCallback;
     private Marker markerPerth;
     private LatLng latlng = null;
+    PickupAdapter mypickupadapter;
     DirectionsResult result = null;
     DirectionsResult result_client = null;
     private LatLng position = null;
@@ -238,14 +240,14 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
 
 
         fillArrayList();
-        fillProfile();
+
         pb.setVisibility(View.GONE);
-        PickupAdapter mypickupadapter = new PickupAdapter(getApplicationContext(),myRowItems2);
+         mypickupadapter = new PickupAdapter(getApplicationContext(),myRowItems2);
         CustomAdapter myAdapter1 = new CustomAdapter(getApplicationContext(), myRowItems1);
         myListView1.setAdapter(myAdapter1);
         RiderCustomerAdapter myAdapter = new RiderCustomerAdapter(getApplicationContext(), myRowItems);
         myListView.setAdapter(myAdapter);
-        myListView3.setAdapter(mypickupadapter);
+
         myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -356,14 +358,8 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
         r2.setSmallImageName(R.drawable.ic_fi_sr_user);
         myRowItems1.add(r2);
 
-        RowItem r3 = new RowItem();
-        r3.setHeading("Jérémy S.");
-        r3.setSubHeading("#AC56458");
-        myRowItems2.add(r3);
-        RowItem r4 = new RowItem();
-        r4.setHeading("Jérémy S.");
-        r4.setSubHeading("#AC5648");
-        myRowItems2.add(r4);
+
+
     }
 
     @Override
@@ -547,6 +543,19 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
                                                     myItinierary.remove();
                                                     addPolyline(result, mMap);
                                                     mBottomSheetDialog.dismiss();
+                                                    RowItem r3 = new RowItem();
+                                                    userHelper.getUser(ord.getClient_Uid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                                        @Override
+                                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                            r3.setHeading(documentSnapshot.toObject(user.class).getUsername());
+                                                            r3.setSubHeading("#AC56458");
+                                                            myRowItems2.add(r3);
+
+                                                            myListView3.setAdapter(mypickupadapter);
+                                                        }
+                                                    });
+
+
                                                 }
                                             });
                                             mBottomSheetDialog.setContentView(bottomSheetLayout);
@@ -559,6 +568,10 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
 
                                 }
                             });
+                        case MODIFIED:
+                            if(dc.getDocument().getData().get("status").toString().equals("2")){
+                              myListView3.setAdapter(null);
+                            }
                     }
                 }
             }

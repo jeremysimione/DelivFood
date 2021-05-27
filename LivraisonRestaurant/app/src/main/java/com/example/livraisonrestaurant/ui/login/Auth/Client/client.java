@@ -188,7 +188,7 @@ public class client extends Fragment {
                                 products p = documentSnapshot.toObject(products.class);
 
                                 RowItem row_one = new RowItem();
-                                row_one.setSubHeading("lorem ipsumf ffjoizhgoirzhvohzrvuoih");
+                                row_one.setSubHeading(" ");
                                 row_one.setTheFooter(String.valueOf(p.getPrice()) + "€");
                                 row_one.setHeading(p.getName());
                                 myRowItems.add(row_one);

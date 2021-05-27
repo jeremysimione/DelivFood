@@ -10,7 +10,7 @@
         android:id="@+id/imageView6"
         android:layout_width="100dp"
         android:layout_height="91dp"
-        android:layout_marginStart="304dp"
+        android:layout_marginStart="280dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="4dp"
 
