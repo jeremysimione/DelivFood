@@ -15,7 +15,10 @@ import android.widget.Toast;
 import com.example.livraisonrestaurant.R;
 import com.example.livraisonrestaurant.ui.login.api.orderHelper;
 import com.example.livraisonrestaurant.ui.login.api.riderHelper;
+import com.example.livraisonrestaurant.ui.login.models.orders;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -61,6 +64,13 @@ public class PickupAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(v.getContext(),"Commande prise en charge",Toast.LENGTH_LONG).show();
+                    orderHelper.getOrdersCollection().whereEqualTo("rider_id", FirebaseAuth.getInstance().getCurrentUser().getUid()).whereEqualTo("status", 1).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                       queryDocumentSnapshots.getDocuments().get(0).toObject(orders.class);
+                       orderHelper.updateStatus(queryDocumentSnapshots.getDocuments().get(0).toObject(orders.class).getUid(),2);
+                        }
+                    });
 
                 }
             });

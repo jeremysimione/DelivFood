@@ -58,6 +58,7 @@ import com.example.livraisonrestaurant.ui.login.api.orderHelper;
 import com.example.livraisonrestaurant.ui.login.api.restHelper;
 import com.example.livraisonrestaurant.ui.login.api.riderHelper;
 import com.example.livraisonrestaurant.ui.login.api.userHelper;
+import com.example.livraisonrestaurant.ui.login.models.orders;
 import com.example.livraisonrestaurant.ui.login.models.restaurant;
 import com.example.livraisonrestaurant.ui.login.models.user;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -118,6 +119,7 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
     DirectionsResult result = null;
     DirectionsResult result_client = null;
     private LatLng position = null;
+    orders ord;
     user c;
     private boolean pickedUpOrder = false;
     private BottomSheetDialog mBottomSheetDialog;
@@ -324,6 +326,7 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
                 TextView tv2 = findViewById(R.id.textView2);
                 tv2.setVisibility(View.VISIBLE);
                 pb.setIndeterminate(false);
+                riderHelper.updateEnligne(FirebaseAuth.getInstance().getUid(),false);
                 pb.setVisibility(View.GONE);
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
@@ -472,6 +475,7 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
                     switch (dc.getType()) {
                         case ADDED:
                             mp.start();
+                            ord=dc.getDocument().toObject(orders.class);
                             mBottomSheetDialog = new BottomSheetDialog(rider.this);
                             // View bottomSheetLayout1 = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_dialog, (ConstraintLayout) findViewById(R.id.constraint));
                             View bottomSheetLayout = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottom_sheet_dialog,(ConstraintLayout)findViewById(R.id.bottomSheetContainer));
