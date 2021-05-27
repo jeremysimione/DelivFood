@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.fragment.app.Fragment;
 
 import android.app.ActionBar;
 import android.app.SearchManager;
@@ -13,9 +14,11 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
@@ -36,19 +39,25 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends Fragment {
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        TextView kebab = findViewById(R.id.kebab);
-        TextView burger = findViewById(R.id.burgers);
+
+        // Read xml file and return View object.
+        // inflate(@LayoutRes int resource, @Nullable ViewGroup root, boolean attachToRoot)
+        View view = inflater.inflate(R.layout.activity_search, container, false);
+
+        super.onCreate(savedInstanceState);
+
+
+        TextView kebab = view.findViewById(R.id.kebab);
+        TextView burger = view.findViewById(R.id.burgers);
 
         kebab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i =  new Intent(getApplicationContext(),SearchResultActivity.class);
+                Intent i =  new Intent(getActivity(),SearchResultActivity.class);
                 i.putExtra("mot","Kebab");
                 startActivity(i);
 
@@ -59,7 +68,7 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                        Intent i =  new Intent(getApplicationContext(),SearchResultActivity.class);
+                        Intent i =  new Intent(getActivity(),SearchResultActivity.class);
                         ArrayList<String> r = new ArrayList<String>();
                         r.add("burgers");
                         r.add("Tacos");
@@ -71,13 +80,13 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-        SearchView simpleSearchView = (SearchView) findViewById(R.id.searchview1); // inititate a search view
+        SearchView simpleSearchView = (SearchView) view.findViewById(R.id.searchview1); // inititate a search view
 
 
         simpleSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Intent i =  new Intent(getApplicationContext(),SearchResultActivity.class);
+                Intent i =  new Intent(getActivity(),SearchResultActivity.class);
                 ArrayList<String> r = new ArrayList<String>();
                 r.add(query);
                 i.putExtra("mot",r);
@@ -92,11 +101,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
+        return view;
     }
 
-    public void onBackPressed() {
-        Log.d("CDA", "onBackPressed Called");
-        Intent setIntent = new Intent(getApplicationContext(),client.class);
-        startActivity(setIntent);
-    }
 }

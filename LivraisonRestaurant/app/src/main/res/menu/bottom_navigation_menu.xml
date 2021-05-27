@@ -2,7 +2,7 @@
     <item
         android:id="@+id/homepage"
         android:enabled="true"
-        android:icon="@drawable/home"
+        android:icon="@drawable/baseline_home_black_24dp"
         android:title="Acceuil"/>
     <item
         android:id="@+id/searchpage"

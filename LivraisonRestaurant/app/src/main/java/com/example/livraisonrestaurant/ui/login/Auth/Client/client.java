@@ -7,24 +7,30 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.NotificationCompat;
 import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.TargetApi;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.media.RingtoneManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -70,16 +76,20 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 
-public class client extends AppCompatActivity {
+public class client extends Fragment {
     ArrayList<restaurant> restaurants = new ArrayList<restaurant>();
+    ArrayList<String> imgrestau = new ArrayList<String>();
     user U;
     ArrayList<RowItem> myRowItems;
     CounterFab cart;
+    View v;
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
 
         userHelper.getUser(FirebaseAuth.getInstance().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -87,26 +97,24 @@ public class client extends AppCompatActivity {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 U = documentSnapshot.toObject(user.class);
                 cart.setCount(U.getOrder().getListProducts().size());
-                if (U.getOrder().getListProducts().size()!=0){
+                if (U.getOrder().getListProducts().size() != 0) {
                     restHelper.getRestaurant(U.getOrder().getRestaurant_id()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                         @Override
                         public void onSuccess(DocumentSnapshot documentSnapshot) {
-                            ((TextView) findViewById(R.id.textView14)).setText(documentSnapshot.toObject(restaurant.class).getName());
+                            ((TextView)v.findViewById(R.id.textView14)).setText(documentSnapshot.toObject(restaurant.class).getName());
                         }
                     });
 
 
                 }
-            }});
-
+            }
+        });
     }
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 
         super.onCreate(savedInstanceState);
-
         orderHelper.getOrdersCollection().whereEqualTo("client_Uid",FirebaseAuth.getInstance().getUid()).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -130,22 +138,27 @@ public class client extends AppCompatActivity {
                 }
             }
         });
-
-        Context context = this;
-        setContentView(R.layout.activity_client);
-        NavigationView nav = findViewById(R.id.navigationView);
+        View view = inflater.inflate(R.layout.activity_client, container, false);
+        v =view;
+        Context context = getActivity();
+        imgrestau.add("burgee");
+        imgrestau.add("pizza");
+        imgrestau.add("sushi");
+        imgrestau.add("mcdonalds");
+        imgrestau.add("doner");
+        NavigationView nav = view.findViewById(R.id.navigationView);
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(nav);
         bottomSheetBehavior.setDraggable(true);
         myRowItems = new ArrayList<RowItem>();
         bottomSheetBehavior.setPeekHeight(0);
-        ListView lv = findViewById(R.id.lvcart);
+        ListView lv = view.findViewById(R.id.lvcart);
         lv.setNestedScrollingEnabled(true);
-        cart = findViewById(R.id.floating_action_button);
-        Button btnOrder = findViewById(R.id.buttonOrder);
+        cart = view.findViewById(R.id.floating_action_button);
+        Button btnOrder = view.findViewById(R.id.buttonOrder);
         btnOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(),PaymentActivity.class);
+                Intent i = new Intent(getActivity(),PaymentActivity.class);
                 startActivity(i);
             }
         });
@@ -158,7 +171,7 @@ public class client extends AppCompatActivity {
                         restHelper.getRestaurant(U.getOrder().getRestaurant_id()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                             @Override
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                ((TextView) findViewById(R.id.textView14)).setText(documentSnapshot.toObject(restaurant.class).getName());
+                                ((TextView) view.findViewById(R.id.textView14)).setText(documentSnapshot.toObject(restaurant.class).getName());
                             }
                         });
 
@@ -177,14 +190,14 @@ public class client extends AppCompatActivity {
                                 row_one.setHeading(p.getName());
                                 myRowItems.add(row_one);
 
-                                MenuAdapter myAdapter = new MenuAdapter(getApplicationContext(), myRowItems);
+                                MenuAdapter myAdapter = new MenuAdapter(getActivity(), myRowItems);
                                 lv.setAdapter(myAdapter);
 
                             }
                         });
                     }
                 }else{
-                    Toast.makeText(getApplicationContext(), "Votre panier est vide", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Votre panier est vide", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -199,19 +212,18 @@ public class client extends AppCompatActivity {
                     restHelper.getRestaurant(U.getOrder().getRestaurant_id()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                         @Override
                         public void onSuccess(DocumentSnapshot documentSnapshot) {
-                            ((TextView) findViewById(R.id.textView14)).setText(documentSnapshot.toObject(restaurant.class).getName());
+                            ((TextView) view.findViewById(R.id.textView14)).setText(documentSnapshot.toObject(restaurant.class).getName());
                         }
                     });
 
 
                 }
             }});
-        LinearLayout myScrollView = findViewById(R.id.linScrollView);
-        BottomNavigationView bnm = findViewById(R.id.bottom_nav);
-        AppBarLayout mappBar = findViewById(R.id.appbar);
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        LinearLayout myScrollView = view.findViewById(R.id.linScrollView);
+        AppBarLayout mappBar = view.findViewById(R.id.appbar);
+        Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.planets_array, android.R.layout.simple_spinner_item);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -220,16 +232,16 @@ public class client extends AppCompatActivity {
         spinner.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Intent i = new Intent(getApplicationContext(), AccountActivity.class);
+                Intent i = new Intent(getActivity(), AccountActivity.class);
                 startActivity(i);
                 return true;
             }
         });
-        Button b = findViewById(R.id.filter_search);
+        Button b = view.findViewById(R.id.filter_search);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(),SearchActivity.class);
+                Intent i = new Intent(getActivity(),SearchActivity.class);
                 startActivity(i);
             }
         });
@@ -242,13 +254,13 @@ public class client extends AppCompatActivity {
 
                 if (verticalOffset == 0)
                 {
-                    MaterialToolbar mtb = findViewById(R.id.toolbar);
+                    MaterialToolbar mtb = view.findViewById(R.id.toolbar);
                     mtb.setVisibility(View.GONE);
 
                 }
                 else
                 {
-                    MaterialToolbar mtb = findViewById(R.id.toolbar);
+                    MaterialToolbar mtb = view.findViewById(R.id.toolbar);
                     mtb.setVisibility(View.VISIBLE);
 
 
@@ -257,15 +269,7 @@ public class client extends AppCompatActivity {
             }
 
         });
-        for (int i = 0; i < 4;i++) {
-            bnm.getMenu().getItem(i).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    onOptionsItemSelected(item);
-                    return true;
-                }
-            });
-        }
+
         restHelper.getRestaurantCollection().get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -289,7 +293,7 @@ public class client extends AppCompatActivity {
                             m.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    Intent intent = new Intent(getApplicationContext(),MenuRestaurantActivity.class);
+                                    Intent intent = new Intent(getActivity(),MenuRestaurantActivity.class);
                                     intent.putExtra("id_resto",r.getUid());
                                     userHelper.getUser(FirebaseAuth.getInstance().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                         @Override
@@ -301,7 +305,7 @@ public class client extends AppCompatActivity {
                                                 userHelper.updateorders(FirebaseAuth.getInstance().getUid(),r.getUid());
                                                 startActivity(intent);
                                             }else{
-                                               AlertDialog.Builder d = new AlertDialog.Builder(client.this);
+                                               AlertDialog.Builder d = new AlertDialog.Builder(context);
                                                d.setTitle("Vous avez dêja un panier sur un autres restaurant voulez vous le supprimer ?? ");
                                                d.setNegativeButton("NON", new DialogInterface.OnClickListener() {
                                                     @Override
@@ -334,9 +338,15 @@ public class client extends AppCompatActivity {
                             parent.getLayoutParams().height = 600;
                             ImageView iv = new ImageView(context);
                             iv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                            iv.setImageResource(R.drawable.home);
+
                             iv.getLayoutParams().height=420;
 
+                            int randomNum = ThreadLocalRandom.current().nextInt(0, 5 );
+
+                            int id = getActivity().getResources().getIdentifier(imgrestau.get(randomNum), "drawable", getActivity().getPackageName());
+                            iv.setImageResource(id);
+                            iv.setScaleType(ImageView.ScaleType.FIT_XY);
+                            iv.setPadding(40,40,40,40);
                             iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
                             LinearLayout layout2 = new LinearLayout(context);
                             layout2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -346,8 +356,14 @@ public class client extends AppCompatActivity {
                             TextView tv1 = new TextView(context);
                             tv1.setText(r.getName());
                             tv1.setTextSize(20);
+                            tv1.setPadding(40,10,0,0);
                             tv1.setTextColor(Color.BLACK);
                             TextView tv2 = new TextView(context);
+                            tv2.setText("Frais de livraisons : 0.49$ - 15-25mn" );
+                            tv2.setTextSize(14);
+                            tv2.setPadding(40,10,0,0);
+                            tv2.setTextColor(Color.GRAY);
+
                             layout2.addView(tv1);
                             layout2.addView(tv2);
                             m.addView(parent);
@@ -361,42 +377,18 @@ public class client extends AppCompatActivity {
                 });
 
         System.out.println("restaurants : "  + restaurants);
-
+    return view;
     }
 
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.homepage:
-                return true;
-            case R.id.searchpage:
-                Intent in = new Intent(getApplicationContext(),SearchActivity.class);
-                startActivity(in);
-                return true;
-            case R.id.orderspage :
-                Intent inte = new Intent(getApplicationContext(),OrdersActivity.class);
-                startActivity(inte);
-                return true;
-            case R.id.accountpage :
-                Intent intent = new Intent(getApplicationContext(),AccountActivity.class);
-                startActivity(intent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-
-        }
-    }
     public void notif(String message){
-        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        Intent intent = new Intent(getActivity(),MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
         NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
         inboxStyle.setBigContentTitle("Mise à jours commande");
         inboxStyle.addLine(message);
         String channelId = getString(R.string.default_notification_channel_id);
         NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(getApplicationContext(), channelId)
+                new NotificationCompat.Builder(getActivity(), channelId)
                         .setSmallIcon(R.drawable.ic_baseline_notifications_24)
                         .setContentTitle(getString(R.string.app_name))
                         .setContentText("Mise à jours commande")
@@ -404,7 +396,7 @@ public class client extends AppCompatActivity {
                         .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                         .setContentIntent(pendingIntent)
                         .setStyle(inboxStyle);
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(getActivity().NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence channelName = "Message provenant de Firebase";
             int importance = NotificationManager.IMPORTANCE_HIGH;

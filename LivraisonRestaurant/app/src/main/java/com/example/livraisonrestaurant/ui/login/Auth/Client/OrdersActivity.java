@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -50,7 +52,7 @@ import com.google.firestore.v1.StructuredQuery;
 
 import java.util.ArrayList;
 
-public class OrdersActivity extends AppCompatActivity {
+public class OrdersActivity extends Fragment {
     ListView myListView;
     ArrayList<orders> orders = new ArrayList<orders>();
     ArrayList<RowItem> myRowItems;
@@ -58,22 +60,14 @@ public class OrdersActivity extends AppCompatActivity {
     user U;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_orders);
-        myRowItems = new ArrayList<RowItem>();
-        BottomNavigationView bnm = findViewById(R.id.bottom_nav);
-        for (int i = 0; i < 4;i++) {
-            bnm.getMenu().getItem(i).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    onOptionsItemSelected(item);
-                    return true;
-                }
-            });
-        }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        myListView = (ListView) findViewById(R.id.lvorders);
+        super.onCreate(savedInstanceState);
+        View view = inflater.inflate(R.layout.activity_orders, container, false);
+        myRowItems = new ArrayList<RowItem>();
+
+
+        myListView = (ListView) view.findViewById(R.id.lvorders);
         orderHelper.getOrdersCollection().whereEqualTo("client_Uid", FirebaseAuth.getInstance().getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -104,7 +98,7 @@ public class OrdersActivity extends AppCompatActivity {
 
 
                 }
-                myAdapter = new OrdersAdapter(getApplicationContext(), myRowItems);
+                myAdapter = new OrdersAdapter(getActivity(), myRowItems);
 
 
             }
@@ -117,12 +111,12 @@ public class OrdersActivity extends AppCompatActivity {
             @Override
             public void onItemClick (AdapterView <?> parent,final View view, int position, long id){
                 RowItem list_row = myRowItems.get(position);
-                Toast.makeText(getApplicationContext(), list_row.getHeading(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), list_row.getHeading(), Toast.LENGTH_SHORT).show();
                     restHelper.getRestaurantCollection().whereEqualTo("name",list_row.getHeading()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                         @Override
                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
-                            Intent intent = new Intent(getApplicationContext(),MenuRestaurantActivity.class);
+                            Intent intent = new Intent(getActivity(),MenuRestaurantActivity.class);
                             intent.putExtra("id_resto",queryDocumentSnapshots.getDocuments().get(0).toObject(restaurant.class).getUid());
                             userHelper.getUser(FirebaseAuth.getInstance().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                 @Override
@@ -134,7 +128,7 @@ public class OrdersActivity extends AppCompatActivity {
                                         userHelper.updateorders(FirebaseAuth.getInstance().getUid(),(String)queryDocumentSnapshots.getDocuments().get(0).toObject(restaurant.class).getUid());
                                         startActivity(intent);
                                     }else{
-                                        AlertDialog.Builder d = new AlertDialog.Builder(OrdersActivity.this);
+                                        AlertDialog.Builder d = new AlertDialog.Builder(getActivity());
                                         d.setTitle("Vous avez dêja un panier sur un autres restaurant voulez vous le supprimer ?? ");
                                         d.setNegativeButton("NON", new DialogInterface.OnClickListener() {
                                             @Override
@@ -158,35 +152,12 @@ public class OrdersActivity extends AppCompatActivity {
                         }
                     });
 
-
-
             }
 
         });
 
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.homepage:
-                Intent inte = new Intent(getApplicationContext(),client.class);
-                startActivity(inte);
-                return true;
-            case R.id.searchpage:
-                Intent in = new Intent(getApplicationContext(),SearchActivity.class);
-                startActivity(in);
-                return true;
-            case R.id.orderspage :
-                return true;
-            case R.id.accountpage :
-                Intent intent = new Intent(getApplicationContext(),AccountActivity.class);
-                startActivity(intent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
 
-        }
+    return view;
     }
 
 

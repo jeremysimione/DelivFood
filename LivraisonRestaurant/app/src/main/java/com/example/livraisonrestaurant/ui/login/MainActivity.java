@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.example.livraisonrestaurant.R;
+import com.example.livraisonrestaurant.ui.login.Auth.Client.ClientActivity;
 import com.example.livraisonrestaurant.ui.login.Auth.Client.client;
 import com.example.livraisonrestaurant.ui.login.Auth.Restaurant.restaurantActivity;
 import com.example.livraisonrestaurant.ui.login.Auth.rider;
@@ -99,7 +100,7 @@ public class MainActivity extends BaseActivity {
                         startActivity(intent);
                         finish();
                     } else {
-                        Intent intent = new Intent(getApplicationContext(), client.class);
+                        Intent intent = new Intent(getApplicationContext(), ClientActivity.class);
                         startActivity(intent);
                         finish();
                     }
@@ -174,7 +175,7 @@ public class MainActivity extends BaseActivity {
                                             startActivity(intent);
                                             finish();
                                         } else {
-                                            Intent intent = new Intent(getApplicationContext(), client.class);
+                                            Intent intent = new Intent(getApplicationContext(), ClientActivity.class);
                                             startActivity(intent);
                                             finish();
                                         }

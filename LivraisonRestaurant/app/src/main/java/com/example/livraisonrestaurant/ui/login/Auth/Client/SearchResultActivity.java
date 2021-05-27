@@ -162,7 +162,7 @@ public class SearchResultActivity extends AppCompatActivity {
     }
         public void onBackPressed() {
             Log.d("CDA", "onBackPressed Called");
-            Intent setIntent = new Intent(getApplicationContext(),SearchActivity.class);
+            Intent setIntent = new Intent(getApplicationContext(),ClientActivity.class);
             startActivity(setIntent);
         }
 

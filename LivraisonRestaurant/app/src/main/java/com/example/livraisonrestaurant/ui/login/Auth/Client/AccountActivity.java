@@ -1,10 +1,13 @@
 package com.example.livraisonrestaurant.ui.login.Auth.Client;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -21,24 +24,29 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class AccountActivity extends AppCompatActivity {
+public class AccountActivity extends Fragment {
     ListView myListView;
     ArrayList<RowItem> myRowItems;
     HashMap<String, Intent> test = new HashMap<String, Intent>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+
+        // Read xml file and return View object.
+        // inflate(@LayoutRes int resource, @Nullable ViewGroup root, boolean attachToRoot)
+        View view = inflater.inflate(R.layout.activity_account, container, false);
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_account);
         myRowItems = new ArrayList<RowItem>();
 
-        myListView = (ListView) findViewById(R.id.listview);
+        myListView = (ListView) view.findViewById(R.id.listview);
 
         fillArrayList();
-        test.put("Paramètres",new Intent(this,SettingsActivity.class));
-        test.put("Livrer avec nous",new Intent(this, rider.class));
-        test.put("Devenir restaurant partenaire ",new Intent(this,devenirRest.class));
-        CustomAdapter myAdapter = new CustomAdapter(getApplicationContext(), myRowItems);
+        test.put("Paramètres",new Intent(getActivity(),SettingsActivity.class));
+        test.put("Livrer avec nous",new Intent(getActivity(), rider.class));
+        test.put("Devenir restaurant partenaire ",new Intent(getActivity(),devenirRest.class));
+        CustomAdapter myAdapter = new CustomAdapter(getActivity(), myRowItems);
         myListView.setAdapter(myAdapter);
         myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -52,13 +60,13 @@ public class AccountActivity extends AppCompatActivity {
                 }
 
                 startActivity(test.get(list_row.getHeading()));
-                finish();
+                getActivity().finish();
                 // Toast.makeText(getApplicationContext(), item,Toast.LENGTH_LONG);
             }
 
         });
 
-
+    return view;
     }
 
 

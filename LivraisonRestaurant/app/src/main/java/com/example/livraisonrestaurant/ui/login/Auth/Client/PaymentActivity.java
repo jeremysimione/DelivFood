@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.livraisonrestaurant.R;
 import com.example.livraisonrestaurant.ui.login.Auth.Restaurant.restaurantActivity;
 import com.example.livraisonrestaurant.ui.login.api.orderHelper;
@@ -21,7 +23,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import java.util.ArrayList;
 import java.util.EventListener;
 
-public class PaymentActivity extends AccountActivity {
+public class PaymentActivity extends AppCompatActivity {
 
     private TextView mTextView;
     user u;
