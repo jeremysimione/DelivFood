@@ -61,40 +61,40 @@ public class RiderAccountActivity extends AppCompatActivity {
     private void fillArrayList() {
         RowItem r2 = new RowItem();
         r2.setHeading("Documents");
-        r2.setSmallImageName(R.drawable.ic_fi_sr_receipt);
+        r2.setSmallImageName(R.drawable.baseline_description_black_24dp);
         myRowItems1.add(r2);
 
         RowItem r3 = new RowItem();
         r3.setHeading("Paiement");
-        r3.setSmallImageName(R.drawable.ic_fi_sr_receipt);
+        r3.setSmallImageName(R.drawable.baseline_credit_card_black_24dp);
         myRowItems1.add(r3);
 
         RowItem r4 = new RowItem();
         r4.setHeading("Informations fiscales");
-        r4.setSmallImageName(R.drawable.ic_fi_sr_receipt);
+        r4.setSmallImageName(R.drawable.baseline_calculate_black_24dp);
         myRowItems1.add(r4);
 
 
         RowItem r5 = new RowItem();
         r5.setHeading("Modifier les informations");
-        r5.setSmallImageName(R.drawable.ic_fi_sr_receipt);
+        r5.setSmallImageName(R.drawable.baseline_info_black_24dp);
         myRowItems1.add(r5);
 
 
         RowItem r6 = new RowItem();
         r6.setHeading("A propos");
-        r6.setSmallImageName(R.drawable.ic_fi_sr_receipt);
+        r6.setSmallImageName(R.drawable.baseline_info_black_24dp);
         myRowItems1.add(r6);
 
 
         RowItem r7 = new RowItem();
         r7.setHeading("Assurance");
-        r7.setSmallImageName(R.drawable.ic_fi_sr_receipt);
+        r7.setSmallImageName(R.drawable.baseline_beach_access_black_24dp);
         myRowItems1.add(r7);
 
         RowItem r8 = new RowItem();
-        r8.setHeading("Assurance");
-        r8.setSmallImageName(R.drawable.ic_fi_sr_receipt);
+        r8.setHeading("Paramètres de l'application");
+        r8.setSmallImageName(R.drawable.baseline_settings_black_24dp);
         myRowItems1.add(r8);
 
     }
