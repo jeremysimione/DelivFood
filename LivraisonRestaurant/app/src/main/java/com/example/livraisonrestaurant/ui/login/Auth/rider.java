@@ -65,6 +65,7 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -270,7 +271,8 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
                 final MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.uber_online);
                 mp.start();
                 getorderslistner();
-
+                TextView tv2 = findViewById(R.id.textView2);
+                tv2.setVisibility(View.GONE);
                 pb.setVisibility(View.VISIBLE);
                 pb.setIndeterminate(true);
                 con.setText("Vous êtes en ligne");
@@ -319,6 +321,8 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
             public void onClick(View v) {
                 con.setText("Vous êtes hors ligne");
                 fab1.setVisibility(View.VISIBLE);
+                TextView tv2 = findViewById(R.id.textView2);
+                tv2.setVisibility(View.VISIBLE);
                 pb.setIndeterminate(false);
                 pb.setVisibility(View.GONE);
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -438,12 +442,16 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
     public void onMyLocationClick(@NonNull Location location) {
         mCurrentLocation = location;
         position = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
+        float zoomLevel = 15.0f; //This goes up to 21
+       // mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mCurrentLocation.getLatitude(),mCurrentLocation.getLongitude()), zoomLevel));
     }
 
     @Override
     public boolean onMyLocationButtonClick() {
         Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT)
                 .show();
+        float zoomLevel = 15.0f; //This goes up to 21
+        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mCurrentLocation.getLatitude(),mCurrentLocation.getLongitude()), zoomLevel));
         // Return false so that we don't consume the event and the default behavior still occurs
         // (the camera animates to the user's current position).
         return false;
@@ -496,6 +504,11 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
                                                 } catch (IOException e) {
                                                     e.printStackTrace();
                                                 }
+                                                //mMap.moveCamera(CameraUpdateFactory.zoomOut());
+                                                float zoomLevel = 12.0f; //This goes up to 21
+                                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mCurrentLocation.getLatitude(),mCurrentLocation.getLongitude()), zoomLevel));
+
+                                               // mMap.moveCamera(CameraUpdateFactory.zoomOut());
                                                 addMarkersToMap(result_client, mMap);
                                                 addPolyline(result_client, mMap);
                                                 int distance = (int) (result_client.routes[0].legs[0].distance.inMeters);
@@ -514,6 +527,9 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
                                                 @Override
                                                 public void onClick(View view) {
                                                     mBottomSheetDialog.dismiss();
+                                                    markers.get(0).remove();
+                                                    mp.stop();
+                                                    myItinierary.remove();
                                                 }
                                             });
                                             (bottomSheetLayout.findViewById(R.id.bottomSheetContainer)).setOnClickListener(new View.OnClickListener() {
