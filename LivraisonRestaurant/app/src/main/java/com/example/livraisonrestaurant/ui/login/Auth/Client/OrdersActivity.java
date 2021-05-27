@@ -71,6 +71,7 @@ public class OrdersActivity extends Fragment {
         orderHelper.getOrdersCollection().whereEqualTo("client_Uid", FirebaseAuth.getInstance().getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                orders = new ArrayList<orders>();
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         orders o = document.toObject(orders.class);

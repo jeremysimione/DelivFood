@@ -18,6 +18,7 @@ import android.content.Context;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.RingtoneManager;
@@ -78,6 +79,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+
+import io.opencensus.resource.Resource;
 
 
 public class client extends Fragment {
@@ -222,17 +225,23 @@ public class client extends Fragment {
         LinearLayout myScrollView = view.findViewById(R.id.linScrollView);
         AppBarLayout mappBar = view.findViewById(R.id.appbar);
         Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
+            Resources resource=getResources();
+            String[] Adress= resource.getStringArray(R.array.Adress);
+
+
+
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.planets_array, android.R.layout.simple_spinner_item);
+                R.array.Adress, android.R.layout.simple_spinner_item);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner.setAdapter(adapter);
+
         spinner.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Intent i = new Intent(getActivity(), AccountActivity.class);
+                Intent i = new Intent(getActivity(), AdressActivity.class);
                 startActivity(i);
                 return true;
             }
@@ -274,6 +283,7 @@ public class client extends Fragment {
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        restaurants = new ArrayList<restaurant>();
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("test", document.getId() + " => " + document.getData());

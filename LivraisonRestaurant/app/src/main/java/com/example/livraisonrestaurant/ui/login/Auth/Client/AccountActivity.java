@@ -57,10 +57,12 @@ public class AccountActivity extends Fragment {
                 if (list_row.getHeading() =="Livrer avec nous"){
                     riderHelper.createRider(FirebaseAuth.getInstance().getUid());
                     userHelper.updateIsRider(FirebaseAuth.getInstance().getUid(),true);
+                    startActivity(test.get(list_row.getHeading()));
+                    getActivity().finish();
                 }
 
                 startActivity(test.get(list_row.getHeading()));
-                getActivity().finish();
+
                 // Toast.makeText(getApplicationContext(), item,Toast.LENGTH_LONG);
             }
 

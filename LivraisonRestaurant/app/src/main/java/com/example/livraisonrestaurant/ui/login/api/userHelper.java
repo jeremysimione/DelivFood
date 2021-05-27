@@ -51,6 +51,9 @@ public class userHelper {
     public static Task<Void> updateIsRest(String uid, Boolean c) {
         return userHelper.getUsersCollection().document(uid).update("isRest", c);
     }
+    public static Task<Void> updateAdress(String uid, String c) {
+        return userHelper.getUsersCollection().document(uid).update("adressCode", c);
+    }
     public static Task<Void> updateIsRider(String uid, Boolean c) {
         return userHelper.getUsersCollection().document(uid).update("isRider", c);
     }
