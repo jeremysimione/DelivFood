@@ -20,8 +20,8 @@
             android:layout_width="147dp"
             android:layout_height="142dp"
             android:layout_marginStart="128dp"
-            android:layout_marginLeft="128dp"
             android:layout_marginTop="40dp"
+            android:scaleType="fitXY"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@drawable/avatar" />
@@ -94,7 +94,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:divider="@color/fui_transparent"
+            android:divider="@color/gris"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
