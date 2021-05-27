@@ -51,6 +51,7 @@ import com.example.livraisonrestaurant.ui.login.Auth.Rider.MailBoxActivity;
 import com.example.livraisonrestaurant.ui.login.Auth.Rider.RiderAccountActivity;
 import com.example.livraisonrestaurant.ui.login.BaseActivity;
 import com.example.livraisonrestaurant.ui.login.CustomAdapter;
+import com.example.livraisonrestaurant.ui.login.PickupAdapter;
 import com.example.livraisonrestaurant.ui.login.RiderCustomerAdapter;
 import com.example.livraisonrestaurant.ui.login.RowItem;
 import com.example.livraisonrestaurant.ui.login.api.orderHelper;
@@ -128,9 +129,12 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
     private Location mCurrentLocation;
     ListView myListView;
     ListView myListView1;
+    ListView myListView3;
 
     ArrayList<RowItem> myRowItems;
     ArrayList<RowItem> myRowItems1;
+
+    ArrayList<RowItem> myRowItems2;
     LocationRequest locationRequest = LocationRequest.create();
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -142,7 +146,10 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
         ProgressBar pb = findViewById(R.id.progressBar);
         myRowItems = new ArrayList<RowItem>();
         myRowItems1 = new ArrayList<RowItem>();
+        myRowItems2 = new ArrayList<RowItem>();
+
         myListView = (ListView) findViewById(R.id.listviewrider);
+        myListView3 = (ListView) findViewById(R.id.lvrider);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         locationRequest.setInterval(10000);
         locationRequest.setFastestInterval(5000);
@@ -225,15 +232,17 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
         };
         myListView1 = (ListView) findViewById(R.id.listviewprofile);
         TextView con = (TextView) findViewById(R.id.textView7);
-        TextView go = (TextView) findViewById(R.id.textView2);
+
 
         fillArrayList();
         fillProfile();
         pb.setVisibility(View.GONE);
+        PickupAdapter mypickupadapter = new PickupAdapter(getApplicationContext(),myRowItems2);
         CustomAdapter myAdapter1 = new CustomAdapter(getApplicationContext(), myRowItems1);
         myListView1.setAdapter(myAdapter1);
         RiderCustomerAdapter myAdapter = new RiderCustomerAdapter(getApplicationContext(), myRowItems);
         myListView.setAdapter(myAdapter);
+        myListView3.setAdapter(mypickupadapter);
         myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -266,7 +275,6 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
                 pb.setIndeterminate(true);
                 con.setText("Vous êtes en ligne");
                 riderHelper.updateEnligne(FirebaseAuth.getInstance().getUid(),true);
-                go.setVisibility(View.GONE);
                 fab1.setVisibility(View.GONE);
 
             }
@@ -310,7 +318,6 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
             @Override
             public void onClick(View v) {
                 con.setText("Vous êtes hors ligne");
-                go.setVisibility(View.VISIBLE);
                 fab1.setVisibility(View.VISIBLE);
                 pb.setIndeterminate(false);
                 pb.setVisibility(View.GONE);
@@ -342,6 +349,14 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
         r2.setSmallImageName(R.drawable.ic_fi_sr_user);
         myRowItems1.add(r2);
 
+        RowItem r3 = new RowItem();
+        r3.setHeading("Jérémy S.");
+        r3.setSubHeading("#AC56458");
+        myRowItems2.add(r3);
+        RowItem r4 = new RowItem();
+        r4.setHeading("Jérémy S.");
+        r4.setSubHeading("#AC5648");
+        myRowItems2.add(r4);
     }
 
     @Override
