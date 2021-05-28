@@ -7,11 +7,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.livraisonrestaurant.R;
 import com.example.livraisonrestaurant.ui.login.CustomAdapter;
+import com.example.livraisonrestaurant.ui.login.MainActivity;
 import com.example.livraisonrestaurant.ui.login.RowItem;
+import com.example.livraisonrestaurant.ui.login.api.userHelper;
+import com.example.livraisonrestaurant.ui.login.models.user;
+import com.firebase.ui.auth.data.model.User;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +33,22 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         myRowItems = new ArrayList<RowItem>();
+        userHelper.getUser(FirebaseAuth.getInstance().getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                ((TextView)findViewById(R.id.textView4)).setText(documentSnapshot.toObject(user.class).getUsername());
+            }
+        });
+        Button deco = findViewById(R.id.button3);
+        deco.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent3 = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent3);
+                finish();
+            }
+        });
 
         myListView = (ListView) findViewById(R.id.listviewhome);
 

@@ -61,6 +61,7 @@ public class AccountActivity extends Fragment {
                     getActivity().finish();
                 }
 
+
                 startActivity(test.get(list_row.getHeading()));
 
                 // Toast.makeText(getApplicationContext(), item,Toast.LENGTH_LONG);
