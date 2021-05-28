@@ -85,10 +85,8 @@ public class PaymentActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         u = documentSnapshot.toObject(user.class);
-                        System.out.println("+++++"+num.getText().toString());
                         userHelper.updateAdress(FirebaseAuth.getInstance().getUid(),adress.getText().toString());
                         userHelper.updatePhoneNumbre(num.getText().toString(),FirebaseAuth.getInstance().getUid());
-                        System.out.println("+++++");
 
                         orderHelper.createOrders1(u.getOrder());
                         userHelper.updateorders2(FirebaseAuth.getInstance().getUid(),new orders(null,null,FirebaseAuth.getInstance().getUid(),0,new ArrayList<String>()));
