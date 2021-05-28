@@ -11,11 +11,25 @@
         android:id="@+id/toolbar3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
+        android:background="@color/colorWhite"
+        android:elevation="10dp"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" >
+
+        <TextView
+            android:id="@+id/textView25"
+            style="@android:style/Widget.TextView.PopupMenu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="10dp"
+            android:fontFamily="@font/bungee_inline"
+            android:gravity="center"
+            android:text="TextView"
+            android:textSize="24sp"
+            android:textStyle="italic" />
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
@@ -38,6 +52,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginBottom="6dp"
                 android:text="Commander"
+                android:textColor="#000000"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
@@ -120,20 +135,6 @@
                 android:text="Frais"
                 app:layout_constraintBottom_toTopOf="@+id/textView22"
                 app:layout_constraintStart_toStartOf="parent" />
-            <TextView
-                android:id="@+id/textView25"
-                style="@android:style/Widget.TextView.PopupMenu"
-                android:layout_width="266dp"
-                android:layout_height="65dp"
-                android:layout_marginStart="72dp"
-                android:fontFamily="@font/bungee_inline"
-                android:gravity="center"
-                android:text="TextView"
-                android:textSize="24sp"
-                android:textStyle="italic"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:ignore="MissingConstraints"
-                tools:layout_editor_absoluteY="73dp" />
 
 
 

@@ -143,7 +143,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:background="@color/black"
-                    android:text="Commander" />
+                    android:text="Commander"
+                    android:textColor="#000000" />
 
                 <ListView
                     android:id="@+id/lvcart"
