@@ -37,6 +37,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -147,6 +148,8 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rider);
         FloatingActionButton fab1 = findViewById(R.id.floatingActionButton9);
+        Button btnBeginShift = findViewById(R.id.commencercourse);
+        btnBeginShift.setVisibility(View.GONE);
         FloatingActionButton deconnexion = findViewById(R.id.floatingActionButton);
         ProgressBar pb = findViewById(R.id.progressBar);
         myRowItems = new ArrayList<RowItem>();
@@ -158,6 +161,7 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         locationRequest.setInterval(10000);
         locationRequest.setFastestInterval(5000);
+
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -209,7 +213,9 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
                             addPolyline(result, mMap);
                             if (result.routes[0].legs[0].distance.inMeters < 50) {
                                 Toast.makeText(getApplicationContext(), "Vous etes arrivés au restau", Toast.LENGTH_LONG).show();
-                                pickedUpOrder =true;
+                                Button begin = findViewById(R.id.commencercourse);
+                                begin.setVisibility(View.VISIBLE);
+
                             }
                         } else {
                             try {
@@ -320,6 +326,13 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
         });
 
 
+        btnBeginShift.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                pickedUpOrder = true;
+            }
+        });
         deconnexion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -552,6 +565,7 @@ public class rider extends AppCompatActivity implements GoogleMap.OnMyLocationBu
                                                             myRowItems2.add(r3);
 
                                                             myListView3.setAdapter(mypickupadapter);
+
                                                         }
                                                     });
 

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:nestedScrollingEnabled="true"
-    android:background="@color/white">
+   >
 
 
 
@@ -90,8 +90,9 @@
                 android:layout_height="20dp"
                 android:layout_marginTop="85dp"
                 android:layout_marginLeft="350dp"
-                android:background="@drawable/ic_fi_sr_search"
-                android:backgroundTint="#000000"
+                android:background="@drawable/baseline_tune_black_24dp"
+                android:backgroundTint="@color/white"
+
                 >
             </Button>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
