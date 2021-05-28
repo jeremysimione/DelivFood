@@ -64,6 +64,11 @@ public class  user {
     public Boolean getIsRest() { return isRest; }
     public Boolean getIsRider() { return isRider; }
 
+    @Nullable
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
     // --- SETTERS ---
     public void setUsername(String username) { this.username = username; }
     public void setUid(String uid) { this.uid = uid; }

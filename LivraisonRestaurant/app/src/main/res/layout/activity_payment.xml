@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar3"
@@ -19,7 +20,7 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="657dp"
         android:fillViewport="true"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="16dp">
@@ -28,52 +29,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/textView17"
-                android:layout_width="106dp"
-                android:layout_height="27dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginBottom="11dp"
-                android:text="TextView"
-                app:layout_constraintBottom_toTopOf="@+id/textView18"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:id="@+id/textView18"
-                android:layout_width="106dp"
-                android:layout_height="27dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginBottom="227dp"
-                android:text="TextView"
-                app:layout_constraintBottom_toBottomOf="@+id/lvord"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <ListView
-                android:id="@+id/lvadr"
-                android:layout_width="381dp"
-                android:layout_height="112dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginBottom="8dp"
-
-                app:layout_constraintBottom_toTopOf="@+id/textView17"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <ListView
-                android:id="@+id/lvord"
-                android:layout_width="389dp"
-                android:layout_height="215dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginBottom="12dp"
-                app:layout_constraintBottom_toTopOf="@+id/textView20"
-                app:layout_constraintStart_toStartOf="parent" />
 
             <Button
                 android:id="@+id/button6"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="362dp"
                 android:layout_height="56dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginBottom="6dp"
-                android:text="Button"
+                android:text="Commander"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
@@ -91,7 +55,7 @@
                 android:id="@+id/textView32"
                 android:layout_width="66dp"
                 android:layout_height="23dp"
-                android:layout_marginStart="324dp"
+                android:layout_marginStart="316dp"
                 android:layout_marginTop="1dp"
                 android:text="TextView"
                 app:layout_constraintStart_toStartOf="parent"
@@ -119,11 +83,11 @@
 
             <TextView
                 android:id="@+id/textView30"
-                android:layout_width="48dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="344dp"
-                android:layout_marginBottom="8dp"
-                android:text="TextView"
+                android:layout_width="43dp"
+                android:layout_height="31dp"
+                android:layout_marginStart="316dp"
+                android:layout_marginBottom="4dp"
+                android:text="1.00$"
                 app:layout_constraintBottom_toTopOf="@+id/textView31"
                 app:layout_constraintStart_toStartOf="parent" />
 
@@ -131,9 +95,9 @@
                 android:id="@+id/textView31"
                 android:layout_width="45dp"
                 android:layout_height="19dp"
-                android:layout_marginStart="348dp"
+                android:layout_marginStart="316dp"
                 android:layout_marginBottom="3dp"
-                android:text="TextView"
+                android:text="0.49$"
                 app:layout_constraintBottom_toTopOf="@+id/textView32"
                 app:layout_constraintStart_toStartOf="parent" />
 
@@ -156,6 +120,64 @@
                 android:text="Frais"
                 app:layout_constraintBottom_toTopOf="@+id/textView22"
                 app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/textView25"
+                style="@android:style/Widget.TextView.PopupMenu"
+                android:layout_width="266dp"
+                android:layout_height="65dp"
+                android:layout_marginStart="72dp"
+                android:fontFamily="@font/bungee_inline"
+                android:gravity="center"
+                android:text="TextView"
+                android:textSize="24sp"
+                android:textStyle="italic"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteY="73dp" />
+
+
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.core.widget.NestedScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/outlinedTextField2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Numero de télephone"
+        android:layout_marginTop="200dp"
+        app:startIconDrawable="@drawable/ic_baseline_local_phone_24"
+        app:startIconTint="@color/cardview_dark_background"
+        android:textColorHint="@color/cardview_dark_background"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/num"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/outlinedTextField3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Adresse de livraison"
+        android:layout_marginTop="300dp"
+        app:startIconDrawable="@drawable/ic_baseline_location_on_24"
+        app:startIconTint="@color/cardview_dark_background"
+        android:textColorHint="@color/cardview_dark_background"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/adress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
