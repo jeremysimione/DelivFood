@@ -112,7 +112,8 @@ public class SearchResultActivity extends AppCompatActivity {
                     iv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
                     iv.setImageResource(R.drawable.home);
                     iv.getLayoutParams().height = 420;
-
+                    iv.setScaleType(ImageView.ScaleType.FIT_XY);
+                    iv.setPadding(40,40,40,40);
                     iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     LinearLayout layout2 = new LinearLayout(context);
                     layout2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -124,6 +125,12 @@ public class SearchResultActivity extends AppCompatActivity {
                     tv1.setTextSize(20);
                     tv1.setTextColor(Color.BLACK);
                     TextView tv2 = new TextView(context);
+                    tv1.setTextSize(20);
+                    tv1.setPadding(40,10,0,0);
+                    tv1.setTextColor(Color.BLACK);
+                    tv2.setText("Frais de livraisons : 0.49$ - 15-25mn" );
+                    tv2.setTextSize(14);
+                    tv2.setPadding(40,10,0,0);
                     layout2.addView(tv1);
                     layout2.addView(tv2);
                     m.addView(parent);

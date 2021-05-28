@@ -15,45 +15,50 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="147dp"
-            android:layout_height="142dp"
-            android:layout_marginStart="128dp"
-            android:layout_marginTop="40dp"
-            android:scaleType="fitXY"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@drawable/avatar" />
-
         <TextView
             android:id="@+id/textView4"
             android:layout_width="134dp"
             android:layout_height="22dp"
-            android:layout_marginStart="136dp"
-            android:layout_marginLeft="136dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginStart="137dp"
+            android:layout_marginTop="160dp"
+            android:layout_marginEnd="137dp"
             android:clickable="true"
+            android:gravity="center"
             android:text="Projet android"
             android:textColor="#0E0E0E"
             android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/button4"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="208dp"
             android:layout_height="47dp"
             android:layout_marginStart="100dp"
-            android:layout_marginLeft="100dp"
             android:layout_marginTop="4dp"
-            android:text="Modifier le compte"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:textColor="#1439BF"
+            android:layout_marginEnd="100dp"
             android:backgroundTint="@color/white"
             android:elevation="0dp"
+            android:text="Modifier le compte"
+            android:textColor="#1439BF"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="196dp"
+            android:layout_height="129dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="100dp"
+            android:scaleType="centerInside"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/avatar" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -78,48 +78,48 @@ public class AccountActivity extends Fragment {
         RowItem row_one = new RowItem();
         row_one.setHeading("Vos favoris");
         row_one.setSubHeading("");
-        row_one.setSmallImageName(R.drawable.ic_fi_sr_receipt);
+        row_one.setSmallImageName(R.drawable.outline_favorite_black_24dp);
 
         myRowItems.add(row_one);
 
         RowItem row_two = new RowItem();
         row_two.setHeading("Programme de fidélité restaurant");
-        row_two.setSmallImageName(R.drawable.ic_fi_sr_user);
+        row_two.setSmallImageName(R.drawable.outline_stars_black_24dp);
         myRowItems.add(row_two);
 
 
         RowItem row_three = new RowItem();
         row_three.setHeading("Paiement");
-        row_three.setSmallImageName(R.drawable.ic_fi_sr_user);
+        row_three.setSmallImageName(R.drawable.baseline_credit_card_black_24dp);
         myRowItems.add(row_three);
 
 
         RowItem row_four = new RowItem();
         row_four.setHeading("Aide");
-        row_four.setSmallImageName(R.drawable.ic_fi_sr_user);
+        row_four.setSmallImageName(R.drawable.outline_support_black_24dp);
         myRowItems.add(row_four);
 
 
         RowItem row_five = new RowItem();
         row_five.setHeading("Promotions");
-        row_five.setSmallImageName(R.drawable.ic_fi_sr_user);
+        row_five.setSmallImageName(R.drawable.baseline_local_offer_black_24dp);
         myRowItems.add(row_five);
 
 
         RowItem row_six = new RowItem();
         row_six.setHeading("Livrer avec nous");
-        row_six.setSmallImageName(R.drawable.ic_fi_sr_user);
+        row_six.setSmallImageName(R.drawable.baseline_delivery_dining_black_24dp);
         myRowItems.add(row_six);
 
 
         RowItem row_8 = new RowItem();
-        row_8.setHeading("Devenir restaurant partenaire ");
-        row_8.setSmallImageName(R.drawable.ic_fi_sr_user);
+        row_8.setHeading("Devenir restaurant partenaire");
+        row_8.setSmallImageName(R.drawable.baseline_restaurant_black_24dp);
         myRowItems.add(row_8);
 
         RowItem row_seven = new RowItem();
         row_seven.setHeading("Paramètres");
-        row_seven.setSmallImageName(R.drawable.ic_fi_sr_user);
+        row_seven.setSmallImageName(R.drawable.baseline_settings_black_24dp);
         myRowItems.add(row_seven);
 
 

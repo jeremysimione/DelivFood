@@ -50,6 +50,15 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+        Button modify = findViewById(R.id.button4);
+
+        modify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent3 = new Intent(getApplicationContext(), SettingsChangeActivity.class);
+                startActivity(intent3);
+            }
+        });
         myListView = (ListView) findViewById(R.id.listviewhome);
 
         fillArrayList();

@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
-        <activity android:name=".ui.login.Auth.Client.AdressActivity"></activity>
+        <activity android:name=".ui.login.Auth.Client.SettingsChangeActivity"></activity>
+        <activity android:name=".ui.login.Auth.Client.AdressActivity" />
         <activity android:name=".ui.login.Auth.Client.ClientActivity" />
         <activity android:name=".ui.login.Auth.Client.SearchResultActivity" />
         <activity android:name=".ui.login.Auth.Client.devenirRest" />
