@@ -5,25 +5,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.livraisonrestaurant.R;
-import com.example.livraisonrestaurant.ui.login.CustomAdapter;
+import com.example.livraisonrestaurant.ui.login.Adpater.CustomAdapter;
 import com.example.livraisonrestaurant.ui.login.MainActivity;
-import com.example.livraisonrestaurant.ui.login.RowItem;
+import com.example.livraisonrestaurant.ui.login.Adpater.RowItem;
 import com.example.livraisonrestaurant.ui.login.api.userHelper;
 import com.example.livraisonrestaurant.ui.login.models.user;
-import com.firebase.ui.auth.data.model.User;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class SettingsActivity extends AppCompatActivity {
     ListView myListView;

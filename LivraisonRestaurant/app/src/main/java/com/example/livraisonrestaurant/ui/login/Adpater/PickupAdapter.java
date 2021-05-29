@@ -1,4 +1,4 @@
-package com.example.livraisonrestaurant.ui.login;
+package com.example.livraisonrestaurant.ui.login.Adpater;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -7,14 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.livraisonrestaurant.R;
 import com.example.livraisonrestaurant.ui.login.api.orderHelper;
-import com.example.livraisonrestaurant.ui.login.api.riderHelper;
 import com.example.livraisonrestaurant.ui.login.models.orders;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;

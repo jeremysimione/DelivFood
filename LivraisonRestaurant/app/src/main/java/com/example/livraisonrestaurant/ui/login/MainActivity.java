@@ -20,8 +20,7 @@ import com.example.livraisonrestaurant.R;
 import com.example.livraisonrestaurant.ui.login.Auth.Client.ClientActivity;
 import com.example.livraisonrestaurant.ui.login.Auth.Client.client;
 import com.example.livraisonrestaurant.ui.login.Auth.Restaurant.restaurantActivity;
-import com.example.livraisonrestaurant.ui.login.Auth.rider;
-import com.example.livraisonrestaurant.ui.login.api.orderHelper;
+import com.example.livraisonrestaurant.ui.login.Auth.Rider.rider;
 import com.example.livraisonrestaurant.ui.login.api.userHelper;
 import com.example.livraisonrestaurant.ui.login.models.user;
 import com.firebase.ui.auth.AuthUI;
@@ -90,7 +89,6 @@ public class MainActivity extends BaseActivity {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 user1 = documentSnapshot.toObject(user.class);
                 if(user1.getIsRest()!=null) {
-                    f=true;
                     if (user1.getIsRest()) {
                         Intent intent = new Intent(getApplicationContext(), restaurantActivity.class);
                         startActivity(intent);

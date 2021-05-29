@@ -9,10 +9,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.livraisonrestaurant.R;
-import com.example.livraisonrestaurant.ui.login.CustomAdapter;
+import com.example.livraisonrestaurant.ui.login.Adpater.CustomAdapter;
 import com.example.livraisonrestaurant.ui.login.MainActivity;
-import com.example.livraisonrestaurant.ui.login.RiderCustomerAdapter;
-import com.example.livraisonrestaurant.ui.login.RowItem;
+import com.example.livraisonrestaurant.ui.login.Adpater.RowItem;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;

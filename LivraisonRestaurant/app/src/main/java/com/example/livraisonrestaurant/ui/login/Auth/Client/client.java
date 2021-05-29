@@ -3,12 +3,8 @@ package com.example.livraisonrestaurant.ui.login.Auth.Client;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.NotificationCompat;
-import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.TargetApi;
 import android.app.NotificationChannel;
@@ -20,19 +16,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.media.RingtoneManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -44,14 +35,12 @@ import android.widget.Toast;
 
 import com.andremion.counterfab.CounterFab;
 import com.example.livraisonrestaurant.R;
-import com.example.livraisonrestaurant.ui.login.BaseActivity;
 import com.example.livraisonrestaurant.ui.login.MainActivity;
-import com.example.livraisonrestaurant.ui.login.MenuAdapter;
-import com.example.livraisonrestaurant.ui.login.RowItem;
+import com.example.livraisonrestaurant.ui.login.Adpater.MenuAdapter;
+import com.example.livraisonrestaurant.ui.login.Adpater.RowItem;
 import com.example.livraisonrestaurant.ui.login.api.orderHelper;
 import com.example.livraisonrestaurant.ui.login.api.productHelper;
 import com.example.livraisonrestaurant.ui.login.api.restHelper;
-import com.example.livraisonrestaurant.ui.login.api.riderHelper;
 import com.example.livraisonrestaurant.ui.login.api.userHelper;
 import com.example.livraisonrestaurant.ui.login.models.orders;
 import com.example.livraisonrestaurant.ui.login.models.products;
@@ -61,8 +50,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.bottomnavigation.BottomNavigationMenu;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.card.MaterialCardView;
 import com.example.livraisonrestaurant.ui.login.models.restaurant;
@@ -76,11 +63,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-
-import io.opencensus.resource.Resource;
 
 
 public class client extends Fragment {
@@ -168,7 +151,9 @@ public class client extends Fragment {
         cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (U.getOrder().getListProducts().size() != 0) {
+                    myRowItems= new ArrayList<RowItem>();
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
                     if (U.getOrder().getListProducts().size() != 0) {
                         restHelper.getRestaurant(U.getOrder().getRestaurant_id()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {

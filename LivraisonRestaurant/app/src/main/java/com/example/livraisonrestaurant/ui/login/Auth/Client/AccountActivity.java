@@ -1,6 +1,5 @@
 package com.example.livraisonrestaurant.ui.login.Auth.Client;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
@@ -9,14 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.livraisonrestaurant.R;
-import com.example.livraisonrestaurant.ui.login.Auth.rider;
-import com.example.livraisonrestaurant.ui.login.CustomAdapter;
-import com.example.livraisonrestaurant.ui.login.RowItem;
+import com.example.livraisonrestaurant.ui.login.Auth.Rider.rider;
+import com.example.livraisonrestaurant.ui.login.Adpater.CustomAdapter;
+import com.example.livraisonrestaurant.ui.login.Adpater.RowItem;
 import com.example.livraisonrestaurant.ui.login.api.riderHelper;
 import com.example.livraisonrestaurant.ui.login.api.userHelper;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,7 +42,7 @@ public class AccountActivity extends Fragment {
         fillArrayList();
         test.put("Paramètres",new Intent(getActivity(),SettingsActivity.class));
         test.put("Livrer avec nous",new Intent(getActivity(), rider.class));
-        test.put("Devenir restaurant partenaire ",new Intent(getActivity(),devenirRest.class));
+        test.put("Devenir restaurant partenaire",new Intent(getActivity(),devenirRest.class));
         CustomAdapter myAdapter = new CustomAdapter(getActivity(), myRowItems);
         myListView.setAdapter(myAdapter);
         myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -63,6 +60,7 @@ public class AccountActivity extends Fragment {
 
 
                 startActivity(test.get(list_row.getHeading()));
+
 
                 // Toast.makeText(getApplicationContext(), item,Toast.LENGTH_LONG);
             }

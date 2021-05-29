@@ -2,7 +2,6 @@ package com.example.livraisonrestaurant.ui.login.Auth.Client;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.widget.NestedScrollView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,19 +10,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andremion.counterfab.CounterFab;
 import com.example.livraisonrestaurant.R;
-import com.example.livraisonrestaurant.ui.login.CustomAdapter;
-import com.example.livraisonrestaurant.ui.login.MenuAdapter;
-import com.example.livraisonrestaurant.ui.login.RowItem;
+import com.example.livraisonrestaurant.ui.login.Adpater.MenuAdapter;
+import com.example.livraisonrestaurant.ui.login.Adpater.RowItem;
 import com.example.livraisonrestaurant.ui.login.api.productHelper;
 import com.example.livraisonrestaurant.ui.login.api.restHelper;
-import com.example.livraisonrestaurant.ui.login.api.riderHelper;
 import com.example.livraisonrestaurant.ui.login.api.userHelper;
 import com.example.livraisonrestaurant.ui.login.models.products;
 import com.example.livraisonrestaurant.ui.login.models.restaurant;
@@ -32,7 +28,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -79,7 +74,9 @@ public class MenuRestaurantActivity extends AppCompatActivity {
         cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (U.getOrder().getListProducts().size() != 0) {
+                    myRowItems= new ArrayList<RowItem>();
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
                     if (U.getOrder().getListProducts().size() != 0) {
                         restHelper.getRestaurant(U.getOrder().getRestaurant_id()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {

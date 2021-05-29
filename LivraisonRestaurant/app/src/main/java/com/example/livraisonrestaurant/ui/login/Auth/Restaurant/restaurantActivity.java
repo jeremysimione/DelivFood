@@ -328,7 +328,7 @@ public class restaurantActivity extends BaseActivity {
                             }
                         case MODIFIED:
                             if(dc.getDocument().getData().get("status").toString().equals("2")){
-                                parent.setVisibility(RelativeLayout.GONE);
+                              //  parent.setVisibility(RelativeLayout.GONE);
                                }
                     }
                 }

@@ -1,4 +1,4 @@
-package com.example.livraisonrestaurant.ui.login;
+package com.example.livraisonrestaurant.ui.login.Adpater;
 
 public class RowItem {
 

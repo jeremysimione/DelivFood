@@ -48,7 +48,7 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity
-            android:name=".ui.login.Auth.rider"
+            android:name=".ui.login.Auth.Rider.rider"
             android:label="@string/toolbar_title_login_activity"
             android:parentActivityName=".ui.login.MainActivity" />
         <activity
