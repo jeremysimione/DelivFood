@@ -77,14 +77,12 @@ private Marker f;
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
-                        System.out.println("+++++"+location);
+
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
                             // Logic to handle location object
                             position = new LatLng(location.getLatitude(), location.getLongitude());
                             mCurrentLocation = location;
-                            System.out.println("++++"+position);
-                            System.out.println(mCurrentLocation);
                             try {
                                 adress = getAdressFromLocation();
                                 adressET.setText(adress);

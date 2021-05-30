@@ -152,7 +152,7 @@ public class MainActivity extends BaseActivity {
                     if(documentSnapshot.toObject(user.class)==null) {
                         userHelper.createUser(uid, username);
                         new Handler().postDelayed(null,6000);
-                        Intent intent = new Intent(getApplicationContext(), client.class);
+                        Intent intent = new Intent(getApplicationContext(), ClientActivity.class);
                         startActivity(intent);
                     }else
                         {

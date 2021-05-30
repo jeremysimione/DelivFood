@@ -256,17 +256,13 @@ public class restaurantActivity extends BaseActivity {
                                                             riderHelper.getRiderCollection().whereEqualTo("enLigne", true).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                                                 @Override
                                                                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                                                    ;
-                                                                    System.out.println("+++++++++++++++++++++" + (String) queryDocumentSnapshots.getDocumentChanges().get(0).getDocument().getData().get("uid"));
                                                                     orderHelper.orderRider((String) dc.getDocument().getData().get("uid"), (String) queryDocumentSnapshots.getDocumentChanges().get(0).getDocument().getData().get("uid"));
                                                                     orderHelper.updateStatus((String) dc.getDocument().getData().get("uid"), 1);
                                                                     bo[0] = false;
 
                                                                 }
                                                             });
-
                                                         }
-
                                                     });
                                                 } else {
                                                     d.setNegativeButton("", new DialogInterface.OnClickListener() {
